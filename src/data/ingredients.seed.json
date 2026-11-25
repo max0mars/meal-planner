@@ -1,0 +1,5701 @@
+[
+ {
+  "name": "Chicken breast",
+  "aliases": [
+   "chicken"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 114,
+  "proteinPer100g": 23.2,
+  "sensitivity": "safe",
+  "usdaId": 171464,
+  "gramsPerPiece": 174
+ },
+ {
+  "name": "Chicken thigh",
+  "aliases": [
+   "chicken"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 121,
+  "proteinPer100g": 19.7,
+  "sensitivity": "safe",
+  "usdaId": 173627,
+  "gramsPerPiece": 90
+ },
+ {
+  "name": "Ground chicken",
+  "aliases": [
+   "chicken"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 143,
+  "proteinPer100g": 17.4,
+  "sensitivity": "safe",
+  "usdaId": 171116
+ },
+ {
+  "name": "Ground turkey",
+  "aliases": [
+   "turkey"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 148,
+  "proteinPer100g": 19.7,
+  "sensitivity": "safe",
+  "usdaId": 171505
+ },
+ {
+  "name": "Turkey breast",
+  "aliases": [
+   "turkey"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 114,
+  "proteinPer100g": 23.7,
+  "sensitivity": "safe",
+  "usdaId": 171098
+ },
+ {
+  "name": "Ground beef (80/20)",
+  "aliases": [
+   "hamburger",
+   "mince",
+   "beef mince",
+   "minced beef",
+   "ground beef"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 254,
+  "proteinPer100g": 17.2,
+  "sensitivity": "safe",
+  "usdaId": 174036
+ },
+ {
+  "name": "Ground beef (93/7)",
+  "aliases": [
+   "lean beef",
+   "lean ground beef"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 152,
+  "proteinPer100g": 20.9,
+  "sensitivity": "safe",
+  "usdaId": 173110
+ },
+ {
+  "name": "Beef sirloin steak",
+  "aliases": [
+   "steak"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 127,
+  "proteinPer100g": 22.3,
+  "sensitivity": "safe",
+  "usdaId": 171804
+ },
+ {
+  "name": "Beef chuck roast",
+  "aliases": [
+   "beef",
+   "pot roast",
+   "stewing beef",
+   "stew beef",
+   "beef stew meat",
+   "chuck roast"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 124,
+  "proteinPer100g": 21.9,
+  "sensitivity": "safe",
+  "usdaId": 170809
+ },
+ {
+  "name": "Pork loin",
+  "aliases": [
+   "pork"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 198,
+  "proteinPer100g": 19.7,
+  "sensitivity": "safe",
+  "usdaId": 167818
+ },
+ {
+  "name": "Pork tenderloin",
+  "aliases": [
+   "pork"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 109,
+  "proteinPer100g": 21,
+  "sensitivity": "safe",
+  "usdaId": 168249
+ },
+ {
+  "name": "Bacon",
+  "aliases": [],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 393,
+  "proteinPer100g": 13.7,
+  "sensitivity": "safe",
+  "usdaId": 168277,
+  "gramsPerPiece": 25
+ },
+ {
+  "name": "Salmon",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 208,
+  "proteinPer100g": 20.4,
+  "sensitivity": "safe",
+  "usdaId": 175167
+ },
+ {
+  "name": "Cod",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 82,
+  "proteinPer100g": 17.8,
+  "sensitivity": "safe",
+  "usdaId": 171955
+ },
+ {
+  "name": "Tilapia",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 96,
+  "proteinPer100g": 20.1,
+  "sensitivity": "safe",
+  "usdaId": 175176
+ },
+ {
+  "name": "Canned tuna",
+  "aliases": [
+   "tuna"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 86,
+  "proteinPer100g": 19.4,
+  "sensitivity": "safe",
+  "usdaId": 173709
+ },
+ {
+  "name": "Shrimp",
+  "aliases": [
+   "prawn",
+   "king prawns",
+   "tiger prawns"
+  ],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 71,
+  "proteinPer100g": 13.6,
+  "sensitivity": "safe",
+  "usdaId": 174210,
+  "gramsPerPiece": 15
+ },
+ {
+  "name": "Eggs",
+  "aliases": [
+   "egg"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "egg"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 365
+  },
+  "kcalPer100g": 143,
+  "proteinPer100g": 12.6,
+  "sensitivity": "safe",
+  "usdaId": 171287,
+  "gramsPerPiece": 50
+ },
+ {
+  "name": "Whole milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 90
+  },
+  "kcalPer100g": 61,
+  "proteinPer100g": 3.2,
+  "sensitivity": "safe",
+  "usdaId": 171265,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "2% milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 90
+  },
+  "kcalPer100g": 50,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 171267,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Skim milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 90
+  },
+  "kcalPer100g": 34,
+  "proteinPer100g": 3.4,
+  "sensitivity": "safe",
+  "usdaId": 171269,
+  "gramsPerMl": 1.04
+ },
+ {
+  "name": "Lactose-free milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14,
+   "freezer": 90
+  },
+  "kcalPer100g": 50,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Butter",
+  "aliases": [],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 60,
+   "freezer": 270,
+   "pantry": 3
+  },
+  "kcalPer100g": 717,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 173410,
+  "gramsPerMl": 0.96
+ },
+ {
+  "name": "Ghee",
+  "aliases": [
+   "clarified butter"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "pantry": 90,
+   "fridge": 365
+  },
+  "kcalPer100g": 876,
+  "proteinPer100g": 0.3,
+  "sensitivity": "safe",
+  "usdaId": 173412,
+  "gramsPerMl": 0.91
+ },
+ {
+  "name": "Heavy cream",
+  "aliases": [
+   "cream",
+   "double cream",
+   "whipping cream"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10,
+   "freezer": 90
+  },
+  "kcalPer100g": 340,
+  "proteinPer100g": 2.8,
+  "sensitivity": "safe",
+  "usdaId": 170859,
+  "gramsPerMl": 0.99
+ },
+ {
+  "name": "Sour cream",
+  "aliases": [
+   "soured cream",
+   "creme fraiche",
+   "crème fraîche"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 198,
+  "proteinPer100g": 2.4,
+  "sensitivity": "safe",
+  "usdaId": 171257,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Plain yogurt",
+  "aliases": [
+   "yoghurt"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14,
+   "freezer": 60
+  },
+  "kcalPer100g": 61,
+  "proteinPer100g": 3.5,
+  "sensitivity": "safe",
+  "usdaId": 171284,
+  "gramsPerMl": 1.04
+ },
+ {
+  "name": "Greek yogurt (nonfat)",
+  "aliases": [
+   "yoghurt"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14,
+   "freezer": 60
+  },
+  "kcalPer100g": 59,
+  "proteinPer100g": 10.2,
+  "sensitivity": "safe",
+  "usdaId": 170894,
+  "gramsPerMl": 1.06
+ },
+ {
+  "name": "Cheddar cheese",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 180
+  },
+  "kcalPer100g": 403,
+  "proteinPer100g": 22.9,
+  "sensitivity": "safe",
+  "usdaId": 173414
+ },
+ {
+  "name": "Mozzarella",
+  "aliases": [
+   "cheese",
+   "mozzarella balls",
+   "mozzarella ball",
+   "buffalo mozzarella"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14,
+   "freezer": 180
+  },
+  "kcalPer100g": 299,
+  "proteinPer100g": 22.2,
+  "sensitivity": "safe",
+  "usdaId": 170845
+ },
+ {
+  "name": "Parmesan",
+  "aliases": [
+   "cheese",
+   "parmesan cheese",
+   "parmigiano-reggiano",
+   "parmigiano reggiano"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 60,
+   "freezer": 270
+  },
+  "kcalPer100g": 392,
+  "proteinPer100g": 35.8,
+  "sensitivity": "safe",
+  "usdaId": 170848,
+  "gramsPerMl": 0.4
+ },
+ {
+  "name": "Swiss cheese",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 180
+  },
+  "kcalPer100g": 393,
+  "proteinPer100g": 27,
+  "sensitivity": "safe",
+  "usdaId": 171251
+ },
+ {
+  "name": "Cottage cheese",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10
+  },
+  "kcalPer100g": 98,
+  "proteinPer100g": 11.1,
+  "sensitivity": "safe",
+  "usdaId": 172179
+ },
+ {
+  "name": "Cream cheese",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 350,
+  "proteinPer100g": 6.2,
+  "sensitivity": "safe",
+  "usdaId": 173418
+ },
+ {
+  "name": "Feta",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 21
+  },
+  "kcalPer100g": 265,
+  "proteinPer100g": 14.2,
+  "sensitivity": "safe",
+  "usdaId": 173420
+ },
+ {
+  "name": "Almond milk (unsweetened)",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "pantry": 180
+  },
+  "kcalPer100g": 15,
+  "proteinPer100g": 0.4,
+  "sensitivity": "safe",
+  "usdaId": 174832,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Soy milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "soy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "pantry": 180
+  },
+  "kcalPer100g": 54,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 172446,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Oat milk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "oats"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "pantry": 180
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Whey protein powder",
+  "aliases": [
+   "protein powder"
+  ],
+  "category": "pantry",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540
+  },
+  "kcalPer100g": 400,
+  "proteinPer100g": 80,
+  "sensitivity": "safe"
+ },
+ {
+  "name": "Pea protein powder",
+  "aliases": [
+   "protein powder"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 540
+  },
+  "kcalPer100g": 380,
+  "proteinPer100g": 75,
+  "sensitivity": "safe"
+ },
+ {
+  "name": "White rice",
+  "aliases": [
+   "rice",
+   "basmati rice",
+   "jasmine rice",
+   "long grain rice",
+   "long-grain rice",
+   "paella rice",
+   "arborio rice",
+   "risotto rice",
+   "pudding rice"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 365,
+  "proteinPer100g": 7.1,
+  "sensitivity": "safe",
+  "usdaId": 168877,
+  "gramsPerMl": 0.78
+ },
+ {
+  "name": "Brown rice",
+  "aliases": [
+   "rice"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 367,
+  "proteinPer100g": 7.5,
+  "sensitivity": "safe",
+  "usdaId": 169703,
+  "gramsPerMl": 0.78
+ },
+ {
+  "name": "Rolled oats",
+  "aliases": [
+   "oatmeal",
+   "porridge"
+  ],
+  "category": "grains",
+  "tags": [
+   "oats"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 379,
+  "proteinPer100g": 13.2,
+  "sensitivity": "safe",
+  "usdaId": 173904,
+  "gramsPerMl": 0.38
+ },
+ {
+  "name": "Wheat pasta",
+  "aliases": [
+   "spaghetti",
+   "noodles",
+   "lasagne sheets",
+   "lasagna sheets",
+   "lasagne",
+   "lasagna",
+   "macaroni",
+   "linguine",
+   "linguine pasta",
+   "penne",
+   "fusilli",
+   "tagliatelle",
+   "farfalle",
+   "rigatoni",
+   "pappardelle",
+   "fettuccine",
+   "orzo",
+   "pasta",
+   "pasta shapes",
+   "penne rigate",
+   "paccheri",
+   "paccheri pasta",
+   "bowtie pasta",
+   "conchiglie",
+   "tagliolini",
+   "spaghettini",
+   "cannelloni"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 371,
+  "proteinPer100g": 13,
+  "sensitivity": "safe",
+  "usdaId": 169736
+ },
+ {
+  "name": "Gluten-free pasta",
+  "aliases": [
+   "pasta",
+   "noodles"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 357,
+  "proteinPer100g": 7.5,
+  "sensitivity": "safe"
+ },
+ {
+  "name": "Rice noodles",
+  "aliases": [
+   "noodles",
+   "chow fun",
+   "chow fun noodles",
+   "ho fun"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 364,
+  "proteinPer100g": 6,
+  "sensitivity": "safe",
+  "usdaId": 169742
+ },
+ {
+  "name": "White bread",
+  "aliases": [
+   "bread",
+   "sliced bread"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 5,
+   "fridge": 10,
+   "freezer": 90
+  },
+  "kcalPer100g": 266,
+  "proteinPer100g": 8.9,
+  "sensitivity": "safe",
+  "usdaId": 174924,
+  "gramsPerPiece": 28
+ },
+ {
+  "name": "Whole wheat bread",
+  "aliases": [],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 5,
+   "fridge": 10,
+   "freezer": 90
+  },
+  "kcalPer100g": 252,
+  "proteinPer100g": 12.5,
+  "sensitivity": "safe",
+  "usdaId": 172688,
+  "gramsPerPiece": 33
+ },
+ {
+  "name": "Corn tortillas",
+  "aliases": [
+   "tortilla"
+  ],
+  "category": "grains",
+  "tags": [
+   "corn"
+  ],
+  "shelfLifeDays": {
+   "pantry": 7,
+   "fridge": 21,
+   "freezer": 180
+  },
+  "kcalPer100g": 218,
+  "proteinPer100g": 5.7,
+  "sensitivity": "safe",
+  "usdaId": 175036,
+  "gramsPerPiece": 26
+ },
+ {
+  "name": "Flour tortillas",
+  "aliases": [
+   "tortilla"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 7,
+   "fridge": 21,
+   "freezer": 180
+  },
+  "kcalPer100g": 297,
+  "proteinPer100g": 8,
+  "sensitivity": "safe",
+  "usdaId": 167535,
+  "gramsPerPiece": 45
+ },
+ {
+  "name": "All-purpose flour",
+  "aliases": [
+   "flour",
+   "plain flour",
+   "white flour",
+   "wheat flour",
+   "strong white flour",
+   "bread flour",
+   "strong flour",
+   "strong white bread flour"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 364,
+  "proteinPer100g": 10.3,
+  "sensitivity": "safe",
+  "usdaId": 168894,
+  "gramsPerMl": 0.53
+ },
+ {
+  "name": "Rice flour",
+  "aliases": [
+   "flour"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 366,
+  "proteinPer100g": 6,
+  "sensitivity": "safe",
+  "usdaId": 169714,
+  "gramsPerMl": 0.65
+ },
+ {
+  "name": "Quinoa",
+  "aliases": [],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 368,
+  "proteinPer100g": 14.1,
+  "sensitivity": "safe",
+  "usdaId": 168874,
+  "gramsPerMl": 0.72
+ },
+ {
+  "name": "Cornmeal",
+  "aliases": [
+   "polenta"
+  ],
+  "category": "grains",
+  "tags": [
+   "corn"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 362,
+  "proteinPer100g": 8.1,
+  "sensitivity": "safe",
+  "usdaId": 169697,
+  "gramsPerMl": 0.63
+ },
+ {
+  "name": "Couscous",
+  "aliases": [],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 376,
+  "proteinPer100g": 12.8,
+  "sensitivity": "safe",
+  "usdaId": 169699,
+  "gramsPerMl": 0.73
+ },
+ {
+  "name": "Potato",
+  "aliases": [
+   "potatoes"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 30,
+   "fridge": 30
+  },
+  "kcalPer100g": 77,
+  "proteinPer100g": 2.1,
+  "sensitivity": "safe",
+  "usdaId": 170026,
+  "gramsPerPiece": 213
+ },
+ {
+  "name": "Sweet potato",
+  "aliases": [
+   "yam"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 21,
+   "fridge": 21
+  },
+  "kcalPer100g": 86,
+  "proteinPer100g": 1.6,
+  "sensitivity": "safe",
+  "usdaId": 168482,
+  "gramsPerPiece": 130
+ },
+ {
+  "name": "Lentils",
+  "aliases": [
+   "brown lentils",
+   "green lentils",
+   "puy lentils",
+   "red lentils"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 352,
+  "proteinPer100g": 24.6,
+  "sensitivity": "safe",
+  "usdaId": 172420,
+  "gramsPerMl": 0.81
+ },
+ {
+  "name": "Black beans",
+  "aliases": [
+   "beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 341,
+  "proteinPer100g": 21.6,
+  "sensitivity": "safe",
+  "usdaId": 173734,
+  "gramsPerMl": 0.8
+ },
+ {
+  "name": "Chickpeas",
+  "aliases": [
+   "garbanzo"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 378,
+  "proteinPer100g": 20.5,
+  "sensitivity": "safe",
+  "usdaId": 173756,
+  "gramsPerMl": 0.85
+ },
+ {
+  "name": "Kidney beans",
+  "aliases": [
+   "beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 333,
+  "proteinPer100g": 23.6,
+  "sensitivity": "safe",
+  "usdaId": 175193,
+  "gramsPerMl": 0.78
+ },
+ {
+  "name": "Firm tofu",
+  "aliases": [],
+  "category": "legumes",
+  "tags": [
+   "soy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 150
+  },
+  "kcalPer100g": 144,
+  "proteinPer100g": 17.3,
+  "sensitivity": "safe",
+  "usdaId": 172475
+ },
+ {
+  "name": "Tempeh",
+  "aliases": [],
+  "category": "legumes",
+  "tags": [
+   "soy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10,
+   "freezer": 180
+  },
+  "kcalPer100g": 192,
+  "proteinPer100g": 20.3,
+  "sensitivity": "safe",
+  "usdaId": 174272
+ },
+ {
+  "name": "Peanuts",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "peanut",
+   "legumes"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 567,
+  "proteinPer100g": 25.8,
+  "sensitivity": "safe",
+  "usdaId": 172430
+ },
+ {
+  "name": "Peanut butter",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "peanut",
+   "legumes"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 598,
+  "proteinPer100g": 22.2,
+  "sensitivity": "safe",
+  "usdaId": 174266,
+  "gramsPerMl": 1.08
+ },
+ {
+  "name": "Almonds",
+  "aliases": [
+   "flaked almonds",
+   "ground almonds",
+   "almond flakes"
+  ],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 579,
+  "proteinPer100g": 21.2,
+  "sensitivity": "safe",
+  "usdaId": 170567
+ },
+ {
+  "name": "Walnuts",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 654,
+  "proteinPer100g": 15.2,
+  "sensitivity": "safe",
+  "usdaId": 170187
+ },
+ {
+  "name": "Cashews",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 553,
+  "proteinPer100g": 18.2,
+  "sensitivity": "safe",
+  "usdaId": 170162
+ },
+ {
+  "name": "Almond butter",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 614,
+  "proteinPer100g": 21,
+  "sensitivity": "safe",
+  "usdaId": 168588,
+  "gramsPerMl": 1.05
+ },
+ {
+  "name": "Chia seeds",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 486,
+  "proteinPer100g": 16.5,
+  "sensitivity": "safe",
+  "usdaId": 170554
+ },
+ {
+  "name": "Flaxseed",
+  "aliases": [
+   "linseed"
+  ],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 534,
+  "proteinPer100g": 18.3,
+  "sensitivity": "safe",
+  "usdaId": 169414
+ },
+ {
+  "name": "Sunflower seeds",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 584,
+  "proteinPer100g": 20.8,
+  "sensitivity": "safe",
+  "usdaId": 170562
+ },
+ {
+  "name": "Tahini",
+  "aliases": [
+   "sesame paste"
+  ],
+  "category": "nuts-seeds",
+  "tags": [
+   "sesame"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 592,
+  "proteinPer100g": 17.4,
+  "sensitivity": "safe",
+  "usdaId": 168604,
+  "gramsPerMl": 1.05
+ },
+ {
+  "name": "Carrot",
+  "aliases": [
+   "carrots"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "freezer": 240
+  },
+  "kcalPer100g": 41,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 170393,
+  "gramsPerPiece": 61
+ },
+ {
+  "name": "Onion",
+  "aliases": [
+   "onions"
+  ],
+  "category": "produce",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 30,
+   "fridge": 60
+  },
+  "kcalPer100g": 40,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 170000,
+  "gramsPerPiece": 110
+ },
+ {
+  "name": "Green onion",
+  "aliases": [
+   "scallion",
+   "spring onion"
+  ],
+  "category": "produce",
+  "tags": [
+   "onion-garlic"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10
+  },
+  "kcalPer100g": 32,
+  "proteinPer100g": 1.8,
+  "sensitivity": "safe",
+  "usdaId": 170005,
+  "gramsPerPiece": 15
+ },
+ {
+  "name": "Garlic",
+  "aliases": [
+   "garlic clove",
+   "clove garlic",
+   "cloves garlic"
+  ],
+  "category": "produce",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 60,
+   "fridge": 90
+  },
+  "kcalPer100g": 149,
+  "proteinPer100g": 6.4,
+  "sensitivity": "safe",
+  "usdaId": 169230,
+  "gramsPerPiece": 3
+ },
+ {
+  "name": "Tomato",
+  "aliases": [
+   "tomatoes"
+  ],
+  "category": "produce",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 18,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 170457,
+  "gramsPerPiece": 123
+ },
+ {
+  "name": "Bell pepper",
+  "aliases": [
+   "pepper",
+   "capsicum",
+   "red pepper",
+   "green pepper",
+   "yellow pepper",
+   "orange pepper",
+   "red bell pepper",
+   "green bell pepper",
+   "yellow bell pepper"
+  ],
+  "category": "produce",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 26,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 170108,
+  "gramsPerPiece": 119
+ },
+ {
+  "name": "Cucumber",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 15,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 168409,
+  "gramsPerPiece": 301
+ },
+ {
+  "name": "Zucchini",
+  "aliases": [
+   "courgette"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 17,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 169291,
+  "gramsPerPiece": 196
+ },
+ {
+  "name": "Spinach",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 240
+  },
+  "kcalPer100g": 23,
+  "proteinPer100g": 2.9,
+  "sensitivity": "safe",
+  "usdaId": 168462,
+  "gramsPerMl": 0.13
+ },
+ {
+  "name": "Kale",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240
+  },
+  "kcalPer100g": 35,
+  "proteinPer100g": 2.9,
+  "sensitivity": "safe",
+  "usdaId": 168421,
+  "gramsPerMl": 0.27
+ },
+ {
+  "name": "Romaine lettuce",
+  "aliases": [
+   "lettuce"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 17,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 169247,
+  "gramsPerPiece": 300,
+  "gramsPerMl": 0.2
+ },
+ {
+  "name": "Broccoli",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240
+  },
+  "kcalPer100g": 34,
+  "proteinPer100g": 2.8,
+  "sensitivity": "safe",
+  "usdaId": 170379,
+  "gramsPerPiece": 300
+ },
+ {
+  "name": "Cauliflower",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "cruciferous",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 25,
+  "proteinPer100g": 1.9,
+  "sensitivity": "safe",
+  "usdaId": 169986,
+  "gramsPerPiece": 600
+ },
+ {
+  "name": "Cabbage",
+  "aliases": [
+   "savoy cabbage",
+   "white cabbage"
+  ],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 21
+  },
+  "kcalPer100g": 25,
+  "proteinPer100g": 1.3,
+  "sensitivity": "safe",
+  "usdaId": 169975,
+  "gramsPerPiece": 900
+ },
+ {
+  "name": "Mushrooms",
+  "aliases": [
+   "button mushrooms",
+   "chestnut mushrooms",
+   "cremini",
+   "chestnut mushroom",
+   "button mushroom"
+  ],
+  "category": "produce",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5
+  },
+  "kcalPer100g": 22,
+  "proteinPer100g": 3.1,
+  "sensitivity": "safe",
+  "usdaId": 169251,
+  "gramsPerPiece": 18
+ },
+ {
+  "name": "Celery",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 14,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 169988,
+  "gramsPerPiece": 40
+ },
+ {
+  "name": "Green beans",
+  "aliases": [
+   "string beans"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 31,
+  "proteinPer100g": 1.8,
+  "sensitivity": "safe",
+  "usdaId": 169961
+ },
+ {
+  "name": "Green peas",
+  "aliases": [
+   "peas"
+  ],
+  "category": "produce",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 81,
+  "proteinPer100g": 5.4,
+  "sensitivity": "safe",
+  "usdaId": 170419
+ },
+ {
+  "name": "Sweet corn",
+  "aliases": [
+   "corn",
+   "sweetcorn"
+  ],
+  "category": "produce",
+  "tags": [
+   "corn",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 240
+  },
+  "kcalPer100g": 86,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 169998
+ },
+ {
+  "name": "Butternut squash",
+  "aliases": [
+   "squash"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 60,
+   "fridge": 14
+  },
+  "kcalPer100g": 45,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 169295
+ },
+ {
+  "name": "Avocado",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 4,
+   "fridge": 7
+  },
+  "kcalPer100g": 160,
+  "proteinPer100g": 2,
+  "sensitivity": "safe",
+  "usdaId": 171705,
+  "gramsPerPiece": 150
+ },
+ {
+  "name": "Asparagus",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 20,
+  "proteinPer100g": 2.2,
+  "sensitivity": "safe",
+  "usdaId": 168389
+ },
+ {
+  "name": "Eggplant",
+  "aliases": [
+   "aubergine",
+   "egg plant"
+  ],
+  "category": "produce",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240,
+   "pantry": 5
+  },
+  "kcalPer100g": 25,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 169228,
+  "gramsPerPiece": 450
+ },
+ {
+  "name": "Ginger root",
+  "aliases": [
+   "ginger"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "freezer": 180
+  },
+  "kcalPer100g": 80,
+  "proteinPer100g": 1.8,
+  "sensitivity": "safe",
+  "usdaId": 169231,
+  "gramsPerPiece": 15
+ },
+ {
+  "name": "Beets",
+  "aliases": [
+   "beetroot"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 1.6,
+  "sensitivity": "safe",
+  "usdaId": 169145,
+  "gramsPerPiece": 82
+ },
+ {
+  "name": "Banana",
+  "aliases": [
+   "bananas"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 5,
+   "fridge": 7,
+   "freezer": 180
+  },
+  "kcalPer100g": 89,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 173944,
+  "gramsPerPiece": 118
+ },
+ {
+  "name": "Apple",
+  "aliases": [
+   "apples"
+  ],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "pantry": 7
+  },
+  "kcalPer100g": 52,
+  "proteinPer100g": 0.3,
+  "sensitivity": "safe",
+  "usdaId": 171688,
+  "gramsPerPiece": 182
+ },
+ {
+  "name": "Blueberries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 365
+  },
+  "kcalPer100g": 57,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 171711
+ },
+ {
+  "name": "Strawberries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 365
+  },
+  "kcalPer100g": 32,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 167762,
+  "gramsPerPiece": 12
+ },
+ {
+  "name": "Orange",
+  "aliases": [
+   "oranges"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "pantry": 7
+  },
+  "kcalPer100g": 47,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 169097,
+  "gramsPerPiece": 131
+ },
+ {
+  "name": "Grapes",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 69,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 174683,
+  "gramsPerPiece": 5
+ },
+ {
+  "name": "Pineapple",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 50,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 169124
+ },
+ {
+  "name": "Mango",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 4
+  },
+  "kcalPer100g": 60,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 169910
+ },
+ {
+  "name": "Pear",
+  "aliases": [
+   "pears"
+  ],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10,
+   "pantry": 5
+  },
+  "kcalPer100g": 57,
+  "proteinPer100g": 0.4,
+  "sensitivity": "safe",
+  "usdaId": 169118,
+  "gramsPerPiece": 178
+ },
+ {
+  "name": "Peach",
+  "aliases": [
+   "peaches"
+  ],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 39,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 169928,
+  "gramsPerPiece": 150
+ },
+ {
+  "name": "Watermelon",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "pantry": 7
+  },
+  "kcalPer100g": 30,
+  "proteinPer100g": 0.6,
+  "sensitivity": "safe",
+  "usdaId": 167765
+ },
+ {
+  "name": "Lemon",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "pantry": 7
+  },
+  "kcalPer100g": 29,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 167746,
+  "gramsPerPiece": 58
+ },
+ {
+  "name": "Lime",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "pantry": 7
+  },
+  "kcalPer100g": 30,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 168155,
+  "gramsPerPiece": 67
+ },
+ {
+  "name": "Raisins",
+  "aliases": [
+   "sultanas",
+   "golden raisins",
+   "mixed dried fruit",
+   "dried fruit"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365
+  },
+  "kcalPer100g": 299,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 168165
+ },
+ {
+  "name": "Dates",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365
+  },
+  "kcalPer100g": 282,
+  "proteinPer100g": 2.5,
+  "sensitivity": "safe",
+  "usdaId": 171726,
+  "gramsPerPiece": 24
+ },
+ {
+  "name": "Olive oil",
+  "aliases": [
+   "oil"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 884,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 171413,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Canola oil",
+  "aliases": [
+   "oil",
+   "vegetable oil",
+   "frying oil",
+   "frying vegetable oil",
+   "cooking oil",
+   "rapeseed oil"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 884,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 172336,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Coconut oil",
+  "aliases": [
+   "oil"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 892,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 171412,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Mayonnaise",
+  "aliases": [
+   "mayo"
+  ],
+  "category": "pantry",
+  "tags": [
+   "egg"
+  ],
+  "shelfLifeDays": {
+   "fridge": 90
+  },
+  "kcalPer100g": 680,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 171009,
+  "gramsPerMl": 0.95
+ },
+ {
+  "name": "Sugar",
+  "aliases": [
+   "caster sugar",
+   "icing sugar",
+   "powdered sugar",
+   "confectioners sugar",
+   "vanilla sugar",
+   "golden caster sugar",
+   "golden sugar"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 387,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 169655,
+  "gramsPerMl": 0.85
+ },
+ {
+  "name": "Honey",
+  "aliases": [
+   "clear honey",
+   "runny honey"
+  ],
+  "category": "pantry",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 304,
+  "proteinPer100g": 0.3,
+  "sensitivity": "safe",
+  "usdaId": 169640,
+  "gramsPerMl": 1.42
+ },
+ {
+  "name": "Maple syrup",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 260,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 169661,
+  "gramsPerMl": 1.33
+ },
+ {
+  "name": "Soy sauce",
+  "aliases": [
+   "shoyu"
+  ],
+  "category": "pantry",
+  "tags": [
+   "soy",
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 53,
+  "proteinPer100g": 8.1,
+  "sensitivity": "safe",
+  "usdaId": 174277,
+  "gramsPerMl": 1.2
+ },
+ {
+  "name": "Tamari",
+  "aliases": [
+   "gluten-free soy sauce"
+  ],
+  "category": "pantry",
+  "tags": [
+   "soy"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 60,
+  "proteinPer100g": 10.5,
+  "sensitivity": "safe",
+  "usdaId": 174278,
+  "gramsPerMl": 1.2
+ },
+ {
+  "name": "Chicken broth",
+  "aliases": [
+   "stock",
+   "chicken stock"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5,
+   "freezer": 180
+  },
+  "kcalPer100g": 6,
+  "proteinPer100g": 0.6,
+  "sensitivity": "safe",
+  "usdaId": 174536,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Canned tomatoes",
+  "aliases": [
+   "tinned tomatoes",
+   "chopped tomatoes",
+   "tinned chopped tomatoes",
+   "canned chopped tomatoes"
+  ],
+  "category": "pantry",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5
+  },
+  "kcalPer100g": 16,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 170051,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Tomato sauce",
+  "aliases": [
+   "marinara",
+   "pasta sauce",
+   "passata",
+   "tomato passata",
+   "sieved tomatoes"
+  ],
+  "category": "pantry",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5
+  },
+  "kcalPer100g": 24,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 170054,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Tomato paste",
+  "aliases": [
+   "tomato puree",
+   "tomato purée"
+  ],
+  "category": "pantry",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 7
+  },
+  "kcalPer100g": 82,
+  "proteinPer100g": 4.3,
+  "sensitivity": "safe",
+  "usdaId": 170459,
+  "gramsPerMl": 1.1
+ },
+ {
+  "name": "Apple cider vinegar",
+  "aliases": [
+   "vinegar",
+   "white vinegar",
+   "white wine vinegar",
+   "red wine vinegar",
+   "rice vinegar",
+   "wine vinegar",
+   "distilled vinegar",
+   "sherry vinegar"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 21,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 173469,
+  "gramsPerMl": 1.01
+ },
+ {
+  "name": "Salt",
+  "aliases": [
+   "celery salt"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 3650
+  },
+  "kcalPer100g": 0,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 173468,
+  "gramsPerMl": 1.2
+ },
+ {
+  "name": "Yellow mustard",
+  "aliases": [
+   "mustard",
+   "dijon mustard",
+   "english mustard",
+   "wholegrain mustard"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365
+  },
+  "kcalPer100g": 60,
+  "proteinPer100g": 3.7,
+  "sensitivity": "safe",
+  "usdaId": 172234,
+  "gramsPerMl": 1.05
+ },
+ {
+  "name": "Ketchup",
+  "aliases": [
+   "catsup",
+   "tomato ketchup"
+  ],
+  "category": "pantry",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 180
+  },
+  "kcalPer100g": 101,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 168556,
+  "gramsPerMl": 1.15
+ },
+ {
+  "name": "Black pepper",
+  "aliases": [
+   "peppercorns",
+   "black peppercorns"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 251,
+  "proteinPer100g": 10.4,
+  "sensitivity": "safe",
+  "usdaId": 170931
+ },
+ {
+  "name": "Cumin",
+  "aliases": [
+   "cumin seeds",
+   "ground cumin"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 375,
+  "proteinPer100g": 17.8,
+  "sensitivity": "safe",
+  "usdaId": 170923
+ },
+ {
+  "name": "Paprika",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 282,
+  "proteinPer100g": 14.1,
+  "sensitivity": "safe",
+  "usdaId": 171329
+ },
+ {
+  "name": "Turmeric",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 312,
+  "proteinPer100g": 9.7,
+  "sensitivity": "safe",
+  "usdaId": 172231
+ },
+ {
+  "name": "Cinnamon",
+  "aliases": [
+   "cinnamon stick",
+   "cinnamon sticks",
+   "ground cinnamon"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 247,
+  "proteinPer100g": 4,
+  "sensitivity": "safe",
+  "usdaId": 171320,
+  "gramsPerPiece": 3
+ },
+ {
+  "name": "Oregano (dried)",
+  "aliases": [
+   "oregano"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 265,
+  "proteinPer100g": 9,
+  "sensitivity": "safe",
+  "usdaId": 171328
+ },
+ {
+  "name": "Basil (dried)",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 233,
+  "proteinPer100g": 23,
+  "sensitivity": "safe",
+  "usdaId": 171317
+ },
+ {
+  "name": "Garlic powder",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 331,
+  "proteinPer100g": 16.6,
+  "sensitivity": "safe",
+  "usdaId": 171325
+ },
+ {
+  "name": "Onion powder",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 341,
+  "proteinPer100g": 10.4,
+  "sensitivity": "safe",
+  "usdaId": 171327
+ },
+ {
+  "name": "Chili powder",
+  "aliases": [
+   "chilli powder"
+  ],
+  "category": "spices-herbs",
+  "tags": [
+   "nightshade",
+   "spicy"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 282,
+  "proteinPer100g": 13.5,
+  "sensitivity": "safe",
+  "usdaId": 171319
+ },
+ {
+  "name": "Cayenne pepper",
+  "aliases": [
+   "chili flakes",
+   "chilli flakes",
+   "red pepper flakes",
+   "crushed red pepper"
+  ],
+  "category": "spices-herbs",
+  "tags": [
+   "nightshade",
+   "spicy"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 318,
+  "proteinPer100g": 12,
+  "sensitivity": "safe",
+  "usdaId": 170932
+ },
+ {
+  "name": "Ground ginger",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 335,
+  "proteinPer100g": 9,
+  "sensitivity": "safe",
+  "usdaId": 170926
+ },
+ {
+  "name": "Parsley",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 10
+  },
+  "kcalPer100g": 36,
+  "proteinPer100g": 3,
+  "sensitivity": "safe",
+  "usdaId": 170416
+ },
+ {
+  "name": "Cilantro",
+  "aliases": [
+   "coriander"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 10
+  },
+  "kcalPer100g": 23,
+  "proteinPer100g": 2.1,
+  "sensitivity": "safe",
+  "usdaId": 169997
+ },
+ {
+  "name": "Basil (fresh)",
+  "aliases": [
+   "basil",
+   "basil leaves"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 23,
+  "proteinPer100g": 3.2,
+  "sensitivity": "safe",
+  "usdaId": 172232,
+  "gramsPerMl": 0.2
+ },
+ {
+  "name": "Thyme (fresh)",
+  "aliases": [
+   "thyme"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 101,
+  "proteinPer100g": 5.6,
+  "sensitivity": "safe",
+  "usdaId": 173470
+ },
+ {
+  "name": "Rosemary (fresh)",
+  "aliases": [
+   "rosemary"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 131,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 173473
+ },
+ {
+  "name": "Raspberries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 4,
+   "freezer": 365
+  },
+  "kcalPer100g": 52,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 167755
+ },
+ {
+  "name": "Blackberries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 4,
+   "freezer": 365
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 1.4,
+  "sensitivity": "safe",
+  "usdaId": 173946
+ },
+ {
+  "name": "Cherries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 365
+  },
+  "kcalPer100g": 63,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 171719,
+  "gramsPerPiece": 8
+ },
+ {
+  "name": "Kiwi",
+  "aliases": [
+   "kiwifruit"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "pantry": 5
+  },
+  "kcalPer100g": 61,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 168153,
+  "gramsPerPiece": 69
+ },
+ {
+  "name": "Cantaloupe",
+  "aliases": [
+   "melon",
+   "rockmelon"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 34,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 169092
+ },
+ {
+  "name": "Honeydew melon",
+  "aliases": [
+   "melon"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 36,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 169911
+ },
+ {
+  "name": "Grapefruit",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "pantry": 7
+  },
+  "kcalPer100g": 30,
+  "proteinPer100g": 0.6,
+  "sensitivity": "safe",
+  "usdaId": 174675
+ },
+ {
+  "name": "Mandarin",
+  "aliases": [
+   "tangerine",
+   "clementine"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "pantry": 7
+  },
+  "kcalPer100g": 53,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 169105,
+  "gramsPerPiece": 88
+ },
+ {
+  "name": "Plums",
+  "aliases": [
+   "plum"
+  ],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 46,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 169949,
+  "gramsPerPiece": 66
+ },
+ {
+  "name": "Apricots",
+  "aliases": [
+   "apricot"
+  ],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 48,
+  "proteinPer100g": 1.4,
+  "sensitivity": "safe",
+  "usdaId": 171697,
+  "gramsPerPiece": 35
+ },
+ {
+  "name": "Pomegranate",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "pantry": 14
+  },
+  "kcalPer100g": 83,
+  "proteinPer100g": 1.7,
+  "sensitivity": "safe",
+  "usdaId": 169134
+ },
+ {
+  "name": "Papaya",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "pantry": 3
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 169926
+ },
+ {
+  "name": "Figs",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 4,
+   "pantry": 2
+  },
+  "kcalPer100g": 74,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 173021,
+  "gramsPerPiece": 50
+ },
+ {
+  "name": "Cranberries",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 365
+  },
+  "kcalPer100g": 46,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 171722
+ },
+ {
+  "name": "Brussels sprouts",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "cruciferous",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 240
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 3.4,
+  "sensitivity": "safe",
+  "usdaId": 170383
+ },
+ {
+  "name": "Bok choy",
+  "aliases": [
+   "pak choi"
+  ],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5
+  },
+  "kcalPer100g": 13,
+  "proteinPer100g": 1.5,
+  "sensitivity": "safe",
+  "usdaId": 170390
+ },
+ {
+  "name": "Arugula",
+  "aliases": [
+   "rocket"
+  ],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5
+  },
+  "kcalPer100g": 25,
+  "proteinPer100g": 2.6,
+  "sensitivity": "safe",
+  "usdaId": 169387,
+  "gramsPerMl": 0.08
+ },
+ {
+  "name": "Radish",
+  "aliases": [
+   "radishes"
+  ],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 16,
+  "proteinPer100g": 0.7,
+  "sensitivity": "safe",
+  "usdaId": 169276,
+  "gramsPerPiece": 5
+ },
+ {
+  "name": "Leek",
+  "aliases": [
+   "leeks"
+  ],
+  "category": "produce",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 61,
+  "proteinPer100g": 1.5,
+  "sensitivity": "safe",
+  "usdaId": 169246,
+  "gramsPerPiece": 90
+ },
+ {
+  "name": "Shallot",
+  "aliases": [
+   "shallots"
+  ],
+  "category": "produce",
+  "tags": [
+   "onion-garlic",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 30,
+   "fridge": 60
+  },
+  "kcalPer100g": 72,
+  "proteinPer100g": 2.5,
+  "sensitivity": "safe",
+  "usdaId": 170499,
+  "gramsPerPiece": 40
+ },
+ {
+  "name": "Jalapeno",
+  "aliases": [
+   "jalapeño",
+   "chili pepper"
+  ],
+  "category": "produce",
+  "tags": [
+   "nightshade",
+   "spicy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10,
+   "freezer": 240
+  },
+  "kcalPer100g": 29,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 168576,
+  "gramsPerPiece": 14
+ },
+ {
+  "name": "Pumpkin",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 60,
+   "fridge": 14
+  },
+  "kcalPer100g": 26,
+  "proteinPer100g": 1,
+  "sensitivity": "safe",
+  "usdaId": 168448
+ },
+ {
+  "name": "Spaghetti squash",
+  "aliases": [
+   "squash"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 60,
+   "fridge": 14
+  },
+  "kcalPer100g": 31,
+  "proteinPer100g": 0.6,
+  "sensitivity": "safe",
+  "usdaId": 169298
+ },
+ {
+  "name": "Parsnip",
+  "aliases": [
+   "parsnips"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21
+  },
+  "kcalPer100g": 75,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 170417,
+  "gramsPerPiece": 130
+ },
+ {
+  "name": "Okra",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 4,
+   "freezer": 240
+  },
+  "kcalPer100g": 33,
+  "proteinPer100g": 1.9,
+  "sensitivity": "safe",
+  "usdaId": 169260
+ },
+ {
+  "name": "Snap peas",
+  "aliases": [
+   "snow peas",
+   "sugar snap peas"
+  ],
+  "category": "produce",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 240
+  },
+  "kcalPer100g": 42,
+  "proteinPer100g": 2.8,
+  "sensitivity": "safe",
+  "usdaId": 170010
+ },
+ {
+  "name": "Fennel",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 31,
+  "proteinPer100g": 1.2,
+  "sensitivity": "safe",
+  "usdaId": 169385
+ },
+ {
+  "name": "Artichoke",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5
+  },
+  "kcalPer100g": 47,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 169205
+ },
+ {
+  "name": "Chicken drumstick",
+  "aliases": [
+   "chicken"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 116,
+  "proteinPer100g": 19.4,
+  "sensitivity": "safe",
+  "usdaId": 173614
+ },
+ {
+  "name": "Ground pork",
+  "aliases": [
+   "pork",
+   "mince",
+   "pork mince",
+   "minced pork"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 218,
+  "proteinPer100g": 18,
+  "sensitivity": "safe",
+  "usdaId": 168372
+ },
+ {
+  "name": "Pork chop",
+  "aliases": [
+   "pork"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 127,
+  "proteinPer100g": 22,
+  "sensitivity": "safe",
+  "usdaId": 167829,
+  "gramsPerPiece": 150
+ },
+ {
+  "name": "Ground lamb",
+  "aliases": [
+   "lamb",
+   "mince",
+   "lamb mince",
+   "minced lamb"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 282,
+  "proteinPer100g": 16.6,
+  "sensitivity": "safe",
+  "usdaId": 174370
+ },
+ {
+  "name": "Egg whites",
+  "aliases": [
+   "egg white"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "egg"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 365
+  },
+  "kcalPer100g": 52,
+  "proteinPer100g": 10.9,
+  "sensitivity": "safe",
+  "usdaId": 172183,
+  "gramsPerPiece": 33
+ },
+ {
+  "name": "Haddock",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 74,
+  "proteinPer100g": 16.3,
+  "sensitivity": "safe",
+  "usdaId": 171964
+ },
+ {
+  "name": "Trout",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 141,
+  "proteinPer100g": 19.9,
+  "sensitivity": "safe",
+  "usdaId": 173717
+ },
+ {
+  "name": "Sardines",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 208,
+  "proteinPer100g": 24.6,
+  "sensitivity": "safe",
+  "usdaId": 175139,
+  "gramsPerPiece": 28
+ },
+ {
+  "name": "Scallops",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 69,
+  "proteinPer100g": 12.1,
+  "sensitivity": "safe",
+  "usdaId": 174220
+ },
+ {
+  "name": "Crab",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 87,
+  "proteinPer100g": 18.1,
+  "sensitivity": "safe",
+  "usdaId": 174204
+ },
+ {
+  "name": "Ricotta",
+  "aliases": [
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 60
+  },
+  "kcalPer100g": 150,
+  "proteinPer100g": 7.5,
+  "sensitivity": "safe",
+  "usdaId": 170851
+ },
+ {
+  "name": "Goat cheese",
+  "aliases": [
+   "chevre",
+   "cheese"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14
+  },
+  "kcalPer100g": 264,
+  "proteinPer100g": 18.5,
+  "sensitivity": "safe",
+  "usdaId": 173435
+ },
+ {
+  "name": "Half and half",
+  "aliases": [
+   "cream",
+   "single cream"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10
+  },
+  "kcalPer100g": 131,
+  "proteinPer100g": 3.1,
+  "sensitivity": "safe",
+  "gramsPerMl": 1.01
+ },
+ {
+  "name": "Buttermilk",
+  "aliases": [
+   "milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "fridge": 14,
+   "freezer": 90
+  },
+  "kcalPer100g": 40,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 170874,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Coconut milk (canned)",
+  "aliases": [
+   "milk"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 5
+  },
+  "kcalPer100g": 197,
+  "proteinPer100g": 2,
+  "sensitivity": "safe",
+  "usdaId": 170173,
+  "gramsPerMl": 0.97
+ },
+ {
+  "name": "Whole wheat pasta",
+  "aliases": [
+   "spaghetti",
+   "noodles"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 352,
+  "proteinPer100g": 13.9,
+  "sensitivity": "safe",
+  "usdaId": 169738
+ },
+ {
+  "name": "Pearl barley",
+  "aliases": [
+   "barley"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 352,
+  "proteinPer100g": 9.9,
+  "sensitivity": "safe",
+  "usdaId": 170284
+ },
+ {
+  "name": "Buckwheat",
+  "aliases": [
+   "kasha"
+  ],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 346,
+  "proteinPer100g": 11.7,
+  "sensitivity": "safe",
+  "usdaId": 170685
+ },
+ {
+  "name": "Millet",
+  "aliases": [],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 378,
+  "proteinPer100g": 11,
+  "sensitivity": "safe",
+  "usdaId": 169702
+ },
+ {
+  "name": "Breadcrumbs",
+  "aliases": [
+   "panko",
+   "bread crumbs",
+   "breadcrumb"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 395,
+  "proteinPer100g": 13.4,
+  "sensitivity": "safe",
+  "usdaId": 174928,
+  "gramsPerMl": 0.45
+ },
+ {
+  "name": "Pita bread",
+  "aliases": [
+   "pita"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 5,
+   "fridge": 10,
+   "freezer": 90
+  },
+  "kcalPer100g": 275,
+  "proteinPer100g": 9.1,
+  "sensitivity": "safe",
+  "usdaId": 174915,
+  "gramsPerPiece": 60
+ },
+ {
+  "name": "Rice cakes",
+  "aliases": [],
+  "category": "grains",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 387,
+  "proteinPer100g": 8.2,
+  "sensitivity": "safe",
+  "usdaId": 170250
+ },
+ {
+  "name": "Cornstarch",
+  "aliases": [
+   "corn flour"
+  ],
+  "category": "pantry",
+  "tags": [
+   "corn"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 381,
+  "proteinPer100g": 0.3,
+  "sensitivity": "safe",
+  "usdaId": 169698,
+  "gramsPerMl": 0.54
+ },
+ {
+  "name": "Pinto beans",
+  "aliases": [
+   "beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 347,
+  "proteinPer100g": 21.4,
+  "sensitivity": "safe",
+  "usdaId": 175199
+ },
+ {
+  "name": "White beans",
+  "aliases": [
+   "cannellini",
+   "cannellini beans",
+   "navy beans",
+   "haricot beans",
+   "beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 333,
+  "proteinPer100g": 23.4,
+  "sensitivity": "safe",
+  "usdaId": 175202
+ },
+ {
+  "name": "Split peas",
+  "aliases": [],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 341,
+  "proteinPer100g": 24.6,
+  "sensitivity": "safe"
+ },
+ {
+  "name": "Edamame",
+  "aliases": [],
+  "category": "legumes",
+  "tags": [
+   "soy",
+   "legumes"
+  ],
+  "shelfLifeDays": {
+   "freezer": 240,
+   "fridge": 3
+  },
+  "kcalPer100g": 109,
+  "proteinPer100g": 11.2,
+  "sensitivity": "safe",
+  "usdaId": 168410
+ },
+ {
+  "name": "Hummus",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [
+   "legumes",
+   "sesame",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 90
+  },
+  "kcalPer100g": 237,
+  "proteinPer100g": 7.8,
+  "sensitivity": "safe",
+  "usdaId": 174289,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Pistachios",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 560,
+  "proteinPer100g": 20.2,
+  "sensitivity": "safe",
+  "usdaId": 170184
+ },
+ {
+  "name": "Pecans",
+  "aliases": [
+   "pecan nuts",
+   "pecan"
+  ],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 691,
+  "proteinPer100g": 9.2,
+  "sensitivity": "safe",
+  "usdaId": 170182
+ },
+ {
+  "name": "Hazelnuts",
+  "aliases": [
+   "filberts"
+  ],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 628,
+  "proteinPer100g": 15,
+  "sensitivity": "safe",
+  "usdaId": 170581
+ },
+ {
+  "name": "Pumpkin seeds",
+  "aliases": [
+   "pepitas"
+  ],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 559,
+  "proteinPer100g": 30.2,
+  "sensitivity": "safe",
+  "usdaId": 170556
+ },
+ {
+  "name": "Sesame seeds",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [
+   "sesame"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 573,
+  "proteinPer100g": 17.7,
+  "sensitivity": "safe",
+  "usdaId": 170150
+ },
+ {
+  "name": "Hemp seeds",
+  "aliases": [],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 553,
+  "proteinPer100g": 31.6,
+  "sensitivity": "safe",
+  "usdaId": 170148
+ },
+ {
+  "name": "Sesame oil",
+  "aliases": [
+   "oil",
+   "sesame seed oil"
+  ],
+  "category": "fats-oils",
+  "tags": [
+   "sesame"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 884,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 171016,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Avocado oil",
+  "aliases": [
+   "oil"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 884,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 173573,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Brown sugar",
+  "aliases": [
+   "muscovado sugar",
+   "dark brown sugar",
+   "light brown sugar",
+   "soft brown sugar",
+   "demerara sugar",
+   "dark brown soft sugar",
+   "light brown soft sugar"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 380,
+  "proteinPer100g": 0.1,
+  "sensitivity": "safe",
+  "usdaId": 168833,
+  "gramsPerMl": 0.93
+ },
+ {
+  "name": "Cocoa powder",
+  "aliases": [
+   "cacao"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730
+  },
+  "kcalPer100g": 228,
+  "proteinPer100g": 19.6,
+  "sensitivity": "safe",
+  "usdaId": 169593,
+  "gramsPerMl": 0.36
+ },
+ {
+  "name": "Dark chocolate",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365
+  },
+  "kcalPer100g": 598,
+  "proteinPer100g": 7.8,
+  "sensitivity": "safe",
+  "usdaId": 170273
+ },
+ {
+  "name": "Applesauce (unsweetened)",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 7
+  },
+  "kcalPer100g": 42,
+  "proteinPer100g": 0.2,
+  "sensitivity": "safe",
+  "usdaId": 171695,
+  "gramsPerMl": 1.05
+ },
+ {
+  "name": "Jam",
+  "aliases": [
+   "jelly",
+   "preserves",
+   "raspberry jam",
+   "strawberry jam",
+   "apricot jam",
+   "marmalade"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 180
+  },
+  "kcalPer100g": 278,
+  "proteinPer100g": 0.4,
+  "sensitivity": "safe",
+  "usdaId": 169641,
+  "gramsPerMl": 1.3
+ },
+ {
+  "name": "Salsa",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [
+   "nightshade",
+   "onion-garlic"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 14
+  },
+  "kcalPer100g": 29,
+  "proteinPer100g": 1.5,
+  "sensitivity": "safe",
+  "usdaId": 174524,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Hot sauce",
+  "aliases": [
+   "sriracha",
+   "hotsauce",
+   "tabasco"
+  ],
+  "category": "pantry",
+  "tags": [
+   "spicy",
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 93,
+  "proteinPer100g": 1.9,
+  "sensitivity": "safe",
+  "usdaId": 171186,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Balsamic vinegar",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 88,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 172241,
+  "gramsPerMl": 1.01
+ },
+ {
+  "name": "Beef broth",
+  "aliases": [
+   "beef stock"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5,
+   "freezer": 180
+  },
+  "kcalPer100g": 7,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 171538,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Nutmeg",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 525,
+  "proteinPer100g": 5.8,
+  "sensitivity": "safe",
+  "usdaId": 171326
+ },
+ {
+  "name": "Sage (dried)",
+  "aliases": [
+   "sage"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 315,
+  "proteinPer100g": 10.6,
+  "sensitivity": "safe",
+  "usdaId": 170935
+ },
+ {
+  "name": "Dill (fresh)",
+  "aliases": [
+   "dill"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 3.5,
+  "sensitivity": "safe",
+  "usdaId": 172233
+ },
+ {
+  "name": "Mint (fresh)",
+  "aliases": [
+   "mint"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 7
+  },
+  "kcalPer100g": 44,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 173475
+ },
+ {
+  "name": "Vanilla extract",
+  "aliases": [
+   "vanilla"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 288,
+  "proteinPer100g": 0.1,
+  "sensitivity": "safe",
+  "usdaId": 173471
+ },
+ {
+  "name": "Sun-dried tomatoes (in oil)",
+  "aliases": [
+   "sundried tomatoes",
+   "sun dried tomatoes",
+   "sun-dried tomatoes"
+  ],
+  "category": "pantry",
+  "tags": [
+   "nightshade"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 30
+  },
+  "kcalPer100g": 213,
+  "proteinPer100g": 5.1,
+  "sensitivity": "safe",
+  "usdaId": 169384
+ },
+ {
+  "name": "Sea bass",
+  "aliases": [
+   "seabass"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 97,
+  "proteinPer100g": 18.4,
+  "sensitivity": "safe",
+  "usdaId": 175142
+ },
+ {
+  "name": "Baking powder",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365
+  },
+  "kcalPer100g": 51,
+  "proteinPer100g": 0.1,
+  "sensitivity": "safe",
+  "usdaId": 172804,
+  "gramsPerMl": 0.93
+ },
+ {
+  "name": "Baking soda",
+  "aliases": [
+   "bicarbonate soda",
+   "bicarbonate of soda",
+   "bicarb"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730
+  },
+  "kcalPer100g": 0,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 175040,
+  "gramsPerMl": 0.93
+ },
+ {
+  "name": "Yeast",
+  "aliases": [
+   "dried yeast",
+   "active dry yeast",
+   "fast action yeast",
+   "instant yeast"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 730
+  },
+  "kcalPer100g": 325,
+  "proteinPer100g": 40.4,
+  "sensitivity": "safe",
+  "usdaId": 175043,
+  "gramsPerMl": 0.6
+ },
+ {
+  "name": "Self-raising flour",
+  "aliases": [
+   "self-rising flour",
+   "self raising flour"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 354,
+  "proteinPer100g": 9.9,
+  "sensitivity": "safe",
+  "usdaId": 168895,
+  "gramsPerMl": 0.53
+ },
+ {
+  "name": "Bay leaf",
+  "aliases": [
+   "bay leaves"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 313,
+  "proteinPer100g": 7.6,
+  "sensitivity": "safe",
+  "usdaId": 170917,
+  "gramsPerPiece": 0.3
+ },
+ {
+  "name": "Lemon juice",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 180
+  },
+  "kcalPer100g": 22,
+  "proteinPer100g": 0.4,
+  "sensitivity": "safe",
+  "usdaId": 167747,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Lime juice",
+  "aliases": [],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 180
+  },
+  "kcalPer100g": 25,
+  "proteinPer100g": 0.4,
+  "sensitivity": "safe",
+  "usdaId": 168156,
+  "gramsPerMl": 1.03
+ },
+ {
+  "name": "Fish sauce",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 1095
+  },
+  "kcalPer100g": 35,
+  "proteinPer100g": 5.1,
+  "sensitivity": "safe",
+  "usdaId": 174531,
+  "gramsPerMl": 1.2
+ },
+ {
+  "name": "Worcestershire sauce",
+  "aliases": [
+   "worcester sauce"
+  ],
+  "category": "pantry",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 1095
+  },
+  "kcalPer100g": 77,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 171610,
+  "gramsPerMl": 1.1
+ },
+ {
+  "name": "Egg yolks",
+  "aliases": [
+   "egg yolk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "egg"
+  ],
+  "shelfLifeDays": {
+   "fridge": 4,
+   "freezer": 365
+  },
+  "kcalPer100g": 322,
+  "proteinPer100g": 15.9,
+  "sensitivity": "safe",
+  "usdaId": 172184,
+  "gramsPerPiece": 17
+ },
+ {
+  "name": "Allspice",
+  "aliases": [
+   "ground allspice",
+   "pimento"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 263,
+  "proteinPer100g": 6.1,
+  "sensitivity": "safe",
+  "usdaId": 171315
+ },
+ {
+  "name": "Cardamom",
+  "aliases": [
+   "cardamom pods",
+   "ground cardamom"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 311,
+  "proteinPer100g": 10.8,
+  "sensitivity": "safe",
+  "usdaId": 170919
+ },
+ {
+  "name": "Saffron",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 310,
+  "proteinPer100g": 11.4,
+  "sensitivity": "safe",
+  "usdaId": 170934
+ },
+ {
+  "name": "Curry powder",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 325,
+  "proteinPer100g": 14.3,
+  "sensitivity": "safe",
+  "usdaId": 170924
+ },
+ {
+  "name": "Cloves",
+  "aliases": [
+   "ground cloves",
+   "whole cloves"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 274,
+  "proteinPer100g": 6,
+  "sensitivity": "safe",
+  "usdaId": 171321
+ },
+ {
+  "name": "Coriander seed",
+  "aliases": [
+   "coriander seeds",
+   "ground coriander"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 298,
+  "proteinPer100g": 12.4,
+  "sensitivity": "safe",
+  "usdaId": 170922
+ },
+ {
+  "name": "Mustard seed",
+  "aliases": [
+   "mustard seeds",
+   "mustard powder"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 508,
+  "proteinPer100g": 26.1,
+  "sensitivity": "safe",
+  "usdaId": 170929
+ },
+ {
+  "name": "Fennel seed",
+  "aliases": [
+   "fennel seeds"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 345,
+  "proteinPer100g": 15.8,
+  "sensitivity": "safe",
+  "usdaId": 171323
+ },
+ {
+  "name": "White pepper",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 296,
+  "proteinPer100g": 10.4,
+  "sensitivity": "safe",
+  "usdaId": 170933
+ },
+ {
+  "name": "Chives",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [
+   "onion-garlic"
+  ],
+  "shelfLifeDays": {
+   "fridge": 7,
+   "freezer": 180
+  },
+  "kcalPer100g": 30,
+  "proteinPer100g": 3.3,
+  "sensitivity": "safe",
+  "usdaId": 169994
+ },
+ {
+  "name": "Chili pepper (fresh)",
+  "aliases": [
+   "chilli",
+   "chili",
+   "red chilli",
+   "green chilli",
+   "red chili",
+   "green chili",
+   "chilli pepper",
+   "chili pepper",
+   "scotch bonnet",
+   "bird eye chilli"
+  ],
+  "category": "produce",
+  "tags": [
+   "nightshade",
+   "spicy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 10,
+   "freezer": 240
+  },
+  "kcalPer100g": 40,
+  "proteinPer100g": 1.9,
+  "sensitivity": "safe",
+  "usdaId": 170106,
+  "gramsPerPiece": 15
+ },
+ {
+  "name": "Sunflower oil",
+  "aliases": [
+   "oil"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 540
+  },
+  "kcalPer100g": 884,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 171017,
+  "gramsPerMl": 0.92
+ },
+ {
+  "name": "Wine",
+  "aliases": [
+   "white wine",
+   "red wine",
+   "dry white wine",
+   "dry red wine",
+   "dry sherry",
+   "sherry",
+   "port",
+   "madeira",
+   "marsala"
+  ],
+  "category": "pantry",
+  "tags": [
+   "alcohol"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 5
+  },
+  "kcalPer100g": 83,
+  "proteinPer100g": 0.1,
+  "sensitivity": "safe",
+  "usdaId": 173185,
+  "gramsPerMl": 0.99
+ },
+ {
+  "name": "Chorizo",
+  "aliases": [
+   "chorizo sausage"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 296,
+  "proteinPer100g": 13.6,
+  "sensitivity": "safe",
+  "usdaId": 173859
+ },
+ {
+  "name": "Pork sausages",
+  "aliases": [
+   "sausage",
+   "sausages",
+   "pork sausage"
+  ],
+  "category": "meat",
+  "tags": [
+   "gluten"
+  ],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 288,
+  "proteinPer100g": 15.4,
+  "sensitivity": "safe",
+  "usdaId": 172934,
+  "gramsPerPiece": 60
+ },
+ {
+  "name": "Puff pastry",
+  "aliases": [],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "freezer": 180,
+   "fridge": 3
+  },
+  "kcalPer100g": 551,
+  "proteinPer100g": 7.3,
+  "sensitivity": "safe",
+  "usdaId": 172790
+ },
+ {
+  "name": "Condensed milk",
+  "aliases": [
+   "sweetened condensed milk"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy",
+   "lactose"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5
+  },
+  "kcalPer100g": 321,
+  "proteinPer100g": 7.9,
+  "sensitivity": "safe",
+  "usdaId": 171275,
+  "gramsPerMl": 1.3
+ },
+ {
+  "name": "Baguette",
+  "aliases": [
+   "french bread",
+   "french stick"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 2,
+   "fridge": 5,
+   "freezer": 90
+  },
+  "kcalPer100g": 272,
+  "proteinPer100g": 10.8,
+  "sensitivity": "safe",
+  "usdaId": 172675
+ },
+ {
+  "name": "Bouillon cube",
+  "aliases": [
+   "stock cube",
+   "chicken stock cube",
+   "beef stock cube",
+   "vegetable stock cube",
+   "stock cubes"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730
+  },
+  "kcalPer100g": 198,
+  "proteinPer100g": 14.6,
+  "sensitivity": "safe",
+  "usdaId": 171563,
+  "gramsPerPiece": 6
+ },
+ {
+  "name": "Gruyere",
+  "aliases": [
+   "gruyère"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 180
+  },
+  "kcalPer100g": 413,
+  "proteinPer100g": 29.8,
+  "sensitivity": "safe",
+  "usdaId": 171242
+ },
+ {
+  "name": "Desiccated coconut",
+  "aliases": [
+   "coconut",
+   "shredded coconut",
+   "coconut flakes",
+   "dried coconut"
+  ],
+  "category": "nuts-seeds",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 660,
+  "proteinPer100g": 6.9,
+  "sensitivity": "safe",
+  "usdaId": 170170
+ },
+ {
+  "name": "Vegetable broth",
+  "aliases": [
+   "vegetable stock",
+   "veg stock"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 5,
+   "freezer": 180
+  },
+  "kcalPer100g": 5,
+  "proteinPer100g": 0.2,
+  "sensitivity": "safe",
+  "usdaId": 171583,
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Olives",
+  "aliases": [
+   "olive",
+   "green olives",
+   "black olives",
+   "kalamata olives"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 14
+  },
+  "kcalPer100g": 116,
+  "proteinPer100g": 0.8,
+  "sensitivity": "safe",
+  "usdaId": 169094,
+  "gramsPerPiece": 4
+ },
+ {
+  "name": "Ham",
+  "aliases": [
+   "gammon",
+   "cooked ham"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 60
+  },
+  "kcalPer100g": 178,
+  "proteinPer100g": 22.6,
+  "sensitivity": "safe",
+  "usdaId": 167872,
+  "gramsPerPiece": 28
+ },
+ {
+  "name": "Chickpeas (canned)",
+  "aliases": [
+   "canned chickpeas",
+   "tinned chickpeas"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 139,
+  "proteinPer100g": 7.1,
+  "sensitivity": "safe",
+  "usdaId": 173800
+ },
+ {
+  "name": "Black beans (canned)",
+  "aliases": [
+   "canned black beans",
+   "tinned black beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 91,
+  "proteinPer100g": 6,
+  "sensitivity": "safe",
+  "usdaId": 175188
+ },
+ {
+  "name": "Kidney beans (canned)",
+  "aliases": [
+   "canned kidney beans",
+   "tinned kidney beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 124,
+  "proteinPer100g": 8,
+  "sensitivity": "safe",
+  "usdaId": 174285
+ },
+ {
+  "name": "White beans (canned)",
+  "aliases": [
+   "canned white beans",
+   "canned cannellini beans",
+   "tinned cannellini beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 114,
+  "proteinPer100g": 7.3,
+  "sensitivity": "safe",
+  "usdaId": 175204
+ },
+ {
+  "name": "Pinto beans (canned)",
+  "aliases": [
+   "canned pinto beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 114,
+  "proteinPer100g": 7,
+  "sensitivity": "safe",
+  "usdaId": 174286
+ },
+ {
+  "name": "Lentils (cooked)",
+  "aliases": [
+   "cooked lentils",
+   "canned lentils"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 180,
+   "pantry": 1
+  },
+  "kcalPer100g": 116,
+  "proteinPer100g": 9,
+  "sensitivity": "safe",
+  "usdaId": 172421
+ },
+ {
+  "name": "Pecorino",
+  "aliases": [
+   "pecorino romano",
+   "romano"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 60,
+   "freezer": 270
+  },
+  "kcalPer100g": 387,
+  "proteinPer100g": 31.8,
+  "sensitivity": "safe",
+  "usdaId": 171249
+ },
+ {
+  "name": "Gouda",
+  "aliases": [],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 28,
+   "freezer": 180
+  },
+  "kcalPer100g": 356,
+  "proteinPer100g": 24.9,
+  "sensitivity": "safe",
+  "usdaId": 171241
+ },
+ {
+  "name": "Molasses",
+  "aliases": [
+   "black treacle",
+   "treacle",
+   "blackstrap molasses"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730
+  },
+  "kcalPer100g": 290,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 168820
+ },
+ {
+  "name": "Digestive biscuits",
+  "aliases": [
+   "digestives",
+   "graham crackers",
+   "digestive biscuit"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 120
+  },
+  "kcalPer100g": 430,
+  "proteinPer100g": 6.7,
+  "sensitivity": "safe",
+  "usdaId": 174957
+ },
+ {
+  "name": "Butter beans (canned)",
+  "aliases": [
+   "butter beans",
+   "tinned butter beans",
+   "canned butter beans",
+   "lima beans"
+  ],
+  "category": "legumes",
+  "tags": [
+   "legumes",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 79,
+  "proteinPer100g": 4.9,
+  "sensitivity": "safe",
+  "usdaId": 174254
+ },
+ {
+  "name": "Beef brisket",
+  "aliases": [
+   "brisket"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 157,
+  "proteinPer100g": 20.7,
+  "sensitivity": "safe",
+  "usdaId": 168607
+ },
+ {
+  "name": "Pork shoulder",
+  "aliases": [
+   "pork butt",
+   "pulled pork",
+   "pork neck"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 236,
+  "proteinPer100g": 17.2,
+  "sensitivity": "safe",
+  "usdaId": 167843
+ },
+ {
+  "name": "Lamb leg",
+  "aliases": [
+   "leg of lamb",
+   "lamb shoulder",
+   "lamb chops",
+   "lamb steak",
+   "diced lamb",
+   "lamb cubes",
+   "lamb neck"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 201,
+  "proteinPer100g": 18.6,
+  "sensitivity": "safe",
+  "usdaId": 174315
+ },
+ {
+  "name": "Chicken leg",
+  "aliases": [
+   "chicken legs",
+   "chicken leg"
+  ],
+  "category": "meat",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 3,
+   "freezer": 270
+  },
+  "kcalPer100g": 120,
+  "proteinPer100g": 19.2,
+  "sensitivity": "safe",
+  "usdaId": 173619
+ },
+ {
+  "name": "Swede",
+  "aliases": [
+   "rutabaga",
+   "rutabagas"
+  ],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "pantry": 14,
+   "freezer": 240
+  },
+  "kcalPer100g": 37,
+  "proteinPer100g": 1.1,
+  "sensitivity": "safe",
+  "usdaId": 168454
+ },
+ {
+  "name": "Celeriac",
+  "aliases": [],
+  "category": "produce",
+  "tags": [],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "freezer": 240
+  },
+  "kcalPer100g": 42,
+  "proteinPer100g": 1.5,
+  "sensitivity": "safe",
+  "usdaId": 170400
+ },
+ {
+  "name": "Turnip",
+  "aliases": [
+   "turnips"
+  ],
+  "category": "produce",
+  "tags": [
+   "cruciferous"
+  ],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "freezer": 240
+  },
+  "kcalPer100g": 28,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 170465
+ },
+ {
+  "name": "Sauerkraut",
+  "aliases": [],
+  "category": "produce",
+  "tags": [
+   "cruciferous",
+   "high-fodmap"
+  ],
+  "shelfLifeDays": {
+   "pantry": 540,
+   "fridge": 30
+  },
+  "kcalPer100g": 19,
+  "proteinPer100g": 0.9,
+  "sensitivity": "safe",
+  "usdaId": 169279
+ },
+ {
+  "name": "Marjoram",
+  "aliases": [],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 271,
+  "proteinPer100g": 12.7,
+  "sensitivity": "safe",
+  "usdaId": 170928
+ },
+ {
+  "name": "Caraway seed",
+  "aliases": [
+   "caraway seeds",
+   "caraway"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 333,
+  "proteinPer100g": 19.8,
+  "sensitivity": "safe",
+  "usdaId": 170918
+ },
+ {
+  "name": "Star anise",
+  "aliases": [
+   "aniseed",
+   "anise seed"
+  ],
+  "category": "spices-herbs",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 337,
+  "proteinPer100g": 17.6,
+  "sensitivity": "safe",
+  "usdaId": 171316
+ },
+ {
+  "name": "Currants",
+  "aliases": [
+   "dried currants"
+  ],
+  "category": "fruit",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365
+  },
+  "kcalPer100g": 290,
+  "proteinPer100g": 3.4,
+  "sensitivity": "safe",
+  "usdaId": 171724
+ },
+ {
+  "name": "Brie",
+  "aliases": [
+   "camembert"
+  ],
+  "category": "dairy-eggs",
+  "tags": [
+   "dairy"
+  ],
+  "shelfLifeDays": {
+   "fridge": 21,
+   "freezer": 120
+  },
+  "kcalPer100g": 334,
+  "proteinPer100g": 20.8,
+  "sensitivity": "safe",
+  "usdaId": 172177
+ },
+ {
+  "name": "Beer",
+  "aliases": [
+   "lager",
+   "ale",
+   "stout"
+  ],
+  "category": "pantry",
+  "tags": [
+   "alcohol",
+   "gluten"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 3
+  },
+  "kcalPer100g": 43,
+  "proteinPer100g": 0.5,
+  "sensitivity": "safe",
+  "usdaId": 168746
+ },
+ {
+  "name": "Spirits",
+  "aliases": [
+   "brandy",
+   "rum",
+   "vodka",
+   "whisky",
+   "whiskey",
+   "gin",
+   "cognac",
+   "liqueur"
+  ],
+  "category": "pantry",
+  "tags": [
+   "alcohol"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1825
+  },
+  "kcalPer100g": 231,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 174815
+ },
+ {
+  "name": "Burger buns",
+  "aliases": [
+   "hamburger buns",
+   "burger bun",
+   "bread rolls",
+   "rolls",
+   "buns",
+   "sesame seed burger buns"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 4,
+   "fridge": 7,
+   "freezer": 90
+  },
+  "kcalPer100g": 279,
+  "proteinPer100g": 9.8,
+  "sensitivity": "safe",
+  "usdaId": 172796
+ },
+ {
+  "name": "Pine nuts",
+  "aliases": [
+   "pine kernels"
+  ],
+  "category": "nuts-seeds",
+  "tags": [
+   "tree-nut"
+  ],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365,
+   "freezer": 540
+  },
+  "kcalPer100g": 673,
+  "proteinPer100g": 13.7,
+  "sensitivity": "safe",
+  "usdaId": 170591
+ },
+ {
+  "name": "Golden syrup",
+  "aliases": [
+   "light corn syrup",
+   "corn syrup"
+  ],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 1095
+  },
+  "kcalPer100g": 283,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "usdaId": 168837
+ },
+ {
+  "name": "Shortcrust pastry",
+  "aliases": [
+   "pastry",
+   "pie crust",
+   "pie dough"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 120
+  },
+  "kcalPer100g": 468,
+  "proteinPer100g": 5.5,
+  "sensitivity": "safe",
+  "usdaId": 167523
+ },
+ {
+  "name": "Whole wheat flour",
+  "aliases": [
+   "wholemeal flour",
+   "whole wheat flour",
+   "wholewheat flour"
+  ],
+  "category": "grains",
+  "tags": [
+   "gluten",
+   "wheat"
+  ],
+  "shelfLifeDays": {
+   "pantry": 365,
+   "fridge": 365,
+   "freezer": 365
+  },
+  "kcalPer100g": 332,
+  "proteinPer100g": 9.6,
+  "sensitivity": "safe",
+  "usdaId": 168944
+ },
+ {
+  "name": "Lard",
+  "aliases": [
+   "goose fat",
+   "duck fat",
+   "beef dripping",
+   "dripping",
+   "suet"
+  ],
+  "category": "fats-oils",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 180,
+   "fridge": 365
+  },
+  "kcalPer100g": 902,
+  "proteinPer100g": 0,
+  "sensitivity": "safe"
+ },
+ {
+  "name": "Water",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [],
+  "shelfLifeDays": {
+   "pantry": 3650,
+   "fridge": 3650
+  },
+  "kcalPer100g": 0,
+  "proteinPer100g": 0,
+  "sensitivity": "safe",
+  "gramsPerMl": 1
+ },
+ {
+  "name": "Oyster sauce",
+  "aliases": [],
+  "category": "pantry",
+  "tags": [
+   "shellfish",
+   "soy",
+   "gluten"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 730
+  },
+  "kcalPer100g": 51,
+  "proteinPer100g": 1.4,
+  "sensitivity": "safe",
+  "usdaId": 174529,
+  "gramsPerMl": 1.2
+ },
+ {
+  "name": "Fresh tuna",
+  "aliases": [
+   "tuna steak",
+   "tuna steaks",
+   "yellowfin tuna",
+   "ahi"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 109,
+  "proteinPer100g": 24.4,
+  "sensitivity": "safe",
+  "usdaId": 175159
+ },
+ {
+  "name": "Mackerel",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 205,
+  "proteinPer100g": 18.6,
+  "sensitivity": "safe",
+  "usdaId": 175119
+ },
+ {
+  "name": "Halibut",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 91,
+  "proteinPer100g": 18.6,
+  "sensitivity": "safe",
+  "usdaId": 174200
+ },
+ {
+  "name": "Catfish",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 119,
+  "proteinPer100g": 15.2,
+  "sensitivity": "safe",
+  "usdaId": 175165
+ },
+ {
+  "name": "Mahi-mahi",
+  "aliases": [
+   "mahi mahi",
+   "mahimahi",
+   "dolphinfish"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 85,
+  "proteinPer100g": 18.5,
+  "sensitivity": "safe",
+  "usdaId": 171959
+ },
+ {
+  "name": "Snapper",
+  "aliases": [
+   "red snapper"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 100,
+  "proteinPer100g": 20.5,
+  "sensitivity": "safe",
+  "usdaId": 173698
+ },
+ {
+  "name": "Swordfish",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 144,
+  "proteinPer100g": 19.7,
+  "sensitivity": "safe",
+  "usdaId": 173703
+ },
+ {
+  "name": "Herring",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 158,
+  "proteinPer100g": 18,
+  "sensitivity": "safe",
+  "usdaId": 175116
+ },
+ {
+  "name": "Pollock",
+  "aliases": [
+   "pollack"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 92,
+  "proteinPer100g": 19.4,
+  "sensitivity": "safe",
+  "usdaId": 175129
+ },
+ {
+  "name": "Flounder or sole",
+  "aliases": [
+   "flounder",
+   "sole",
+   "dover sole",
+   "lemon sole",
+   "plaice"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 70,
+  "proteinPer100g": 12.4,
+  "sensitivity": "safe",
+  "usdaId": 174196
+ },
+ {
+  "name": "Perch",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 91,
+  "proteinPer100g": 19.4,
+  "sensitivity": "safe",
+  "usdaId": 173678
+ },
+ {
+  "name": "Monkfish",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 76,
+  "proteinPer100g": 14.5,
+  "sensitivity": "safe",
+  "usdaId": 173676
+ },
+ {
+  "name": "Anchovies",
+  "aliases": [
+   "anchovy",
+   "anchovy fillets"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 730,
+   "fridge": 14
+  },
+  "kcalPer100g": 210,
+  "proteinPer100g": 28.9,
+  "sensitivity": "safe",
+  "usdaId": 174183
+ },
+ {
+  "name": "Smoked salmon",
+  "aliases": [
+   "lox"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 5,
+   "freezer": 60
+  },
+  "kcalPer100g": 117,
+  "proteinPer100g": 18.3,
+  "sensitivity": "safe",
+  "usdaId": 173687
+ },
+ {
+  "name": "Canned salmon",
+  "aliases": [
+   "tinned salmon",
+   "pink salmon"
+  ],
+  "category": "seafood",
+  "tags": [
+   "fish"
+  ],
+  "shelfLifeDays": {
+   "pantry": 1095,
+   "fridge": 3
+  },
+  "kcalPer100g": 138,
+  "proteinPer100g": 23.1,
+  "sensitivity": "safe",
+  "usdaId": 175175
+ },
+ {
+  "name": "Mussels",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 86,
+  "proteinPer100g": 11.9,
+  "sensitivity": "safe",
+  "usdaId": 174216
+ },
+ {
+  "name": "Oysters",
+  "aliases": [
+   "oyster"
+  ],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 81,
+  "proteinPer100g": 9.5,
+  "sensitivity": "safe",
+  "usdaId": 174219
+ },
+ {
+  "name": "Lobster",
+  "aliases": [],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 77,
+  "proteinPer100g": 16.5,
+  "sensitivity": "safe",
+  "usdaId": 174208,
+  "gramsPerPiece": 450
+ },
+ {
+  "name": "Clams",
+  "aliases": [
+   "clam"
+  ],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 86,
+  "proteinPer100g": 14.7,
+  "sensitivity": "safe",
+  "usdaId": 174214
+ },
+ {
+  "name": "Squid",
+  "aliases": [
+   "calamari"
+  ],
+  "category": "seafood",
+  "tags": [
+   "shellfish"
+  ],
+  "shelfLifeDays": {
+   "fridge": 2,
+   "freezer": 180
+  },
+  "kcalPer100g": 92,
+  "proteinPer100g": 15.6,
+  "sensitivity": "safe",
+  "usdaId": 174223
+ }
+]

@@ -1,0 +1,362 @@
+{
+ "themealdb:53158": {
+  "servings": 4,
+  "minutes": 40
+ },
+ "themealdb:53049": {
+  "servings": 12,
+  "minutes": 30
+ },
+ "themealdb:53389": {
+  "servings": 4,
+  "minutes": 40
+ },
+ "themealdb:53522": {
+  "servings": 6,
+  "minutes": 60
+ },
+ "themealdb:53278": {
+  "servings": 4,
+  "minutes": 25
+ },
+ "themealdb:53267": {
+  "servings": 2,
+  "minutes": 25
+ },
+ "themealdb:53127": {
+  "servings": 18,
+  "minutes": 180
+ },
+ "themealdb:52874": {
+  "servings": 4,
+  "minutes": 180
+ },
+ "themealdb:53068": {
+  "servings": 6,
+  "minutes": 100
+ },
+ "themealdb:53078": {
+  "servings": 10,
+  "minutes": 70
+ },
+ "themealdb:53100": {
+  "servings": 6,
+  "minutes": 40
+ },
+ "themealdb:52914": {
+  "servings": 8,
+  "minutes": 80
+ },
+ "themealdb:53036": {
+  "servings": 6,
+  "minutes": 50
+ },
+ "themealdb:53485": {
+  "servings": 8,
+  "minutes": 80
+ },
+ "themealdb:53475": {
+  "servings": 18,
+  "minutes": 55
+ },
+ "themealdb:53492": {
+  "servings": 4,
+  "minutes": 10
+ },
+ "themealdb:53488": {
+  "servings": 6,
+  "minutes": 50
+ },
+ "themealdb:52897": {
+  "servings": 8,
+  "minutes": 150
+ },
+ "themealdb:53055": {
+  "servings": 4,
+  "minutes": 45
+ },
+ "themealdb:52969": {
+  "servings": 2,
+  "minutes": 30
+ },
+ "themealdb:52846": {
+  "servings": 4,
+  "minutes": 60
+ },
+ "themealdb:53011": {
+  "servings": 4,
+  "minutes": 20
+ },
+ "themealdb:53159": {
+  "servings": 1,
+  "minutes": 28
+ },
+ "themealdb:53116": {
+  "servings": 12,
+  "minutes": 150
+ },
+ "themealdb:52840": {
+  "servings": 6,
+  "minutes": 45
+ },
+ "themealdb:53524": {
+  "servings": 6,
+  "minutes": 45
+ },
+ "themealdb:53477": {
+  "servings": 4,
+  "minutes": 45
+ },
+ "themealdb:52977": {
+  "servings": 8,
+  "minutes": 30
+ },
+ "themealdb:53490": {
+  "servings": 4,
+  "minutes": 5
+ },
+ "themealdb:53386": {
+  "servings": 10,
+  "minutes": 100
+ },
+ "themealdb:53393": {
+  "servings": 15,
+  "minutes": 90
+ },
+ "themealdb:53266": {
+  "servings": 6,
+  "minutes": 20
+ },
+ "themealdb:53030": {
+  "servings": 8,
+  "minutes": 70
+ },
+ "themealdb:53043": {
+  "servings": 15,
+  "minutes": 50
+ },
+ "themealdb:52903": {
+  "servings": 4,
+  "minutes": 70
+ },
+ "themealdb:53041": {
+  "servings": 4,
+  "minutes": 20
+ },
+ "themealdb:53340": {
+  "servings": 6,
+  "minutes": 40
+ },
+ "themealdb:53351": {
+  "servings": 4,
+  "minutes": 15
+ },
+ "themealdb:53353": {
+  "servings": 4,
+  "minutes": 25
+ },
+ "themealdb:53355": {
+  "servings": 12,
+  "minutes": 16
+ },
+ "themealdb:53356": {
+  "servings": 4,
+  "minutes": 22
+ },
+ "themealdb:53352": {
+  "servings": 6,
+  "minutes": 31
+ },
+ "themealdb:53357": {
+  "servings": 6,
+  "minutes": 30
+ },
+ "themealdb:53364": {
+  "servings": 6,
+  "minutes": 30
+ },
+ "themealdb:53344": {
+  "servings": 10,
+  "minutes": 200
+ },
+ "themealdb:52937": {
+  "servings": 6,
+  "minutes": 70
+ },
+ "themealdb:53125": {
+  "servings": 6,
+  "minutes": 15
+ },
+ "themealdb:52887": {
+  "servings": 4,
+  "minutes": 45
+ },
+ "themealdb:53408": {
+  "servings": 8,
+  "minutes": 50
+ },
+ "themealdb:52978": {
+  "servings": 4,
+  "minutes": 120
+ },
+ "themealdb:53414": {
+  "servings": 20,
+  "minutes": 30
+ },
+ "themealdb:53412": {
+  "servings": 4,
+  "minutes": 170
+ },
+ "themealdb:53426": {
+  "servings": 10,
+  "minutes": 25
+ },
+ "themealdb:53304": {
+  "servings": 12,
+  "minutes": 38
+ },
+ "themealdb:53006": {
+  "servings": 4,
+  "minutes": 30
+ },
+ "themealdb:53038": {
+  "servings": 4,
+  "minutes": 30
+ },
+ "themealdb:52858": {
+  "servings": 12,
+  "minutes": 90
+ },
+ "themealdb:53129": {
+  "servings": 20,
+  "minutes": 45
+ },
+ "themealdb:53121": {
+  "servings": 8,
+  "minutes": 120
+ },
+ "themealdb:52851": {
+  "servings": 4,
+  "minutes": 18
+ },
+ "themealdb:53534": {
+  "servings": 4,
+  "minutes": 57
+ },
+ "themealdb:53429": {
+  "servings": 5,
+  "minutes": 50
+ },
+ "themealdb:53172": {
+  "servings": 10,
+  "minutes": 85
+ },
+ "themealdb:52958": {
+  "servings": 25,
+  "minutes": 20
+ },
+ "themealdb:53292": {
+  "servings": 10,
+  "minutes": 125
+ },
+ "themealdb:53081": {
+  "servings": 8,
+  "minutes": 45
+ },
+ "themealdb:52908": {
+  "servings": 4,
+  "minutes": 50
+ },
+ "themealdb:53273": {
+  "servings": 2,
+  "minutes": 35
+ },
+ "themealdb:53268": {
+  "servings": 4,
+  "minutes": 55
+ },
+ "themealdb:53215": {
+  "servings": 2
+ },
+ "themealdb:53219": {
+  "servings": 4
+ },
+ "themealdb:53409": {
+  "servings": 20,
+  "minutes": 45
+ },
+ "themealdb:53491": {
+  "servings": 4,
+  "minutes": 10
+ },
+ "themealdb:53259": {
+  "servings": 4,
+  "minutes": 35
+ },
+ "themealdb:53177": {
+  "servings": 4,
+  "minutes": 10
+ },
+ "themealdb:53184": {
+  "servings": 4,
+  "minutes": 20
+ },
+ "themealdb:53142": {
+  "servings": 4,
+  "minutes": 25
+ },
+ "themealdb:53201": {
+  "servings": 4,
+  "minutes": 40
+ },
+ "themealdb:53008": {
+  "servings": 4,
+  "minutes": 65
+ },
+ "themealdb:53130": {
+  "servings": 10,
+  "minutes": 120
+ },
+ "themealdb:53113": {
+  "servings": 4
+ },
+ "themealdb:53404": {
+  "servings": 4,
+  "minutes": 125
+ },
+ "themealdb:53405": {
+  "servings": 4,
+  "minutes": 75
+ },
+ "themealdb:53199": {
+  "servings": 4,
+  "minutes": 10
+ },
+ "themealdb:52882": {
+  "servings": 6,
+  "minutes": 90
+ },
+ "themealdb:53032": {
+  "servings": 4,
+  "minutes": 26
+ },
+ "themealdb:53075": {
+  "servings": 4,
+  "minutes": 30
+ },
+ "themealdb:53114": {
+  "servings": 4
+ },
+ "themealdb:53325": {
+  "servings": 7,
+  "minutes": 45
+ },
+ "themealdb:53097": {
+  "servings": 8,
+  "minutes": 25
+ },
+ "themealdb:53394": {
+  "servings": 30,
+  "minutes": 160
+ }
+}

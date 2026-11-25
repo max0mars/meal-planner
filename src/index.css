@@ -1,0 +1,74 @@
+:root {
+  /* Warm linen neutrals, brown-black ink, leaf green as the one brand colour. */
+  --bg: #f4ede3;
+  --surface: #fbf8f2;
+  --ink: #2a2418;
+  --muted: #6b6150;
+  --line: #e0d6c4;
+  --brand: #2a6f37;
+  --light-fill: #f2b84b;
+  --light-ink: #3a2a00;
+  --light-tint: #f7e2a8;
+  --major-fill: #b53829;
+  --major-ink: #ffffff;
+  --major-tint: #f4d5c9;
+  /* Type scale: four sizes, three weights. */
+  --t-display: 2rem;
+  --t-title: 1.25rem;
+  --t-body: 1rem;
+  --t-small: 0.875rem;
+  --w-regular: 400;
+  --w-medium: 600;
+  --w-bold: 800;
+  /* Two radii, on a 4px grid. */
+  --radius: 16px;
+  --radius-sm: 12px;
+  /* Shadows are tinted with the brand colour, never grey or black. */
+  --shadow: 0 1px 2px rgb(42 111 55 / 0.08), 0 8px 24px rgb(42 111 55 / 0.08);
+  --shadow-cta: 0 8px 16px rgb(42 111 55 / 0.3), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  --font: 'Schibsted Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1610;
+    --surface: #241f17;
+    --ink: #f0e9db;
+    --muted: #aaa08b;
+    --line: #3b3426;
+    --brand: #7fc47f;
+    --light-fill: #e0a82e;
+    --light-ink: #241a00;
+    --light-tint: #3d3012;
+    --major-fill: #d4513f;
+    --major-tint: #4a2118;
+    --shadow: 0 1px 2px rgb(12 8 2 / 0.4), 0 8px 24px rgb(12 8 2 / 0.35);
+    --shadow-cta: 0 8px 16px rgb(12 8 2 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.25);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: var(--w-regular) var(--t-body) / 1.5 var(--font);
+}
+
+/* Figures line up in columns only where they are figures: tabular spacing on running text spaces out commas and full stops. */
+.days-num, .r-nums, .count, time { font-variant-numeric: tabular-nums; }
+
+h1, h2 { margin: 0; letter-spacing: -0.02em; line-height: 1.15; }
+h1 { font-size: var(--t-display); font-weight: var(--w-bold); }
+h2 { font-size: var(--t-title); font-weight: var(--w-medium); }
+p { margin: 0; }
+
+button, input, select { font: inherit; color: inherit; }
+
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+.muted { color: var(--muted); }
