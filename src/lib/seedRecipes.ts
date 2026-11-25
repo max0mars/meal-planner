@@ -1,5 +1,6 @@
 import { db, ensureSettings, type MealPlannerDB } from '../db'
-import type { Ingredient, Recipe, Unit } from '../types'
+import type { Ingredient, Recipe, RecipeIngredient, Unit } from '../types'
+import { pickFood } from './flexible'
 import { legacyServingsGuess } from './guessServings'
 import { recipeNutrition } from './nutrition'
 import { SEED_FIXES, type FixLine } from './seedFixes'
@@ -15,8 +16,54 @@ import { SEED_FIXES, type FixLine } from './seedFixes'
  * 7: ingredient amounts corrected on the piri-piri chicken.
  * 8: ingredient amounts and servings corrected on recipes whose import misread them (see SEED_FIXES); only recipes still as shipped.
  * 9: more corrections, for every recipe whose page publishes servings and nutrition.
+ * 10: the first flexible recipe (meat sauce pasta: any meat, pasta and sauce, with optional onion and garlic).
+ * 11: meat sauce pasta becomes one hearty meal (half a box of pasta, half a jar of sauce, 2 sausages, an onion).
  */
-export const BASELINE_RECIPES_VERSION = 9
+export const BASELINE_RECIPES_VERSION = 11
+
+/**
+ * Starter recipes rewritten in a later release. A recipe is replaced (ingredients, servings, time and steps) only while
+ * its ingredients are still exactly as `was` shipped, ignoring a food you picked on a flexible line; otherwise you changed
+ * it, and it is left alone.
+ */
+const REWRITTEN: { seedId: string; before: number; was: SeedLine[] }[] = [
+  {
+    seedId: 'basic:meat-sauce-pasta',
+    before: 11,
+    was: [
+      { name: 'Ground beef (80/20)', qty: 450, unit: 'g', label: 'Meat', anyCategory: 'meat' },
+      { name: 'Wheat pasta', qty: 340, unit: 'g', label: 'Pasta', anyOf: ['Whole wheat pasta', 'Gluten-free pasta'] },
+      { name: 'Tomato sauce', qty: 680, unit: 'g', label: 'Pasta sauce', anyOf: ['Canned tomatoes'] },
+      { name: 'Onion', qty: 1, unit: 'piece', optional: true },
+      { name: 'Garlic', qty: 3, unit: 'piece', optional: true },
+      { name: 'Olive oil', qty: 1, unit: 'tbsp' },
+    ],
+  },
+]
+
+async function applyRewrites(database: MealPlannerDB, installed: number, seed: SeedRecipe[], idByName: Map<string, number>) {
+  const seedById = new Map(seed.map((s) => [s.seedId, s]))
+  for (const rw of REWRITTEN) {
+    const fresh = seedById.get(rw.seedId)
+    if (installed >= rw.before || !fresh) continue
+    // the amounts and units as shipped; a picked food changes which food a flexible line holds, so only those are compared
+    const shape = (lines: { qty: number; unit: Unit }[]) => JSON.stringify(lines.map((l) => [l.qty, l.unit]))
+    const fixedFoods = (lines: { ingredientId?: number; anyCategory?: string; anyOf?: number[] }[]) =>
+      JSON.stringify(lines.map((l) => (l.anyCategory || l.anyOf?.length ? 'flex' : l.ingredientId)))
+    const was = rw.was.map((l) => toRecipeLine(l, idByName))
+    for (const r of await database.recipes.filter((x) => x.seedId === rw.seedId).toArray()) {
+      if (shape(r.ingredients) !== shape(was as { qty: number; unit: Unit }[]) || fixedFoods(r.ingredients) !== fixedFoods(was)) continue
+      const lines = fresh.ingredients.map((l) => toRecipeLine(l, idByName))
+      if (lines.some((l) => l.ingredientId == null)) continue
+      // a food you picked on a flexible line stays picked
+      const ingredients = (lines as RecipeIngredient[]).map((l) => {
+        const old = r.ingredients.find((o) => o.picked && o.label != null && o.label === l.label)
+        return old ? pickFood(l, old.ingredientId) : l
+      })
+      await database.recipes.update(r.id!, { ingredients, servings: fresh.servings, estMinutes: fresh.estMinutes, steps: fresh.steps })
+    }
+  }
+}
 
 interface SeedRecipe {
   seedId: string
@@ -31,8 +78,31 @@ interface SeedRecipe {
   estMinutes: number
   /** False when `estMinutes` is what the original recipe published. */
   timeEstimated?: boolean
-  ingredients: { name: string; qty: number; unit: Unit }[]
+  ingredients: SeedLine[]
   steps: string[]
+}
+
+/** An ingredient by name. Flexible and optional lines carry their extra details (see src/lib/flexible.ts). */
+interface SeedLine {
+  name: string
+  qty: number
+  unit: Unit
+  optional?: boolean
+  /** Other foods, by name, that can be used. */
+  anyOf?: string[]
+  anyCategory?: string
+  label?: string
+}
+
+/** A seed line as stored. Choices whose food this install does not have are left out. */
+function toRecipeLine(l: SeedLine, idByName: Map<string, number>): Partial<RecipeIngredient> {
+  const line: Partial<RecipeIngredient> = { ingredientId: idByName.get(l.name), qty: l.qty, unit: l.unit }
+  if (l.optional) line.optional = true
+  const anyOf = (l.anyOf ?? []).map((n) => idByName.get(n)).filter((id): id is number => id != null)
+  if (anyOf.length > 0) line.anyOf = anyOf
+  if (l.anyCategory) line.anyCategory = l.anyCategory
+  if (l.label) line.label = l.label
+  return line
 }
 
 /**
@@ -143,6 +213,7 @@ export async function seedBaselineRecipes(database: MealPlannerDB = db): Promise
   if (installed >= 1 && installed < 9) await applySeedFixes(database, idByName)
   if (installed === 1) await correctFirstReleaseServings(database, seed, byId)
   if (installed >= 1) await refreshFromSources(database, seed)
+  if (installed >= 1) await applyRewrites(database, installed, seed, idByName)
 
   // Everything ever added (even if since deleted), plus anything already in the table.
   const seen = new Set<string | undefined>([...(settings.baselineSeedIds ?? []), ...(await database.recipes.toArray()).map((r) => r.seedId)])
@@ -150,7 +221,7 @@ export async function seedBaselineRecipes(database: MealPlannerDB = db): Promise
   const toAdd: Recipe[] = []
   for (const r of seed) {
     if (seen.has(r.seedId)) continue
-    const lines = r.ingredients.map((l) => ({ ingredientId: idByName.get(l.name), qty: l.qty, unit: l.unit }))
+    const lines = r.ingredients.map((l) => toRecipeLine(l, idByName))
     // Never add a recipe with an ingredient we cannot find: it would hide that ingredient from the sensitivity check.
     if (lines.some((l) => l.ingredientId == null)) continue
     toAdd.push({

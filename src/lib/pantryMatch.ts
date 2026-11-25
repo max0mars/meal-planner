@@ -32,7 +32,8 @@ export function pantryMatch(
   const seen = new Set<number>()
   for (const line of recipe.ingredients) {
     const food = byId.get(line.ingredientId)
-    if (!food || isStaple(food) || seen.has(line.ingredientId)) continue
+    // an optional food you don't have doesn't make the meal any less possible
+    if (!food || isStaple(food) || line.optional || seen.has(line.ingredientId)) continue
     const needed = toGrams(line.qty * scale, line.unit, food)
     if (needed == null || needed <= 0) continue
     seen.add(line.ingredientId)

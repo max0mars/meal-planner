@@ -7,6 +7,7 @@ import App from './App'
 import { DEFAULT_SETTINGS, db } from './db'
 import { addDays } from './lib/expiry'
 import { todayIso } from './lib/pantry'
+import { setFoods } from './lib/planEdit'
 import { seedIfEmpty } from './lib/seed'
 import type { RecipeIngredient, Unit } from './types'
 
@@ -87,6 +88,173 @@ describe('the Today screen', () => {
     expect(within(cards()[1]).getByText(/^\d+ kcal$/)).toBeTruthy()
     expect(within(cards()[1]).getByText(/^\d+ g protein$/)).toBeTruthy()
     expect(within(cards()[1]).getByText('Start cooking at 5:45 PM · 45 min')).toBeTruthy()
+  })
+
+  it('marks a meal as made, moves "Up next" on, and can undo it', async () => {
+    const chicken = await chickenAndRice()
+    const beef = await beefStew()
+    const lunch = (await meal('lunch', beef)) as number
+    await meal('dinner', chicken)
+    open()
+    await waitFor(() => expect(cards()).toHaveLength(2))
+    expect(within(cards()[0]).getByText('Up next')).toBeTruthy()
+    fireEvent.click(within(cards()[0]).getByRole('button', { name: 'Made it' }))
+    await waitFor(async () => expect((await db.mealPlan.get(lunch))?.status).toBe('cooked'))
+    await waitFor(() => expect(within(cards()[0]).getByText('Made')).toBeTruthy())
+    expect(within(cards()[0]).queryByText(/Start cooking at/)).toBeNull()
+    expect(within(cards()[1]).getByText('Up next')).toBeTruthy() // dinner is next now
+    fireEvent.click(within(cards()[0]).getByRole('button', { name: 'Undo' }))
+    await waitFor(async () => expect((await db.mealPlan.get(lunch))?.status).toBe('planned'))
+    await waitFor(() => expect(within(cards()[0]).getByText('Up next')).toBeTruthy())
+  })
+
+  it('takes what a meal used out of the pantry when you make it, and puts it back on Undo', async () => {
+    const chicken = await chickenAndRice() // 400 g chicken, 200 g rice and 200 g broccoli, for 4 servings
+    const entryId = (await meal('dinner', chicken, { servingsPlanned: 2 })) as number
+    const breast = (await db.ingredients.where('name').equals('Chicken breast').first())!
+    const rice = (await db.ingredients.where('name').equals('White rice').first())!
+    const chickenLot = (await db.pantryItems.add({ ingredientId: breast.id!, qty: 500, unit: 'g', purchasedOn: TODAY, expiresOn: addDays(TODAY, 3), location: 'fridge' })) as number
+    const riceLot = (await db.pantryItems.add({ ingredientId: rice.id!, qty: 100, unit: 'g', purchasedOn: TODAY, expiresOn: addDays(TODAY, 300), location: 'pantry' })) as number
+    open()
+    await waitFor(() => expect(cards()).toHaveLength(2))
+    const dinner = () => cards().find((c) => within(c).queryByText('Dinner'))!
+    fireEvent.click(within(dinner()).getByRole('button', { name: 'Made it' }))
+    // 2 of 4 servings: 200 g of the chicken, and the 100 g of rice there was (it needed 100 g)
+    await waitFor(async () => expect((await db.pantryItems.get(chickenLot))?.qty).toBe(300))
+    expect(await db.pantryItems.get(riceLot)).toBeUndefined()
+    await waitFor(() => expect(within(dinner()).getByText(/Taken from your pantry: Chicken breast, White rice/)).toBeTruthy())
+    fireEvent.click(within(dinner()).getByRole('button', { name: 'Undo' }))
+    await waitFor(async () => expect((await db.mealPlan.get(entryId))?.status).toBe('planned'))
+    expect((await db.pantryItems.get(chickenLot))?.qty).toBe(500)
+    expect((await db.pantryItems.get(riceLot))?.qty).toBe(100)
+  })
+
+  describe('a meal of plain foods, with no recipe', () => {
+    const pick = async (dialog: ReturnType<typeof within>, box: RegExp, search: string, name: string) => {
+      fireEvent.change(dialog.getByLabelText(box), { target: { value: search } })
+      fireEvent.click(await dialog.findByRole('button', { name }))
+    }
+
+    it('logs 3 eggs, a slice of toast and a borrowed apple as eaten, taking only your own food out of the pantry', async () => {
+      at('13:00') // lunch (12:30) has gone, so it starts ticked as eaten
+      const egg = (await db.ingredients.where('name').equals('Eggs').first())!
+      const apple = (await db.ingredients.where('name').equals('Apple').first())!
+      const eggs = (await db.pantryItems.add({ ingredientId: egg.id!, qty: 12, unit: 'piece', purchasedOn: TODAY, expiresOn: addDays(TODAY, 20), location: 'fridge' })) as number
+      const apples = (await db.pantryItems.add({ ingredientId: apple.id!, qty: 4, unit: 'piece', purchasedOn: TODAY, expiresOn: addDays(TODAY, 20), location: 'fridge' })) as number
+      open()
+      await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+      const lunch = () => cards().find((c) => within(c).queryByText('Lunch'))!
+      fireEvent.click(within(lunch()).getByRole('button', { name: 'Add foods' }))
+      const dialog = within(screen.getByRole('dialog'))
+      await pick(dialog, /What did you have/, 'eggs', 'Eggs')
+      fireEvent.change(dialog.getByLabelText('Amount of Eggs'), { target: { value: '3' } })
+      await pick(dialog, /Add another food/, 'white bread', 'White bread')
+      await pick(dialog, /Add another food/, 'apple', 'Apple')
+      fireEvent.click(dialog.getByRole('checkbox', { name: 'Borrowed Apple' }))
+      // 3 x 50 g eggs (215 kcal), a 28 g slice (74 kcal) and a 182 g apple (95 kcal)
+      expect(dialog.getByText(/kcal/).textContent).toMatch(/^384 kcal/)
+      expect((dialog.getByRole('checkbox', { name: /eaten it/ }) as HTMLInputElement).checked).toBe(true)
+      fireEvent.click(dialog.getByRole('button', { name: 'Save meal' }))
+
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+      const entry = (await db.mealPlan.toArray()).find((e) => e.slot === 'lunch')!
+      expect(entry).toMatchObject({ status: 'cooked', borrowed: [apple.id] })
+      // the foods are kept on the meal itself: no recipe is made
+      expect(entry.recipeId).toBeUndefined()
+      expect(entry.foods!.map((f) => [f.ingredientId, f.qty, f.unit])).toEqual([
+        [egg.id, 3, 'piece'],
+        [(await db.ingredients.where('name').equals('White bread').first())!.id, 1, 'piece'],
+        [apple.id, 1, 'piece'],
+      ])
+      expect(await db.recipes.count()).toBe(0)
+      expect((await db.pantryItems.get(eggs))?.qty).toBe(9)
+      expect((await db.pantryItems.get(apples))?.qty).toBe(4) // borrowed: yours are untouched
+      await waitFor(() => expect(within(lunch()).getByText('Eaten')).toBeTruthy())
+      expect(within(lunch()).getByText('Eggs, White bread and Apple')).toBeTruthy()
+      expect(within(lunch()).getByText('384 kcal')).toBeTruthy()
+      expect(within(lunch()).queryByText(/Start cooking/)).toBeNull()
+      // the day's totals count it
+      expect(document.querySelector('.today-totals')!.textContent).toContain('384')
+    })
+
+    it('changes the foods of a meal: take one away and add another', async () => {
+      const egg = (await db.ingredients.where('name').equals('Eggs').first())!
+      const toast = (await db.ingredients.where('name').equals('White bread').first())!
+      const id = await setFoods(TODAY, 'lunch', [
+        { ingredientId: egg.id!, qty: 2, unit: 'piece' },
+        { ingredientId: toast.id!, qty: 1, unit: 'piece' },
+      ])
+      open()
+      await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+      const lunch = () => cards().find((c) => within(c).queryByText('Lunch'))!
+      expect(within(lunch()).getByText('Eggs and White bread')).toBeTruthy()
+      fireEvent.click(within(lunch()).getByRole('button', { name: 'Edit foods' }))
+      const dialog = within(screen.getByRole('dialog'))
+      expect((dialog.getByLabelText('Amount of Eggs') as HTMLInputElement).value).toBe('2')
+      fireEvent.click(dialog.getByRole('button', { name: 'Remove White bread' }))
+      await pick(dialog, /Add another food/, 'banana', 'Banana')
+      fireEvent.click(dialog.getByRole('button', { name: 'Save changes' }))
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+      await waitFor(() => expect(within(lunch()).getByText('Eggs and Banana')).toBeTruthy())
+      expect((await db.mealPlan.get(id))!.foods!.map((f) => f.ingredientId)).toEqual([egg.id, (await db.ingredients.where('name').equals('Banana').first())!.id])
+      expect(await db.mealPlan.count()).toBe(1)
+    })
+
+    it('offers foods for a meal whose recipe was deleted, and replaces it', async () => {
+      const chicken = await chickenAndRice()
+      const id = (await meal('lunch', chicken)) as number
+      await db.recipes.delete(chicken)
+      open()
+      await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+      const lunch = () => cards().find((c) => within(c).queryByText('Lunch'))!
+      expect(within(lunch()).getByText('Recipe deleted')).toBeTruthy()
+      fireEvent.click(within(lunch()).getByRole('button', { name: 'Add foods' }))
+      const dialog = within(screen.getByRole('dialog'))
+      await pick(dialog, /What did you have/, 'eggs', 'Eggs')
+      fireEvent.click(dialog.getByRole('button', { name: 'Save meal' }))
+      await waitFor(() => expect(within(lunch()).getByText('Eggs')).toBeTruthy())
+      const entry = (await db.mealPlan.get(id))!
+      expect(entry.recipeId).toBeUndefined()
+      expect(entry.foods).toHaveLength(1)
+    })
+  })
+
+  it('removes a meal from today without deleting its recipe', async () => {
+    const chicken = await chickenAndRice()
+    await meal('dinner', chicken)
+    open()
+    await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+    const dinner = () => cards().find((c) => within(c).queryByText('Dinner'))!
+    expect(within(dinner()).getByRole('link', { name: 'Chicken and rice' })).toBeTruthy()
+    fireEvent.click(within(dinner()).getByRole('button', { name: 'Remove dinner from today' }))
+    await waitFor(() => expect(within(dinner()).getByText('Nothing planned')).toBeTruthy())
+    expect(await db.mealPlan.count()).toBe(0)
+    expect(await db.recipes.get(chicken)).toBeTruthy() // still one of your recipes
+  })
+
+  it('does not offer Remove on a meal you have made: Undo comes first', async () => {
+    const chicken = await chickenAndRice()
+    await meal('dinner', chicken, { status: 'cooked' })
+    open()
+    await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+    const dinner = cards().find((c) => within(c).queryByText('Dinner'))!
+    expect(within(dinner).getByRole('button', { name: 'Undo' })).toBeTruthy()
+    expect(within(dinner).queryByRole('button', { name: /^Remove/ })).toBeNull()
+  })
+
+  it('says "Ate it" for leftovers', async () => {
+    const chicken = await chickenAndRice()
+    await db.mealPlan.add({ date: addDays(TODAY, -1), slot: 'dinner', recipeId: chicken, servingsPlanned: 1, status: 'cooked' })
+    await meal('lunch', chicken)
+    open()
+    await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+    const lunch = cards().find((c) => within(c).queryByText('Lunch'))!
+    expect(within(lunch).getByText('Leftovers, nothing to cook')).toBeTruthy()
+    const broccoli = (await db.ingredients.where('name').equals('Broccoli').first())!
+    const lot = (await db.pantryItems.add({ ingredientId: broccoli.id!, qty: 300, unit: 'g', purchasedOn: TODAY, expiresOn: addDays(TODAY, 5), location: 'fridge' })) as number
+    fireEvent.click(within(lunch).getByRole('button', { name: 'Ate it' }))
+    await waitFor(() => expect(within(cards().find((c) => within(c).queryByText('Lunch'))!).getByText('Eaten')).toBeTruthy())
+    expect((await db.pantryItems.get(lot))?.qty).toBe(300) // leftovers take nothing: that food went when it was cooked
   })
 
   it('goes back to Today from a recipe opened there', async () => {
@@ -265,10 +433,33 @@ describe('the Today screen', () => {
     await db.trips.add({ date: addDays(TODAY, 1), after: 'start', time: '09:00' }) // tomorrow: not shown
     open()
     expect(await screen.findByText('Groceries today')).toBeTruthy()
-    expect(screen.getByText('11:00 AM, before lunch')).toBeTruthy()
+    expect((screen.getByRole('combobox', { name: 'Grocery trip time' }) as HTMLSelectElement).value).toBe('11:00')
+    expect(screen.getByText(/, before lunch/)).toBeTruthy()
     expect(screen.getByText('big shop')).toBeTruthy()
-    expect(screen.queryByText(/9:00 AM/)).toBeNull()
+    expect(screen.getAllByRole('combobox', { name: 'Grocery trip time' })).toHaveLength(1) // tomorrow's trip is not shown
     expect(screen.getByRole('link', { name: /Open the shopping list|things? to buy/ }).getAttribute('href')).toBe('/shopping')
+  })
+
+  it('changes a grocery trip time from a half-hour dropdown', async () => {
+    const id = (await db.trips.add({ date: TODAY, after: 'start', time: '11:00' })) as number
+    open()
+    const pick = (await screen.findByRole('combobox', { name: 'Grocery trip time' })) as HTMLSelectElement
+    expect(pick.options).toHaveLength(48)
+    expect(pick.options[1].value).toBe('00:30')
+    fireEvent.change(pick, { target: { value: '10:30' } })
+    await waitFor(async () => expect((await db.trips.get(id))?.time).toBe('10:30'))
+  })
+
+  it('changes when you eat a planned meal from a half-hour dropdown, and keeps an off-the-half-hour time listed', async () => {
+    const chicken = await chickenAndRice()
+    const id = (await meal('dinner', chicken, { eatAt: '18:45' })) as number
+    open()
+    const pick = (await screen.findByRole('combobox', { name: 'Dinner time' })) as HTMLSelectElement
+    expect(pick.value).toBe('18:45')
+    expect(pick.options).toHaveLength(49)
+    fireEvent.change(pick, { target: { value: '19:30' } })
+    await waitFor(async () => expect((await db.mealPlan.get(id))?.eatAt).toBe('19:30'))
+    await waitFor(() => expect(screen.getByText(/Start cooking at 6:45 PM/)).toBeTruthy())
   })
 
   it('has no grocery section when there is no trip today', async () => {

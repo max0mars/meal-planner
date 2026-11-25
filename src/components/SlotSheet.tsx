@@ -6,7 +6,8 @@ import { db } from '../db'
 import { backTo } from '../lib/backTo'
 import { formatDate } from '../lib/pantry'
 import { CONSTRAINT_LABEL, SLOT_LABEL } from '../lib/plan'
-import { changeServings, removeMeal, setTimes } from '../lib/planEdit'
+import { changeServings, removeMeal, setBorrowed, setTimes } from '../lib/planEdit'
+import { isStaple } from '../lib/shopping'
 import { formatServings } from '../lib/scaling'
 import { cookStart, eatTime } from '../lib/times'
 import type { useRecipeRows } from '../lib/useRecipeRows'
@@ -42,6 +43,7 @@ export default function SlotSheet({
   useSheetFocus()
   const row = entry?.recipeId != null ? kitchen.recipeById.get(entry.recipeId) : undefined
   const eat = entry ? eatTime(entry, settings.mealTimes) : settings.mealTimes[slot]
+  // a meal of plain foods (ad hoc) needs no cooking
   const needsCooking = !!row && !leftover && entry?.constraint !== 'leftovers'
   const cook = entry?.cookAt ?? (row ? cookStart(eat, row.recipe.estMinutes) : undefined)
 
@@ -98,6 +100,26 @@ export default function SlotSheet({
             </div>
             <RatingButtons recipeId={row.recipe.id} rating={row.recipe.rating} />
           </div>
+        )}
+
+        {row && entry?.id != null && needsCooking && (
+          <fieldset className="field borrow">
+            <legend className="legend">Borrowing any of this?</legend>
+            <p className="hint">Food that is not yours (from a shared fridge) is not taken from your pantry or put on your shopping list.</p>
+            {[...new Map(row.recipe.ingredients.map((l) => [l.ingredientId, kitchen.data.byId.get(l.ingredientId)])).values()]
+              .filter((f): f is NonNullable<typeof f> => !!f && !isStaple(f))
+              .map((food) => (
+                <label key={food.id} className="check">
+                  <input
+                    type="checkbox"
+                    checked={entry.borrowed?.includes(food.id!) ?? false}
+                    aria-label={`Borrowing ${food.name}`}
+                    onChange={(e) => setBorrowed(entry.id!, food.id!, e.target.checked)}
+                  />{' '}
+                  {food.name}
+                </label>
+              ))}
+          </fieldset>
         )}
 
         {entry && (

@@ -35,19 +35,25 @@ const ABBREVIATIONS: Record<string, string> = {
   btr: 'butter', bnna: 'banana', bnnas: 'bananas', ban: 'banana', apl: 'apple', apls: 'apples', orng: 'orange', lttc: 'lettuce', crt: 'carrot',
   crts: 'carrots', onn: 'onion', onns: 'onions', spnch: 'spinach', slmn: 'salmon', bf: 'beef', prk: 'pork', sausg: 'sausage', saus: 'sausage',
   mshrm: 'mushroom', mshrms: 'mushrooms', cucmbr: 'cucumber', brocc: 'broccoli', rce: 'rice', flr: 'flour', sgr: 'sugar', smkd: 'smoked',
-  thgh: 'thigh', thghs: 'thighs', drmstk: 'drumstick', bcn: 'bacon',
+  thgh: 'thigh', thghs: 'thighs', drmstk: 'drumstick', bcn: 'bacon', ital: 'italian',
+  // "BRAVO TOMATO PAS": a jar of pasta sauce, cut short to fit the till line
+  pas: 'pasta sauce',
   // size and brand codes that say nothing about the food
   gv: '', gfs: '', lg: '', sm: '', med: '',
 }
 
 /** Things that are on a receipt but are not an item at all: totals, payment, tax, loyalty, discounts, store details. */
-const NOT_AN_ITEM = /\b(sub\s*total|total|balance|change|amount due|tax|vat|visa|mastercard|master card|amex|debit|credit|card|cash|tender|payment|paid|auth|approval|terminal|merchant|receipt|thank|welcome|store|tel|phone|www|http|points?|clubcard|nectar|loyalty|reward|savings?|saved|items? sold|number of items|no\.? of items|cashier|operator|trans(?:action)?|invoice|order|customer|survey|feedback|barcode|visit|please|come again|opening|hours|reg|rounding|round|deposit|carrier bag|bag charge|discount|coupon|voucher|promo(?:tion)?|multibuy|offer|club price|member|price)\b/i
+const NOT_AN_ITEM = /\b(sub\s*total|total|balance|change|amount due|tax|vat|visa|mastercard|master card|amex|debit|credit|card|cash|tender|payment|paid|auth|approval|terminal|merchant|receipt|thank|welcome|store|tel|phone|www|http|points?|clubcard|nectar|loyalty|reward|savings?|saved|items? sold|number of items|no\.? of items|cashier|operator|trans(?:action)?|invoice|order|customer|survey|feedback|barcode|visit|please|come again|opening|hours|reg|rounding|round|deposit|carrier bag|bag charge|discount|coupon|voucher|promo(?:tion)?(?:al)?|multibuy|offer|club price|member|price|hst|gst|pst|qst|datetime|ref|code|winners?|chance)s?\b/i
 /** Real items that are not food. They stay in the list, unticked, so nothing is silently lost. */
 const NON_FOOD = /\b(bag|bin|liner|foil|cling|film|toilet|tissue|towel|detergent|washing|soap|shampoo|conditioner|toothpaste|toothbrush|razor|batter(?:y|ies)|bulb|candle|charcoal|nappy|nappies|wipe|bleach|cleaner|sponge|dishwasher|softener|deodorant|lotion|magazine|newspaper|stamp|lighter|matches|kitchen roll|pet food|cat food|dog food)s?\b/i
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
-/** "05/11/2026", "5-11-26", "2026-11-05", "05 Nov 2026". 05/11 could be 5 November or 11 May: the more recent real date wins. */
+/**
+ * The purchase date: "05/11/2026", "5-11-26", "2026-11-05", "26/11/25" (year first, as card terminals print it), "05 Nov 2026".
+ * A receipt can show the date more than once and in different orders (the till's and the card terminal's), and 05/11 could
+ * be 5 November or 11 May, so every reading of every date is tried and the most recent real one wins.
+ */
 export function findDate(text: string, today: string): string | undefined {
   const valid = (y: number, m: number, d: number) => {
     const iso = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
@@ -57,21 +63,19 @@ export function findDate(text: string, today: string): string | undefined {
     return iso <= today && iso >= addDays(today, -366) ? iso : undefined
   }
   const year = (y: number) => (y < 100 ? 2000 + y : y)
-  let m = /\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/.exec(text)
-  if (m) return valid(+m[1], +m[2], +m[3])
-  m = /\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2}|\d{4})\b/.exec(text)
-  if (m) {
-    // day first or month first: when both readings are real dates, a receipt is recent, so take the later one
-    const [a, b, y] = [+m[1], +m[2], year(+m[3])]
-    const readings = [valid(y, b, a), valid(y, a, b)].filter((d): d is string => !!d)
-    return readings.sort().at(-1)
+  const found: (string | undefined)[] = []
+  for (const m of text.matchAll(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/g)) found.push(valid(+m[1], +m[2], +m[3]))
+  for (const m of text.matchAll(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2}|\d{4})\b/g)) {
+    const [a, b, c] = [+m[1], +m[2], +m[3]]
+    // day first or month first; with a two-digit year at both ends, year first too (26/11/25 is 25 November 2026)
+    found.push(valid(year(c), b, a), valid(year(c), a, b))
+    if (m[3].length === 2) found.push(valid(year(a), b, c))
   }
-  m = /\b(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?,?\s+(\d{2}|\d{4})\b/.exec(text)
-  if (m) {
+  for (const m of text.matchAll(/\b(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?,?\s+(\d{2}|\d{4})\b/g)) {
     const month = MONTHS.indexOf(m[2].toLowerCase()) + 1
-    if (month > 0) return valid(year(+m[3]), month, +m[1])
+    if (month > 0) found.push(valid(year(+m[3]), month, +m[1]))
   }
-  return undefined
+  return found.filter((d): d is string => !!d).sort().at(-1)
 }
 
 const PRICE_AT_END = /(?:^|\s)[£$€]?\s?(-?\d{1,4}[.,]\d{2})\s?(?:[A-Za-z*]{1,2})?\s*$/
@@ -94,6 +98,7 @@ const num = (s: string) => Number(s.replace(',', '.'))
 
 /** A line that only carries detail for the item above it: "0.452 kg @ £1.20/kg   £0.54", "2 x 0.85". */
 function detailOnly(line: string): boolean {
+  if (!/\d/.test(line)) return false // a row of dots or dashes is a divider, not a weight
   const withoutNumbers = line.replace(/[\d.,£$€@/xX*\s-]|kg|lbs?|oz|g\b|ml|cl|qty|each|ea|for/gi, '')
   return withoutNumbers.length === 0 || (RATE.test(line) && !/[A-Za-z]{4,}/.test(line.replace(RATE, '').replace(WEIGHT, '')))
 }
@@ -152,10 +157,10 @@ function findFood(name: string, foods: Ingredient[]): { match: Ingredient | null
 export function parseReceipt(text: string, foods: Ingredient[], today: string): ParsedReceipt {
   const rows = text.split(/\r?\n/).map((l) => l.replace(/\s+/g, ' ').trim()).filter(Boolean)
   const lines: ReceiptLine[] = []
-  let date: string | undefined
+
+  const date = findDate(text, today)
 
   rows.forEach((row, i) => {
-    date ??= findDate(row, today)
     if (!/[A-Za-z0-9]/.test(row)) return
 
     // weight / quantity / price detail for the item just above
@@ -176,12 +181,15 @@ export function parseReceipt(text: string, foods: Ingredient[], today: string): 
     const priced = price ? num(price[1]) : undefined
     const letters = row.replace(/[^A-Za-z]/g, '')
     if (letters.length < 3 || NOT_AN_ITEM.test(row) || (priced != null && priced < 0)) return
-    // A line with no price and no amount is a heading or a slogan, unless the next line is its weight and price ("CARROTS LOOSE" then "0.45 kg @ 1.20/kg 0.54").
+    // A line with no price and no amount is a heading, a slogan or a code ("HST# 105216170", "Ref. #: 144715"), unless the
+    // next line is its weight and price ("CARROTS LOOSE" then "0.45 kg @ 1.20/kg 0.54").
     const detailFollows = rows[i + 1] != null && detailOnly(rows[i + 1])
-    if (priced == null && !/\d/.test(row) && !detailFollows) return
+    const hasAmount = WEIGHT.test(row) || PACK.test(row) || /^\d+\s*[xX@]\s/.test(row)
+    if (priced == null && !hasAmount && !detailFollows) return
 
     const name = cleanName(row)
-    if (name.length < 3) return
+    // a code such as "3B1800070M32393P03AM18D1" leaves only scraps of letters, with no word in it
+    if (name.length < 3 || !name.split(' ').some((w) => w.replace(/[^a-z]/g, '').length >= 3)) return
 
     let amount: ReceiptLine['amount']
     const w = WEIGHT.exec(row)

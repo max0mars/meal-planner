@@ -1,7 +1,7 @@
 import { CATEGORIES } from '../data/categories'
 import type { Ingredient, MealSlot, PantryItem, Recipe, Trip } from '../types'
 import { daysBetween, defaultExpiry } from './expiry'
-import { byDateThenSlot, type CookSession } from './plan'
+import { byDateThenSlot, foodsAsRecipe, foodsTitle, type CookSession } from './plan'
 import { byTripOrder, tripBefore, upcomingTrips } from './trips'
 import { defaultLocation, defaultUnit, formatDate } from './pantry'
 import { formatAmount } from './scaling'
@@ -96,12 +96,15 @@ export function buildShoppingList(
   const nonPieces = new Set<number>()
 
   for (const session of sessions) {
-    const recipe = recipes.get(session.recipeId)
-    if (!recipe || recipe.servings <= 0) continue
+    const recipe = session.foods ? { title: foodsTitle(session.foods, byId), ...foodsAsRecipe(session.foods) } : recipes.get(session.recipeId)
+    // already made: nothing left to buy for it
+    if (session.done || !recipe || recipe.servings <= 0) continue
     const factor = session.servings / recipe.servings
+    // foods you are borrowing for any meal of this cook are not yours to buy
+    const borrowed = new Set(session.entries.flatMap((e) => e.borrowed ?? []))
     for (const line of recipe.ingredients) {
       const food = byId.get(line.ingredientId)
-      if (!food) continue
+      if (!food || borrowed.has(food.id!)) continue
       if (isStaple(food)) {
         cupboard.set(food.id!, food)
         continue

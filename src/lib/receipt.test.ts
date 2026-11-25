@@ -181,3 +181,111 @@ describe('what is not an item', () => {
     expect(r.lines[0].match).toBeNull()
   })
 })
+
+// A Canadian (Metro) receipt photo, exactly as the on-device reader read it: section headings, a saving line, loyalty points,
+// a survey code, and the date twice, once year first on the card slip ("26/11/25") and once month first ("11/25/2026").
+const METRO = `
+Store #100704 (416)236-3217
+EgoE        HST# 105216170
+
+Moi Rewards program
+
+Moi Rewards card number:380250293
+
+GROCERY
+
+DECECCO FUSILLI                     2.99
+
+saving 0.50
+
+BRAVO TOMATO PAS                    5.99
+uERT
+
+30 HOT ITAL.SAUS                    8.99
+PRODUCE
+
+ONION RED MEDIUM                    5.99
+DELI crEESE
+
+IRRS.PARMIGIA.RE                   13.99
+SUBTOTAL           37.95
+TOTAL           37.95
+
+CREDIT CR                        37.95
+
+Total number of items sold =     s
+
+wewsvs Your savings today rrr
+
+Promotional discounts                 0.50
+Total of your savings                 0.50
+Points                              12
+Bonus points                             0
+New earned points                                          12
+NEW POINTS BALANCE                     265
+
+How did we do? Tell us at
+METROSURVEY.CA for a chance to win
+$1000 IN FREE GROCERIES. Monthly winners
+
+Your code
+351800070M32393P03AM18D1
+
+Trans. Type: PURCHASE
+
+Account: VISA                 caps 37.95
+Card Type: CREDIT
+
+Card Number:     Hdd 5905 PB
+DateTime:        26/11/25 12:08:46
+
+Ref. #:          144715
+
+Auth #:          05427F
+
+Visa CREDIT
+0000000031010 0000000000
+00 APPROVED - THANK YOU
+Keep this copy for your records
+
+#%% CUSTOMER COBY *++
+
+11/25/2026                        12:08 BM
+999               100704 93 3837
+`
+
+describe('a Metro receipt', () => {
+  const r = parseReceipt(METRO, foods, '2026-11-25')
+
+  it('finds the five groceries and nothing else', () => {
+    expect(r.lines.map((l) => [l.match?.name, l.price])).toEqual([
+      ['Wheat pasta', 2.99],
+      ['Tomato sauce', 5.99],
+      ['Pork sausages', 8.99],
+      ['Onion', 5.99],
+      ['Parmesan', 13.99],
+    ])
+    expect(r.lines.every((l) => l.isFood)).toBe(true)
+  })
+
+  it('reads the date as 25 November 2026, not 26 November 2025', () => {
+    expect(r.date).toBe('2026-11-25')
+    expect(findDate('DateTime: 26/11/25 12:08:46', '2026-11-25')).toBe('2026-11-25')
+  })
+
+  it('reads "TOMATO PAS" as pasta sauce', () => {
+    expect(r.lines[1].text).toBe('bravo tomato pasta sauce')
+    expect(r.lines[1].guess).toBe(false)
+  })
+})
+
+describe('lines that are not groceries', () => {
+  it('skips plural discount and tax lines, prize slogans, codes and dividers', () => {
+    const text = ['Promotional discounts 0.50', 'E&OE HST# R105216170', '$1000 IN FREE GROCERIES. Monthly winners', '3B1800070M32393P03AM18D1', '.........', 'Ref. #: 144715']
+    expect(read(text.join('\n')).lines).toEqual([])
+  })
+
+  it('still keeps an item with an amount but no price', () => {
+    expect(read('SEMI SKIMMED MILK 2L').lines.map((l) => l.amount)).toEqual([{ qty: 2000, unit: 'ml' }])
+  })
+})

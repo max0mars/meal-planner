@@ -7,6 +7,8 @@ import RatingButtons from '../components/RatingButtons'
 import SafetyPanel from '../components/SafetyPanel'
 import ScalePanel from '../components/ScalePanel'
 import { db } from '../db'
+import FoodChoice from '../components/FoodChoice'
+import { candidatesFor, chooseFood, describeChoices, isFlexible, lineName, pickFood, resolveRecipe, setOptionalUse } from '../lib/flexible'
 import { recipeNutrition } from '../lib/nutrition'
 import { mergeDuplicateLines } from '../lib/mergeLines'
 import { unlistedStaples } from '../lib/recipeHints'
@@ -17,6 +19,14 @@ import { todayIso } from '../lib/pantry'
 import { toGrams } from '../lib/units'
 import { useKitchenData } from '../lib/useKitchenData'
 
+/** "Dec 26, 2025": with the year, since food that went off can have done so last year. */
+const longDate = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
 export default function RecipeDetail() {
   const { id } = useParams()
   const recipeId = Number(id)
@@ -24,7 +34,7 @@ export default function RecipeDetail() {
   // opened from the plan or Today: the back button returns there
   const cameFrom = readBackTo(useLocation().state)
   // null = not found; undefined = still loading.
-  const recipe = useLiveQuery(async () => (await db.recipes.get(recipeId)) ?? null, [recipeId])
+  const saved = useLiveQuery(async () => (await db.recipes.get(recipeId)) ?? null, [recipeId])
   const data = useKitchenData()
   const [confirming, setConfirming] = useState(false)
   // How many servings you want to cook, or null for the recipe as written. Only changes what is shown.
@@ -33,13 +43,32 @@ export default function RecipeDetail() {
   // food that has gone off does not count towards what you have
   const pantry = useMemo(() => allPantry?.filter((p) => p.expiresOn >= todayIso()), [allPantry])
 
+  // flexible lines filled with one food (preferring what you have), and optional lines you should not eat left out
+  const resolved = useMemo(
+    () =>
+      saved && data && pantry
+        ? resolveRecipe(saved, {
+            byId: data.byId,
+            levels: data.levels,
+            pantry,
+            date: todayIso(),
+          })
+        : null,
+    [saved, data, pantry],
+  )
+  const recipe = saved === undefined || (saved && !resolved) ? undefined : (resolved?.recipe ?? null)
+
   const view = useMemo(() => {
-    if (!recipe || !data) return null
+    if (!recipe || !data || !resolved) return null
     const factor = target == null ? 1 : factorForServings(target, recipe.servings)
     // a food named on two lines reads as one ingredient (the numbers are unchanged)
     const merged = mergeDuplicateLines(recipe.ingredients, data.byId)
+    // which saved line each shown line came from, so picking a food saves to the right line (merged lines have none)
+    const savedAt = new Map(recipe.ingredients.map((l, i) => [l, resolved.sourceIndex[i]]))
     return {
+      savedAt,
       merged,
+      dropped: resolved.dropped,
       nutrition: recipeNutrition(recipe, data.byId),
       safety: classifyRecipe(recipe, data.byId, data.levels, data.combinedCap, data.defaultLimit),
       unlisted: unlistedStaples(recipe, data.ingredients),
@@ -52,7 +81,7 @@ export default function RecipeDetail() {
         return [{ original, line, food, grams: toGrams(line.qty, line.unit, food), coverage: lineCoverage(line, pantry ?? [], data.byId) }]
       }),
     }
-  }, [recipe, data, target, pantry])
+  }, [recipe, resolved, data, target, pantry])
 
   if (recipe === undefined || !data) return <p className="muted">Loading…</p>
   if (recipe === null || !view) {
@@ -69,8 +98,41 @@ export default function RecipeDetail() {
     )
   }
 
-  const { nutrition: n, safety, rows, unlisted, factor, merged } = view
-  const havePantry = (pantry?.length ?? 0) > 0
+  const { nutrition: n, safety, rows, unlisted, factor, merged, dropped, savedAt } = view
+  // pick a food for a flexible line yourself, or (undefined) let the app choose again
+  const pick = (index: number, foodId: number | undefined) => {
+    if (!saved) return
+    db.recipes.update(recipeId, {
+      ingredients: saved.ingredients.map((l, i) => (i === index ? pickFood(l, foodId) : l)),
+    })
+  }
+  // use an optional food when you make it, or leave it out
+  const setUsed = (index: number, use: boolean) => {
+    if (!saved) return
+    db.recipes.update(recipeId, {
+      ingredients: saved.ingredients.map((l, i) => (i === index ? setOptionalUse(l, use) : l)),
+    })
+  }
+  const optionalToggle = (name: string, index: number | undefined, used: boolean) => (
+    <span className="r-optional">
+      Optional
+      {index != null && (
+        <label className="check optional-use">
+          <input type="checkbox" checked={used} aria-label={`Use ${name}`} onChange={(e) => setUsed(index, e.target.checked)} /> Use it
+        </label>
+      )}
+    </span>
+  )
+  const leftOutByYou = dropped.filter((d) => d.chosen)
+  const leftOutForSafety = dropped.filter((d) => !d.chosen)
+  const havePantry = (allPantry?.length ?? 0) > 0
+  // the last day food you have of this kind was good, when all of it has gone off: it is not counted, but you should know why
+  const wentOff = (foodId: number) =>
+    allPantry
+      ?.filter((p) => p.ingredientId === foodId && p.expiresOn < todayIso())
+      .map((p) => p.expiresOn)
+      .sort()
+      .at(-1)
   const setServings = (servings: number) => db.recipes.update(recipeId, { servings, servingsEstimated: false })
   return (
     <section>
@@ -137,7 +199,9 @@ export default function RecipeDetail() {
             <button
               className="btn-outline"
               onClick={() =>
-                db.recipes.update(recipeId, { ingredients: [...recipe.ingredients, { ingredientId: u.ingredient.id!, qty: grams, unit: 'g' }] })
+                db.recipes.update(recipeId, {
+                  ingredients: [...(saved?.ingredients ?? []), { ingredientId: u.ingredient.id!, qty: grams, unit: 'g' }],
+                })
               }
             >
               <Plus size={20} aria-hidden /> Add {grams} g {u.ingredient.name.toLowerCase()} ({recipe.servings} × {u.gramsPerServing} g raw)
@@ -166,7 +230,38 @@ export default function RecipeDetail() {
           const eff = effectiveSensitivity(food, data.levels)
           return (
             <li key={i} className={`row ${eff.level}`}>
-              <div className="r-name">{food.name}</div>
+              <div className="r-name">
+                {isFlexible(original) && saved && savedAt.get(original) != null ? (
+                  <FoodChoice
+                    label={lineName(original, data.byId)}
+                    value={food}
+                    picked={!!saved.ingredients[savedAt.get(original)!].picked}
+                    options={candidatesFor(original, data.byId)}
+                    auto={chooseFood(
+                      {
+                        ...saved.ingredients[savedAt.get(original)!],
+                        picked: undefined,
+                      },
+                      {
+                        byId: data.byId,
+                        levels: data.levels,
+                        pantry,
+                        date: todayIso(),
+                      },
+                    )}
+                    levels={data.levels}
+                    onPick={(foodId) => pick(savedAt.get(original)!, foodId)}
+                  />
+                ) : isFlexible(original) ? (
+                  <>
+                    {lineName(original, data.byId)}: {food.name}
+                    <span className="r-flex">Use {describeChoices(original, data.byId)}</span>
+                  </>
+                ) : (
+                  food.name
+                )}
+                {original.optional && optionalToggle(food.name, savedAt.get(original), true)}
+              </div>
               <div className="r-nums">
                 <span>{formatAmount(line.qty, line.unit)}</span>
                 {line.unit !== 'g' && grams != null && <span>{formatAmount(grams, 'g')}</span>}
@@ -179,11 +274,32 @@ export default function RecipeDetail() {
                   Short by {formatAmount(coverage.shortByGrams!, 'g')}. You have {formatAmount(coverage.haveGrams!, 'g')}.
                 </div>
               )}
-              {havePantry && coverage.status === 'none' && <div className="stock none">Not in your pantry</div>}
+              {havePantry && coverage.status === 'none' && (
+                <div className="stock none">
+                  {wentOff(food.id!) ? `Not in your pantry. Yours went off on ${longDate(wentOff(food.id!)!)}.` : 'Not in your pantry'}
+                </div>
+              )}
             </li>
           )
         })}
+        {leftOutByYou.map((d) => (
+          <li key={`out-${d.index}`} className="row left-out">
+            <div className="r-name">
+              <span className="left-out-name">{d.food.name}</span>
+              {optionalToggle(d.food.name, d.index, false)}
+            </div>
+            <div className="r-nums">
+              <span>Left out: not counted, and not on your shopping list</span>
+            </div>
+          </li>
+        ))}
       </ul>
+      {leftOutForSafety.length > 0 && (
+        <p className="hint">
+          Left out, because {leftOutForSafety.length === 1 ? 'it is' : 'they are'} optional and not safe for you:{' '}
+          {leftOutForSafety.map((d) => `${d.food.name} (${d.level === 'major' ? 'Major' : 'Light'} sensitivity)`).join(', ')}.
+        </p>
+      )}
       {n.uncounted.length > 0 && (
         <p className="hint">
           Calories leave out {n.uncounted.map((i) => i.name).join(', ')}, because its amount has no known weight. Edit the recipe and enter it

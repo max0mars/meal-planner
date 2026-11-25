@@ -112,8 +112,9 @@ describe('writing an .ics file', () => {
   it('only includes meals and trips from the start date on, and skips meals already cooked or skipped', () => {
     const entries = [
       meal('2026-11-18', 'dinner', { recipeId: 1 }),
-      meal('2026-11-25', 'lunch', { recipeId: 1, status: 'cooked' }),
-      meal('2026-11-25', 'dinner', { recipeId: 1, status: 'skipped' }),
+      // a different recipe: a made meal of recipe 1 would make the dinner after it leftovers
+      meal('2026-11-25', 'lunch', { recipeId: 2, status: 'cooked' }),
+      meal('2026-11-25', 'dinner', { recipeId: 2, status: 'skipped' }),
       meal('2026-11-26', 'dinner', { recipeId: 1 }),
     ]
     const events = calendarEvents(input({ entries, trips: [trip('2026-11-10', 'start', '09:00'), trip('2026-11-22', 'start', '09:00')] }))

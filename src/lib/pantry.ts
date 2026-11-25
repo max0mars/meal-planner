@@ -36,10 +36,28 @@ export function expiryLabel(days: number): { value: string; caption: string } {
   return { value: String(days), caption: days === 1 ? 'day left' : 'days left' }
 }
 
-/** Share of the item's shelf life still remaining, 0 to 1. */
-export function shelfFraction(purchasedOn: string, expiresOn: string, today: string): number {
-  const total = Math.max(1, daysBetween(purchasedOn, expiresOn))
-  return Math.min(1, Math.max(0, daysBetween(today, expiresOn) / total))
+/**
+ * How much of an item you have, as a big number and the word under it: "2" "pieces", "227" "g", "1.5" "kg". Large weights
+ * and volumes read in kg and L.
+ */
+export function amountLabel(qty: number, unit: Unit): { value: string; caption: string } {
+  const show = (n: number, places = 2) => String(Math.round(n * 10 ** places) / 10 ** places)
+  if (unit === 'g') return qty >= 1000 ? { value: show(qty / 1000, 1), caption: 'kg' } : { value: show(qty, 0), caption: 'g' }
+  if (unit === 'ml') return qty >= 1000 ? { value: show(qty / 1000, 1), caption: 'L' } : { value: show(qty, 0), caption: 'ml' }
+  if (unit === 'piece') return { value: show(qty), caption: qty === 1 ? 'piece' : 'pieces' }
+  if (unit === 'cup') return { value: show(qty), caption: qty === 1 ? 'cup' : 'cups' }
+  return { value: show(qty), caption: unit }
+}
+
+/** The days the pantry's time-left bar spans: food with this long or more left shows a full bar. */
+export const TIME_BAR_DAYS = 21
+
+/**
+ * How full an item's time-left bar is, 0 to 1: the days left out of 21. It stays full for food with 21 days or more
+ * left, then empties steadily until it is empty on the use-by date (and after it).
+ */
+export function timeLeftFraction(expiresOn: string, today: string): number {
+  return Math.min(1, Math.max(0, daysLeft(expiresOn, today) / TIME_BAR_DAYS))
 }
 
 export type UrgencyKey = 'expired' | 'soon' | 'later'

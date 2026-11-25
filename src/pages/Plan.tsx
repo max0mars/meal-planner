@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { CalendarPlus, Check, ChevronLeft, ChevronRight, Plus, ShoppingBasket, Sparkles, Trash2, TriangleAlert, X } from 'lucide-react'
+import FoodsSheet from '../components/FoodsSheet'
 import RecipePicker from '../components/RecipePicker'
 import SlotSheet from '../components/SlotSheet'
 import TripSheet from '../components/TripSheet'
@@ -10,8 +11,20 @@ import { buildCalendar, calendarEvents, calendarFileName, type CalendarInput } f
 import { downloadTextFile } from '../lib/download'
 import { addDays, daysBetween } from '../lib/expiry'
 import { formatDate, todayIso } from '../lib/pantry'
-import { CONSTRAINT_LABEL, SLOT_LABEL, SLOT_ORDER, cookSessions, dayTotals, isLeftover, weekDays, type PerServing } from '../lib/plan'
-import { applyPlan, clearDays, dismissCookDeleted, removeMeal, removeTrip, saveTrip, setConstraint, setMeal } from '../lib/planEdit'
+import {
+  CONSTRAINT_LABEL,
+  SLOT_LABEL,
+  SLOT_ORDER,
+  cookSessions,
+  dayTotals,
+  foodsTitle,
+  isFoodsMeal,
+  isLeftover,
+  mealNutrition,
+  weekDays,
+  type PerServing,
+} from '../lib/plan'
+import { applyPlan, clearDays, dismissCookDeleted, removeMeal, removeTrip, saveTrip, setConstraint, setFoods, setMeal, updateFoods } from '../lib/planEdit'
 import { planWeek, type Unresolved } from '../lib/planner'
 import { assignToTrips, buildShoppingList, formatBuy, mealShortfalls } from '../lib/shopping'
 import { defaultTripTime, eatTime, formatTime, passedSlots, slotOrder, toMinutes } from '../lib/times'
@@ -33,7 +46,11 @@ const dayStep = (strip: HTMLElement) =>
   strip.children.length > 1 ? (strip.children[1] as HTMLElement).offsetLeft - (strip.children[0] as HTMLElement).offsetLeft : 0
 const PLAN_DAYS = DAYS_SHOWN
 
-type Sheet = { kind: 'slot'; date: string; slot: MealSlot } | { kind: 'pick'; date: string; slot: MealSlot } | { kind: 'trip'; date: string; after: TripAfter }
+type Sheet =
+  | { kind: 'slot'; date: string; slot: MealSlot }
+  | { kind: 'pick'; date: string; slot: MealSlot }
+  | { kind: 'foods'; date: string; slot: MealSlot }
+  | { kind: 'trip'; date: string; after: TripAfter }
 
 const weekday = (date: string) => new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' })
 const dayNumber = (date: string) => new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
@@ -184,11 +201,11 @@ export default function Plan() {
   const entryAt = (date: string, slot: MealSlot) => entries.find((e) => e.date === date && e.slot === slot)
   const tripAt = (date: string, after: TripAfter) => trips.find((t) => t.date === date && t.after === after)
 
-  const planMyWeek = async () => {
+  /** Fills the empty meals of these days (from today on) with recipes, and says what it did. */
+  const planDays = async (days: string[]) => {
     setConfirmClear(false)
-    const from = start < today ? today : start
     const result = planWeek({
-      days: weekDays(from, PLAN_DAYS),
+      days,
       slots: planSlots,
       existing: entries,
       candidates: kitchen.candidates,
@@ -206,9 +223,15 @@ export default function Plan() {
     await applyPlan(result)
     setUnresolved(result.unresolved)
     const filled = result.add.length + result.update.length
+    const span = days.length === 1 ? formatDate(days[0]) : `${formatDate(days[0])} to ${formatDate(days[days.length - 1])}`
+    const these = days.length === 1 ? 'this day' : `these ${days.length} days`
     if (kitchen.candidates.length === 0) setNote('There are no recipes you can cook yet. Add some on the Recipes screen.')
-    else if (filled === 0 && result.unresolved.length === 0) setNote('Nothing to add: every meal in these 3 days is already planned.')
-    else setNote(`Planned ${filled} ${filled === 1 ? 'meal' : 'meals'} for ${formatDate(from)} to ${formatDate(addDays(from, PLAN_DAYS - 1))}.${result.unresolved.length > 0 ? ` ${result.unresolved.length} could not be planned.` : ''}`)
+    else if (filled === 0 && result.unresolved.length === 0) setNote(`Nothing to add: every meal in ${these} is already planned.`)
+    else setNote(`Planned ${filled} ${filled === 1 ? 'meal' : 'meals'} for ${span}.${result.unresolved.length > 0 ? ` ${result.unresolved.length} could not be planned.` : ''}`)
+  }
+  const planMyWeek = () => {
+    const from = start < today ? today : start
+    return planDays(weekDays(from, PLAN_DAYS))
   }
 
   // clearing empties the days of their meals and their grocery trips
@@ -244,6 +267,7 @@ export default function Plan() {
 
   const open = sheet?.kind === 'slot' ? sheet : null
   const picking = sheet?.kind === 'pick' ? sheet : null
+  const choosingFoods = sheet?.kind === 'foods' ? sheet : null
   const openTrip = sheet?.kind === 'trip' ? sheet : null
 
   const tripButton = (date: string, after: TripAfter) => {
@@ -287,9 +311,13 @@ export default function Plan() {
     const row = entry?.recipeId != null ? kitchen.recipeById.get(entry.recipeId) : undefined
     const leftover = !!entry && isLeftover(entry, sessions)
     const label = SLOT_LABEL[slot]
+    const foods = isFoodsMeal(entry) ? { title: foodsTitle(entry.foods, kitchen.data.byId), kcal: mealNutrition(entry, perServing, kitchen.data.byId).kcal } : null
     let kind = 'open'
     let aria = `Add ${label.toLowerCase()}, ${weekday(date)}`
-    if (entry?.constraint === 'out') {
+    if (foods) {
+      kind = 'recipe foods'
+      aria = `${label}, ${weekday(date)}: ${foods.title}, ${Math.round(foods.kcal)} kcal`
+    } else if (entry?.constraint === 'out') {
       kind = 'out'
       aria = `${label}, ${weekday(date)}: eating out`
     } else if (row && entry) {
@@ -312,7 +340,7 @@ export default function Plan() {
     // leftovers, eating out or little time, and taking that mark off again) sits in the same box, below the main button.
     return (
       <div className={`plan-cell ${kind}`}>
-        <button type="button" className="cell-main" aria-label={aria} onClick={() => setSheet({ kind: kind === 'open' ? 'pick' : 'slot', date, slot })}>
+        <button type="button" className="cell-main" aria-label={aria} onClick={() => setSheet({ kind: foods ? 'foods' : kind === 'open' || kind === 'gone' ? 'pick' : 'slot', date, slot })}>
           <span className="cell-head">
             <span className="cell-slot">{label}</span>
             {kind === 'open' ? (
@@ -321,7 +349,12 @@ export default function Plan() {
               entry && entry.constraint !== 'out' && <span className="cell-time">{formatTime(eatTime(entry, settings.mealTimes), settings.timeFormat)}</span>
             )}
           </span>
-          {row && entry ? (
+          {foods ? (
+            <>
+              <span className="cell-title">{foods.title}</span>
+              <span className="cell-nums">{Math.round(foods.kcal)} kcal</span>
+            </>
+          ) : row && entry ? (
             <>
               <span className="cell-title">{row.recipe.title}</span>
               <span className="cell-nums">{Math.round(row.nutrition.kcalPerServing * entry.servingsPlanned)} kcal</span>
@@ -362,7 +395,7 @@ export default function Plan() {
           <button
             type="button"
             className="cell-clear"
-            aria-label={`Remove ${label.toLowerCase()}, ${weekday(date)}${row ? `: ${row.recipe.title}` : ''}`}
+            aria-label={`Remove ${label.toLowerCase()}, ${weekday(date)}${row ? `: ${row.recipe.title}` : foods ? `: ${foods.title}` : ''}`}
             onClick={() => removeMeal(entry.id!)}
           >
             <X size={16} aria-hidden />
@@ -382,6 +415,8 @@ export default function Plan() {
   }
 
   const sheetEntry = open ? entryAt(open.date, open.slot) : undefined
+  // the meal whose foods are being chosen, when it is already a meal of plain foods (then they are edited)
+  const foodsEntry = choosingFoods ? entryAt(choosingFoods.date, choosingFoods.slot) : undefined
 
   return (
     <section>
@@ -433,30 +468,45 @@ export default function Plan() {
 
       <div className="plan-grid" ref={strip}>
         {stripDays.map((date) => {
-          const totals = dayTotals(entries, date, perServing)
+          const totals = dayTotals(entries, date, perServing, kitchen.data.byId)
           const share = Math.min(1, totals.kcal / settings.kcalTarget)
           const slots = slotsFor(date)
           return (
             <div key={date} data-date={date} className={`plan-col${date === today ? ' today' : ''}`} role="group" aria-label={`${weekday(date)} ${dayNumber(date)}`}>
               <div className="col-head">
-                <span className="col-day">{weekday(date)}</span>
-                <span className="col-date">{dayNumber(date)}</span>
-                {date === today && <span className="today-tag">Today</span>}
+                <span className="col-name">
+                  <span className="col-day">{weekday(date)}</span>
+                  <span className="col-date">{dayNumber(date)}</span>
+                  {date === today && <span className="today-tag">Today</span>}
+                </span>
+                <span className="col-actions">
+                  {date >= today && (
+                    <button
+                      type="button"
+                      className="col-plan"
+                      aria-label={`Plan ${weekday(date)} ${dayNumber(date)}`}
+                      title="Plan this day: fill its empty meals"
+                      onClick={() => planDays([date])}
+                    >
+                      <Sparkles size={14} aria-hidden /> Plan
+                    </button>
+                  )}
+                  {hasPlan(date) && (
+                    // one button in the corner: the bin, which turns into a red tick to confirm in the same place
+                    <button
+                      type="button"
+                      className={`col-clear${confirmDay === date ? ' confirm' : ''}`}
+                      aria-label={confirmDay === date ? `Yes, clear ${weekday(date)} ${dayNumber(date)}` : `Clear ${weekday(date)} ${dayNumber(date)}`}
+                      title={confirmDay === date ? 'Tap again to clear this day' : 'Clear this day'}
+                      onClick={() => (confirmDay === date ? clearOneDay(date) : setConfirmDay(date))}
+                      onBlur={() => confirmDay === date && setConfirmDay(null)}
+                      onKeyDown={(e) => e.key === 'Escape' && setConfirmDay(null)}
+                    >
+                      {confirmDay === date ? <Check size={18} aria-hidden /> : <Trash2 size={16} aria-hidden />}
+                    </button>
+                  )}
+                </span>
               </div>
-              {hasPlan(date) && (
-                // one button in the corner: the bin, which turns into a red tick to confirm in the same place
-                <button
-                  type="button"
-                  className={`col-clear${confirmDay === date ? ' confirm' : ''}`}
-                  aria-label={confirmDay === date ? `Yes, clear ${weekday(date)} ${dayNumber(date)}` : `Clear ${weekday(date)} ${dayNumber(date)}`}
-                  title={confirmDay === date ? 'Tap again to clear this day' : 'Clear this day'}
-                  onClick={() => (confirmDay === date ? clearOneDay(date) : setConfirmDay(date))}
-                  onBlur={() => confirmDay === date && setConfirmDay(null)}
-                  onKeyDown={(e) => e.key === 'Escape' && setConfirmDay(null)}
-                >
-                  {confirmDay === date ? <Check size={18} aria-hidden /> : <Trash2 size={16} aria-hidden />}
-                </button>
-              )}
               <div className="col-totals" aria-label={totals.meals > 0 ? `${Math.round(totals.kcal)} calories, ${Math.round(totals.protein)} grams protein` : 'Nothing planned'}>
                 {totals.meals > 0 ? (
                   <>
@@ -548,6 +598,20 @@ export default function Plan() {
           slot={picking.slot}
           onPick={async (r) => {
             await setMeal(picking.date, picking.slot, r.recipe.id, r.recipe.servingsPerMeal || 1)
+            setSheet(null)
+          }}
+          onFoods={() => setSheet({ kind: 'foods', date: picking.date, slot: picking.slot })}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {choosingFoods && (
+        <FoodsSheet
+          title={`${SLOT_LABEL[choosingFoods.slot]}, ${formatDate(choosingFoods.date)}`}
+          ingredients={kitchen.data.ingredients}
+          initial={isFoodsMeal(foodsEntry) ? { foods: foodsEntry.foods, borrowed: foodsEntry.borrowed } : undefined}
+          onSave={async (foods, _eaten, borrowed) => {
+            if (isFoodsMeal(foodsEntry) && foodsEntry.id != null) await updateFoods(foodsEntry.id, foods, borrowed)
+            else await setFoods(choosingFoods.date, choosingFoods.slot, foods, borrowed)
             setSheet(null)
           }}
           onClose={() => setSheet(null)}

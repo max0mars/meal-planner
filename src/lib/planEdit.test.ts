@@ -1,11 +1,26 @@
 import 'fake-indexeddb/auto'
 import { afterEach, describe, expect, it } from 'vitest'
 import { db } from '../db'
-import { applyPlan, changeServings, clearDays, makeDayQuick, removeMeal, removeTrip, saveTrip, setConstraint, setMeal, setTimes } from './planEdit'
+import {
+  applyPlan,
+  changeServings,
+  clearDays,
+  makeDayQuick,
+  moveAdhocRecipesToMeals,
+  removeMeal,
+  removeTrip,
+  saveTrip,
+  setConstraint,
+  setFoods,
+  setMeal,
+  setTimes,
+  updateFoods,
+} from './planEdit'
 
 afterEach(async () => {
   await db.mealPlan.clear()
   await db.trips.clear()
+  await db.recipes.clear()
 })
 
 const only = async () => (await db.mealPlan.toArray())[0]
@@ -149,5 +164,51 @@ describe('clearDays', () => {
     expect(await db.mealPlan.count()).toBe(1)
     await clearDays([])
     expect(await db.mealPlan.count()).toBe(1)
+  })
+})
+
+describe('a meal of plain foods', () => {
+  const egg = { ingredientId: 1, qty: 3, unit: 'piece' as const }
+  const apple = { ingredientId: 2, qty: 1, unit: 'piece' as const }
+
+  it('keeps the foods on the meal, with no recipe, and replaces whatever the meal was', async () => {
+    await setMeal('2026-11-25', 'lunch', 7, 2)
+    const id = await setFoods('2026-11-25', 'lunch', [egg, apple], [2])
+    expect(await db.mealPlan.count()).toBe(1)
+    const e = await only()
+    expect(e.id).toBe(id)
+    expect(e).toMatchObject({ foods: [egg, apple], borrowed: [2], servingsPlanned: 1, status: 'planned' })
+    expect(e.recipeId).toBeUndefined()
+  })
+
+  it('changes its foods, and a recipe or a constraint replaces them', async () => {
+    const id = await setFoods('2026-11-25', 'lunch', [egg, apple], [2])
+    await updateFoods(id, [egg])
+    expect((await only()).foods).toEqual([egg])
+    expect((await only()).borrowed).toBeUndefined()
+    await setMeal('2026-11-25', 'lunch', 7, 1)
+    expect((await only()).foods).toBeUndefined()
+    await setFoods('2026-11-25', 'lunch', [egg])
+    await setConstraint('2026-11-25', 'lunch', 'quick')
+    expect((await only()).foods).toBeUndefined()
+  })
+
+  it('moves meals an earlier version saved as hidden recipes onto the meal, and deletes the recipe', async () => {
+    const hidden = (await db.recipes.add({
+      title: 'Eggs and Apple', servings: 1, servingsPerMeal: 1, ingredients: [egg, apple], steps: [], estMinutes: 0, actualMinutesHistory: [], adhoc: true,
+    })) as number
+    const real = (await db.recipes.add({ title: 'Stew', servings: 4, servingsPerMeal: 1, ingredients: [egg], steps: ['Cook.'], estMinutes: 30, actualMinutesHistory: [] })) as number
+    await setMeal('2026-11-25', 'lunch', hidden, 1)
+    await setMeal('2026-11-25', 'dinner', real, 1)
+    await moveAdhocRecipesToMeals()
+    const meals = await db.mealPlan.toArray()
+    const lunch = meals.find((m) => m.slot === 'lunch')!
+    expect(lunch.foods).toEqual([egg, apple])
+    expect(lunch.recipeId).toBeUndefined()
+    expect(meals.find((m) => m.slot === 'dinner')!.recipeId).toBe(real) // a real recipe is left alone
+    expect(await db.recipes.get(hidden)).toBeUndefined()
+    expect(await db.recipes.get(real)).toBeTruthy()
+    await moveAdhocRecipesToMeals() // nothing left to do
+    expect(await db.recipes.count()).toBe(1)
   })
 })

@@ -11,12 +11,14 @@ export interface TodayMeal {
   time: string
   /** Earlier today, the one coming up, or later on. */
   state: 'past' | 'next' | 'later'
+  /** You marked it made (or eaten). */
+  made: boolean
 }
 
 /**
  * Today's meals in the order you eat them: the meals you plan (even if nothing is chosen yet) and any other meal that has
- * something planned. The first one whose time has not gone is "next". A skipped meal is left out. Once every meal is past,
- * there is no next.
+ * something planned. The first one whose time has not gone and that you have not made yet is "next". A skipped meal is left
+ * out. Once every meal is past, there is no next.
  */
 export function todaysMeals(
   entries: MealPlanEntry[],
@@ -31,8 +33,9 @@ export function todaysMeals(
     return { slot, entry, time: entry?.eatAt ?? mealTimes[slot] }
   })
   meals.sort((a, b) => toMinutes(a.time) - toMinutes(b.time) || SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot))
-  const next = meals.findIndex((m) => toMinutes(m.time) >= nowMinutes)
-  return meals.map((m, i) => ({ ...m, state: next < 0 || i < next ? 'past' : i === next ? 'next' : 'later' }))
+  const made = (m: (typeof meals)[number]) => m.entry?.status === 'cooked'
+  const next = meals.findIndex((m) => toMinutes(m.time) >= nowMinutes && !made(m))
+  return meals.map((m, i) => ({ ...m, made: made(m), state: next < 0 || i < next ? 'past' : i === next ? 'next' : 'later' }))
 }
 
 /** Pantry food that is past its date or goes off within a few days, soonest first. */

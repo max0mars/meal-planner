@@ -11,7 +11,7 @@ import { classifyRecipe } from './lib/recipeSafety'
 import { seedIfEmpty } from './lib/seed'
 import { BASELINE_RECIPES_VERSION, seedBaselineRecipes } from './lib/seedRecipes'
 import { tagLevelMap } from './lib/sensitivity'
-import type { Sensitivity } from './types'
+import type { RecipeIngredient, Sensitivity } from './types'
 
 let n = 0
 async function freshDb() {
@@ -54,6 +54,77 @@ describe('the baseline recipe set', () => {
       expect(n.kcalPerServing, r.title).toBeGreaterThan(5)
       expect(n.kcalPerServing, r.title).toBeLessThan(2500)
     }
+  })
+
+  it('adds meat sauce pasta as a flexible recipe, with its choices and optional lines as foods in this install', async () => {
+    const database = await freshDb()
+    await seedBaselineRecipes(database)
+    const byName = new Map((await database.ingredients.toArray()).map((i) => [i.name, i.id!]))
+    const r = (await database.recipes.filter((x) => x.seedId === 'basic:meat-sauce-pasta').first())!
+    expect(r.title).toBe('Meat sauce pasta')
+    // one meal for one person: half a box of pasta, half a jar of sauce, 2 sausages and an onion
+    expect([r.servings, r.servingsPerMeal, r.servingsEstimated]).toEqual([1, 1, false])
+    expect(r.ingredients).toHaveLength(5)
+    const [meat, pasta, sauce, onion, garlic] = r.ingredients
+    expect(meat).toMatchObject({ ingredientId: byName.get('Pork sausages'), qty: 120, unit: 'g', anyCategory: 'meat', label: 'Meat' })
+    expect([pasta.qty, sauce.qty, onion.qty, onion.unit]).toEqual([227, 340, 1, 'piece'])
+    expect(pasta.anyOf).toEqual([byName.get('Whole wheat pasta'), byName.get('Gluten-free pasta')])
+    expect(sauce.label).toBe('Pasta sauce')
+    expect([onion.ingredientId, onion.optional, garlic.ingredientId, garlic.optional]).toEqual([byName.get('Onion'), true, byName.get('Garlic'), true])
+  })
+
+  it('brings meat sauce pasta to an install that already has the previous release', async () => {
+    const database = await freshDb()
+    await seedBaselineRecipes(database)
+    await database.recipes.filter((x) => x.seedId === 'basic:meat-sauce-pasta').delete()
+    const ids = (await database.settings.get(1))!.baselineSeedIds!.filter((s) => s !== 'basic:meat-sauce-pasta')
+    await database.settings.update(1, { baselineRecipesVersion: 9, baselineSeedIds: ids })
+    expect(await seedBaselineRecipes(database)).toBe(1)
+    expect(await database.recipes.filter((x) => x.seedId === 'basic:meat-sauce-pasta').count()).toBe(1)
+  })
+
+  describe('an install with the first, 4-serving meat sauce pasta', () => {
+    async function withFirstVersion(change?: (lines: RecipeIngredient[], byName: Map<string, number>) => RecipeIngredient[]) {
+      const database = await freshDb()
+      await seedBaselineRecipes(database)
+      const byName = new Map((await database.ingredients.toArray()).map((i) => [i.name, i.id!]))
+      const id = (n: string) => byName.get(n)!
+      let first: RecipeIngredient[] = [
+        { ingredientId: id('Ground beef (80/20)'), qty: 450, unit: 'g', label: 'Meat', anyCategory: 'meat' },
+        { ingredientId: id('Wheat pasta'), qty: 340, unit: 'g', label: 'Pasta', anyOf: [id('Whole wheat pasta'), id('Gluten-free pasta')] },
+        { ingredientId: id('Tomato sauce'), qty: 680, unit: 'g', label: 'Pasta sauce', anyOf: [id('Canned tomatoes')] },
+        { ingredientId: id('Onion'), qty: 1, unit: 'piece', optional: true },
+        { ingredientId: id('Garlic'), qty: 3, unit: 'piece', optional: true },
+        { ingredientId: id('Olive oil'), qty: 1, unit: 'tbsp' },
+      ]
+      if (change) first = change(first, byName)
+      const r = (await database.recipes.filter((x) => x.seedId === 'basic:meat-sauce-pasta').first())!
+      await database.recipes.update(r.id!, { ingredients: first, servings: 4, estMinutes: 30 })
+      await database.settings.update(1, { baselineRecipesVersion: 10 })
+      await seedBaselineRecipes(database)
+      return { recipe: (await database.recipes.get(r.id!))!, id }
+    }
+
+    it('becomes 1 serving with the new amounts', async () => {
+      const { recipe, id } = await withFirstVersion()
+      expect(recipe.servings).toBe(1)
+      expect(recipe.estMinutes).toBe(25)
+      expect(recipe.ingredients.map((l) => [l.ingredientId, l.qty])).toEqual([
+        [id('Pork sausages'), 120], [id('Wheat pasta'), 227], [id('Tomato sauce'), 340], [id('Onion'), 1], [id('Garlic'), 2],
+      ])
+    })
+
+    it('keeps a meat you picked', async () => {
+      const { recipe, id } = await withFirstVersion((lines, byName) => [{ ...lines[0], ingredientId: byName.get('Chicken thigh')!, picked: true }, ...lines.slice(1)])
+      expect(recipe.servings).toBe(1)
+      expect(recipe.ingredients[0]).toMatchObject({ ingredientId: id('Chicken thigh'), qty: 120, picked: true })
+    })
+
+    it('is left alone when you changed its amounts', async () => {
+      const { recipe } = await withFirstVersion((lines) => [{ ...lines[0], qty: 300 }, ...lines.slice(1)])
+      expect(recipe.servings).toBe(4)
+      expect(recipe.ingredients[0].qty).toBe(300)
+    })
   })
 
   it('keeps a deleted recipe deleted, even when a later release adds new ones', async () => {
