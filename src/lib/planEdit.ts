@@ -28,6 +28,8 @@ export function setMeal(date: string, slot: MealSlot, recipeId: number, servings
       usedPantry: undefined,
       borrowed: undefined,
       foods: undefined,
+      outKcal: undefined,
+      outProtein: undefined,
     }
     if (existing?.id != null) {
       await db.mealPlan.update(existing.id, fields)
@@ -53,6 +55,8 @@ export function setFoods(date: string, slot: MealSlot, foods: RecipeIngredient[]
       constraint: undefined,
       cookDeleted: undefined,
       usedPantry: undefined,
+      outKcal: undefined,
+      outProtein: undefined,
     }
     if (existing?.id != null) {
       await db.mealPlan.update(existing.id, fields)
@@ -60,6 +64,11 @@ export function setFoods(date: string, slot: MealSlot, foods: RecipeIngredient[]
     }
     return (await db.mealPlan.add({ date, slot, ...fields })) as number
   })
+}
+
+/** What eating out came to, as you entered it. A blank (undefined) clears that number. */
+export function setEatingOut(id: number, numbers: { kcal?: number; protein?: number }) {
+  return db.mealPlan.update(id, { outKcal: numbers.kcal, outProtein: numbers.protein })
 }
 
 /** Changes the foods of a meal of plain foods: add, remove or change how much. */
@@ -102,7 +111,8 @@ export function setBorrowed(id: number, foodId: number, borrowed: boolean) {
 export function setConstraint(date: string, slot: MealSlot, constraint: SlotConstraint) {
   return db.transaction('rw', db.mealPlan, async () => {
     const existing = await find(date, slot)
-    const fields = { constraint, recipeId: undefined, foods: undefined, status: 'planned' as const, cookDeleted: undefined }
+    const keepOut = constraint === 'out' ? {} : { outKcal: undefined, outProtein: undefined }
+    const fields = { constraint, recipeId: undefined, foods: undefined, status: 'planned' as const, cookDeleted: undefined, ...keepOut }
     if (existing?.id != null) await db.mealPlan.update(existing.id, fields)
     else await db.mealPlan.add({ date, slot, servingsPlanned: 1, ...fields })
   })
@@ -136,8 +146,8 @@ export function dismissCookDeleted(id: number) {
   return db.mealPlan.update(id, { cookDeleted: undefined })
 }
 
-/** Set when you eat a meal, and/or when you start cooking it. `undefined` goes back to the usual or worked-out time. */
-export function setTimes(id: number, times: Partial<Pick<MealPlanEntry, 'eatAt' | 'cookAt'>>) {
+/** Set when you eat a meal. `undefined` goes back to your usual time for it. */
+export function setTimes(id: number, times: Partial<Pick<MealPlanEntry, 'eatAt'>>) {
   return db.mealPlan.update(id, times)
 }
 

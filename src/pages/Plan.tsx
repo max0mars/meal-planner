@@ -262,7 +262,7 @@ export default function Plan() {
       return
     }
     downloadTextFile(calendarFileName(today), buildCalendar(input), 'text/calendar')
-    setNote(`Saved ${calendarFileName(today)} with ${count} ${count === 1 ? 'event' : 'events'}: meals, cooking times and grocery trips from today on. Open it to add them to your calendar.`)
+    setNote(`Saved ${calendarFileName(today)} with ${count} ${count === 1 ? 'event' : 'events'}: meals and grocery trips from today on. Open it to add them to your calendar.`)
   }
 
   const open = sheet?.kind === 'slot' ? sheet : null
@@ -359,7 +359,9 @@ export default function Plan() {
               <span className="cell-title">{row.recipe.title}</span>
               <span className="cell-nums">{Math.round(row.nutrition.kcalPerServing * entry.servingsPlanned)} kcal</span>
             </>
-          ) : tagged === 'out' ? null : tagged ? (
+          ) : tagged === 'out' ? (
+            entry?.outKcal != null && <span className="cell-nums">{Math.round(entry.outKcal)} kcal</span>
+          ) : tagged ? (
             <span className="cell-title muted">Not planned yet</span>
           ) : entry ? (
             <span className="cell-title muted">Recipe deleted</span>

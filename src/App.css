@@ -736,3 +736,8 @@ a.today-title:hover { text-decoration: underline; }
 .borrow { border: 0; padding: 0; margin: 0; display: grid; gap: 0; }
 .borrow .hint { margin: 0 0 4px; }
 .today-remove { padding-left: 0; }
+
+/* eating out: type in its calories and protein */
+.out-numbers { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: var(--t-small); }
+.out-numbers label { display: inline-flex; align-items: center; gap: 4px; }
+.out-numbers .input { width: 88px; min-height: 40px; padding: 0 8px; }

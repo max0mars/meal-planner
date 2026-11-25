@@ -21,10 +21,10 @@ import {
   type PerServing,
 } from '../lib/plan'
 import { suitsSlot, type Candidate } from '../lib/planner'
-import { markMade, removeMeal, setFoods, setTimes, unmarkMade, updateFoods } from '../lib/planEdit'
+import { markMade, removeMeal, setEatingOut, setFoods, setTimes, unmarkMade, updateFoods } from '../lib/planEdit'
 import { formatServings } from '../lib/scaling'
 import { assignToTrips, buildShoppingList, missingWithNoTrip } from '../lib/shopping'
-import { cookTime, formatTime, slotOrder } from '../lib/times'
+import { formatTime, slotOrder } from '../lib/times'
 import { itemsToUseSoon, todaysMeals } from '../lib/today'
 import { tripPosition } from '../lib/trips'
 import { useRecipeRows } from '../lib/useRecipeRows'
@@ -187,14 +187,9 @@ export default function Today() {
               <span>
                 {formatServings(entry.servingsPlanned)} {entry.servingsPlanned === 1 ? 'serving' : 'servings'}
               </span>
+              {!eatenNotMade && <span>{row.recipe.estMinutes} min</span>}
             </span>
-            {m.made ? null : eatenNotMade ? (
-              <span className="today-cook">Leftovers, nothing to cook</span>
-            ) : (
-              <span className="today-cook">
-                Start cooking at {formatTime(cookTime(entry, row.recipe.estMinutes, settings.mealTimes), format)} · {row.recipe.estMinutes} min
-              </span>
-            )}
+            {!m.made && eatenNotMade && <span className="today-cook">Leftovers, nothing to cook</span>}
             <span className="today-links">
               {madeControls(
                 entry,
@@ -216,6 +211,7 @@ export default function Today() {
         ) : entry?.constraint === 'out' ? (
           <div className="today-body">
             <span className="today-title plain">Eating out</span>
+            {entry.id != null && <EatingOutNumbers key={entry.id} id={entry.id} kcal={entry.outKcal} protein={entry.outProtein} />}
             <span className="today-links">{removeButton(m)}</span>
           </div>
         ) : entry?.constraint ? (
@@ -427,5 +423,50 @@ export default function Today() {
         />
       )}
     </section>
+  )
+}
+
+/**
+ * Calories and protein for a meal out, typed in. Each is saved as you type, and an empty box means "not known", which
+ * counts as nothing towards the day.
+ */
+function EatingOutNumbers({ id, kcal, protein }: { id: number; kcal?: number; protein?: number }) {
+  const [values, setValues] = useState({ kcal: kcal == null ? '' : String(kcal), protein: protein == null ? '' : String(protein) })
+  const save = (next: typeof values) => {
+    setValues(next)
+    const num = (v: string) => (v.trim() !== '' && Number(v) >= 0 ? Number(v) : undefined)
+    setEatingOut(id, { kcal: num(next.kcal), protein: num(next.protein) })
+  }
+  return (
+    <span className="out-numbers">
+      <label>
+        <input
+          className="input"
+          type="number"
+          inputMode="decimal"
+          min="0"
+          step="any"
+          placeholder="?"
+          aria-label="Calories eating out"
+          value={values.kcal}
+          onChange={(e) => save({ ...values, kcal: e.target.value })}
+        />{' '}
+        kcal
+      </label>
+      <label>
+        <input
+          className="input"
+          type="number"
+          inputMode="decimal"
+          min="0"
+          step="any"
+          placeholder="?"
+          aria-label="Protein eating out"
+          value={values.protein}
+          onChange={(e) => save({ ...values, protein: e.target.value })}
+        />{' '}
+        g protein
+      </label>
+    </span>
   )
 }

@@ -99,6 +99,14 @@ describe('days, totals and cook sessions', () => {
   })
 })
 
+describe('a meal out', () => {
+  it('counts the calories and protein you entered, and nothing when you have not', () => {
+    const out = { ...entry('2026-11-19', 'dinner', 0), recipeId: undefined, constraint: 'out' as const }
+    expect(dayTotals([out], '2026-11-19', new Map())).toEqual({ kcal: 0, protein: 0, meals: 1 })
+    expect(dayTotals([{ ...out, outKcal: 850, outProtein: 40 }], '2026-11-19', new Map())).toEqual({ kcal: 850, protein: 40, meals: 1 })
+  })
+})
+
 describe('the shopping list', () => {
   it('does not ask you to buy food you are borrowing for a meal', () => {
     const r = recipe('Eggs on toast', [line('Eggs', 2, 'piece'), line('White bread', 60)])

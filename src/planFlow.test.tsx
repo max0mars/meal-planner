@@ -706,18 +706,13 @@ describe('meal times', () => {
     fireEvent.click(cell)
     const sheet = sheetFor('Dinner')
     expect(timeValue(sheet, 'Eat at')).toBe('18:30')
-    expect(timeValue(sheet, 'Start cooking at')).toBe('17:45')
+    expect(sheet.queryByRole('group', { name: 'Start cooking at' })).toBeNull() // no cooking time any more
 
     setTime(sheet, 'Eat at', '20:00')
     await waitFor(async () => expect((await db.mealPlan.toArray())[0].eatAt).toBe('20:00'))
-    await waitFor(() => expect(timeValue(sheet, 'Start cooking at')).toBe('19:15')) // follows the new time
 
-    setTime(sheet, 'Start cooking at', '19:00')
-    await waitFor(async () => expect((await db.mealPlan.toArray())[0].cookAt).toBe('19:00'))
-
-    fireEvent.click(sheet.getByRole('button', { name: 'Use the usual times' }))
+    fireEvent.click(sheet.getByRole('button', { name: 'Use the usual time' }))
     await waitFor(async () => expect((await db.mealPlan.toArray())[0].eatAt).toBeUndefined())
-    expect((await db.mealPlan.toArray())[0].cookAt).toBeUndefined()
   })
 
   it('shows times as 18:30 when the setting is 24-hour', async () => {
@@ -796,8 +791,7 @@ describe('meal times', () => {
     open('/plan')
     fireEvent.click(await (await col(1)).findByRole('button', { name: /^Lunch, .*Chicken and rice/ }))
     const sheet = sheetFor('Lunch')
-    expect(sheet.queryByRole('group', { name: 'Start cooking at' })).toBeNull()
-    expect(sheet.getByText(/Leftovers need no cooking/)).toBeTruthy()
+    expect(sheet.queryByRole('group', { name: 'Borrowing any of this?' })).toBeNull() // nothing is cooked for leftovers
   })
 })
 

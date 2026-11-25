@@ -1,6 +1,6 @@
 import type { MealPlanEntry, Settings, Trip } from '../types'
 import { SLOT_LABEL, isLeftover, type CookSession } from './plan'
-import { cookTime, eatTime, toMinutes } from './times'
+import { eatTime, toMinutes } from './times'
 
 // An .ics file (RFC 5545): a text file that Google Calendar, Apple Calendar and Outlook can all import.
 
@@ -70,7 +70,7 @@ interface Event {
   description?: string
 }
 
-/** The plan from `from` on as events: eating (and eating out), cooking for meals that are cooked fresh, and grocery trips. */
+/** The plan from `from` on as events: eating (and eating out), and grocery trips. */
 export function calendarEvents(input: CalendarInput): Event[] {
   const events: Event[] = []
   for (const e of input.entries) {
@@ -91,20 +91,6 @@ export function calendarEvents(input: CalendarInput): Event[] {
       summary: `${label}: ${recipe.title}${leftover ? ' (leftovers)' : ''}`,
       description: recipe.source && /^https?:\/\//.test(recipe.source) ? recipe.source : undefined,
     })
-    if (!leftover) {
-      const start = cookTime(e, recipe.estMinutes, input.mealTimes)
-      if (toMinutes(start) < toMinutes(when)) {
-        const session = input.sessions.find((s) => s.entries.some((x) => x.id === e.id))
-        const servings = session ? session.servings : e.servingsPlanned
-        events.push({
-          uid: `cook-${e.date}-${e.slot}`,
-          start: utcStamp(e.date, start),
-          end: utcStamp(e.date, when),
-          summary: `Cook: ${recipe.title}`,
-          description: `Makes ${servings} ${servings === 1 ? 'serving' : 'servings'}, ready for ${label.toLowerCase()} at ${when}.${recipe.source && /^https?:\/\//.test(recipe.source) ? `\n${recipe.source}` : ''}`,
-        })
-      }
-    }
   }
   for (const t of input.trips) {
     if (t.date < input.from) continue

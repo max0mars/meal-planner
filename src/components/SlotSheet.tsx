@@ -9,7 +9,7 @@ import { CONSTRAINT_LABEL, SLOT_LABEL } from '../lib/plan'
 import { changeServings, removeMeal, setBorrowed, setTimes } from '../lib/planEdit'
 import { isStaple } from '../lib/shopping'
 import { formatServings } from '../lib/scaling'
-import { cookStart, eatTime } from '../lib/times'
+import { eatTime } from '../lib/times'
 import type { useRecipeRows } from '../lib/useRecipeRows'
 import type { MealPlanEntry, MealSlot, Settings } from '../types'
 import RatingButtons from './RatingButtons'
@@ -19,7 +19,7 @@ import { useSheetFocus } from './useSheetFocus'
 type Kitchen = NonNullable<ReturnType<typeof useRecipeRows>>
 
 /**
- * One planned meal: its recipe, the servings, and when you eat and start cooking. Every change is saved as you make it.
+ * One planned meal: its recipe, the servings, and when you eat it. Every change is saved as you make it.
  */
 export default function SlotSheet({
   date,
@@ -43,9 +43,8 @@ export default function SlotSheet({
   useSheetFocus()
   const row = entry?.recipeId != null ? kitchen.recipeById.get(entry.recipeId) : undefined
   const eat = entry ? eatTime(entry, settings.mealTimes) : settings.mealTimes[slot]
-  // a meal of plain foods (ad hoc) needs no cooking
+  // leftovers are not cooked again, so there is nothing of yours to borrow for them
   const needsCooking = !!row && !leftover && entry?.constraint !== 'leftovers'
-  const cook = entry?.cookAt ?? (row ? cookStart(eat, row.recipe.estMinutes) : undefined)
 
   return createPortal(
     <div className="sheet" role="dialog" aria-modal="true" aria-labelledby={`${uid}-title`} onKeyDown={(e) => e.key === 'Escape' && onClose()}>
@@ -124,25 +123,13 @@ export default function SlotSheet({
 
         {entry && (
           <div className="field">
-            <span className="legend">Times</span>
-            <div className="time-stack">
-              <div className="field">
-                <span className="legend">Eat at</span>
-                <TimeField label="Eat at" value={eat} format={settings.timeFormat} onChange={(v) => setTimes(entry.id!, { eatAt: v })} />
-              </div>
-              {needsCooking && cook && (
-                <div className="field">
-                  <span className="legend">Start cooking at</span>
-                  <TimeField label="Start cooking at" value={cook} format={settings.timeFormat} onChange={(v) => setTimes(entry.id!, { cookAt: v })} />
-                </div>
-              )}
-            </div>
-            {(entry.eatAt || entry.cookAt) && (
-              <button type="button" className="btn-quiet" onClick={() => setTimes(entry.id!, { eatAt: undefined, cookAt: undefined })}>
-                Use the usual times
+            <span className="legend">Eat at</span>
+            <TimeField label="Eat at" value={eat} format={settings.timeFormat} onChange={(v) => setTimes(entry.id!, { eatAt: v })} />
+            {entry.eatAt && (
+              <button type="button" className="btn-quiet" onClick={() => setTimes(entry.id!, { eatAt: undefined })}>
+                Use the usual time
               </button>
             )}
-            {row && !needsCooking && <p className="hint">Leftovers need no cooking, so there is no cooking time.</p>}
           </div>
         )}
 

@@ -100,7 +100,7 @@ describe('scaling to what you have', () => {
     fireEvent.click(screen.getByText('Or scale to what I have'))
   }
   /** The ingredient list starts with the oil, so pick the beef (the second line) before entering an amount. */
-  const pickBeef = () => fireEvent.change(screen.getByLabelText('Which ingredient?'), { target: { value: '1' } })
+  const pickBeef = () => fireEvent.change(screen.getByLabelText('Or scale by one ingredient'), { target: { value: '1' } })
 
   it('scales the whole recipe from the amount of one ingredient', async () => {
     await choose()
@@ -115,7 +115,7 @@ describe('scaling to what you have', () => {
 
   it('offers the other ingredients too, in the recipe\'s own units', async () => {
     await choose()
-    const options = within(screen.getByLabelText('Which ingredient?')).getAllByRole('option').map((o) => o.textContent)
+    const options = within(screen.getByLabelText('Or scale by one ingredient')).getAllByRole('option').map((o) => o.textContent)
     expect(options.some((o) => /Beef chuck roast \(400 g in the recipe\)/.test(o ?? ''))).toBe(true)
     expect(options.some((o) => /Canola oil \(2 tbsp in the recipe\)/.test(o ?? ''))).toBe(true)
     expect(options.some((o) => /Basil/.test(o ?? ''))).toBe(false) // herbs and spices are never the limit
@@ -130,7 +130,7 @@ describe('scaling to what you have', () => {
     await stockUp('Beef chuck roast', 600)
     await choose()
     pickBeef()
-    fireEvent.click(await screen.findByRole('button', { name: /Use my pantry \(600 g\)/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /Use all my beef chuck roast \(600 g\)/ }))
     expect(await within(list()).findByText('600 g')).toBeTruthy() // 6 servings: x1.5
     expect(screen.getByText(/every amount is ×1.5/)).toBeTruthy()
   })
@@ -171,7 +171,7 @@ describe('how your pantry covers the recipe', () => {
     open()
     fireEvent.click(await screen.findByText('Or scale to what I have'))
     expect(await screen.findByText(/Your pantry covers about 8 servings, running out of beef chuck roast first/)).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Cook that much' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Use my pantry: cook 8 servings' }))
     expect(await within(list()).findByText('800 g')).toBeTruthy()
   })
 
@@ -180,7 +180,7 @@ describe('how your pantry covers the recipe', () => {
     open()
     fireEvent.click(await screen.findByText('Or scale to what I have'))
     expect(await screen.findByText(/Not in your pantry: .*canola oil/)).toBeTruthy()
-    expect(screen.queryByRole('button', { name: 'Cook that much' })).toBeNull()
+    expect(screen.queryByRole('button', { name: /^Use my pantry:/ })).toBeNull()
   })
 
   it('does not let a missing seasoning or water block the maximum', async () => {
@@ -193,5 +193,26 @@ describe('how your pantry covers the recipe', () => {
     fireEvent.click(await screen.findByText('Or scale to what I have'))
     await waitFor(() => expect(screen.getByText(/Your pantry covers about 8 servings/)).toBeTruthy())
     expect(screen.queryByText(/Not in your pantry: .*basil/)).toBeNull()
+  })
+
+  it('does not let a missing optional food block it, and cooks what the pantry covers in one tap', async () => {
+    // the chilli is optional here, and there is none: the most you can make still comes from the rest
+    const before = (await db.recipes.get(id))!
+    const chilli = (await db.ingredients.where('name').equals('Chili pepper (fresh)').first())!
+    await db.recipes.update(id, { ingredients: before.ingredients.map((l) => (l.ingredientId === chilli.id ? { ...l, optional: true } : l)) })
+    try {
+      await stockUp('Beef chuck roast', 800)
+      await stockUp('Canola oil', 100, 'ml')
+      await stockUp('Oyster sauce', 100, 'ml')
+      open()
+      fireEvent.click(await screen.findByText('Or scale to what I have'))
+      expect(await screen.findByText(/Your pantry covers about 8 servings, running out of beef chuck roast first/)).toBeTruthy()
+      expect(screen.queryByText(/Not in your pantry: .*chili/)).toBeNull()
+      fireEvent.click(screen.getByRole('button', { name: 'Use my pantry: cook 8 servings' }))
+      expect(await within(list()).findByText('800 g')).toBeTruthy()
+      expect(screen.getByText(/every amount is ×2/)).toBeTruthy()
+    } finally {
+      await db.recipes.put(before)
+    }
   })
 })

@@ -1,12 +1,17 @@
 // @vitest-environment jsdom
 import 'fake-indexeddb/auto'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { cleanup, configure, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import { DEFAULT_SETTINGS, db } from './db'
 import { seedIfEmpty } from './lib/seed'
 import { ScanError } from './lib/scanEngine'
+
+// The Ingredients page draws every food (about 400, each with a sensitivity slider), which takes a few seconds in the test
+// browser on a busy machine. Give these tests time to see it instead of failing on the default 1 s wait and 5 s limit.
+configure({ asyncUtilTimeout: 5000 })
+vi.setConfig({ testTimeout: 20000 })
 
 // jsdom has no camera, so the camera module is replaced. Everything else (lookup, forms, saving) is the real code.
 const engine = vi.hoisted(() => ({

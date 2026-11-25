@@ -50,14 +50,16 @@ export function foodsAsRecipe(foods: RecipeIngredient[]) {
 }
 
 /**
- * What a planned meal adds up to: the recipe's per-serving numbers times the servings you plan to eat, or for a meal of
- * plain foods, the foods themselves (`byId` is needed for those).
+ * What a planned meal adds up to: the recipe's per-serving numbers times the servings you plan to eat; for a meal of
+ * plain foods, the foods themselves (`byId` is needed for those); for eating out, what you entered.
  */
 export function mealNutrition(
-  entry: Pick<MealPlanEntry, 'recipeId' | 'servingsPlanned' | 'foods'>,
+  entry: Pick<MealPlanEntry, 'recipeId' | 'servingsPlanned' | 'foods' | 'constraint' | 'outKcal' | 'outProtein'>,
   perServing: Map<number, PerServing>,
   byId?: Map<number, Ingredient>,
 ): PerServing {
+  // eating out counts what you entered for it, and nothing until you do
+  if (entry.constraint === 'out') return { kcal: entry.outKcal ?? 0, protein: entry.outProtein ?? 0 }
   if (isFoodsMeal(entry)) {
     if (!byId) return { kcal: 0, protein: 0 }
     const n = recipeNutrition(foodsAsRecipe(entry.foods), byId)

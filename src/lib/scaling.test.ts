@@ -148,6 +148,14 @@ describe('the most you could make from your pantry', () => {
     expect(pantryCapacity(lines, [], byId)).toBeNull()
   })
 
+  it('never lets an optional food limit the batch or block it', () => {
+    const withOnion = [...lines, { ...line('Onion', 1, 'piece'), optional: true }]
+    const cap = pantryCapacity(withOnion, [stock('Chicken breast', 800), stock('White rice', 300)], byId) // no onion at all
+    if (cap?.kind !== 'max') throw new Error('expected a max')
+    expect(cap.factor).toBeCloseTo(1.5)
+    expect(cap.limiting.name).toBe('White rice')
+  })
+
   it('works on an already scaled recipe', () => {
     const cap = pantryCapacity(scaleLines(lines, 2), [stock('Chicken breast', 800), stock('White rice', 300)], byId)
     if (cap?.kind !== 'max') throw new Error('expected a max')

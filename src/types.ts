@@ -113,14 +113,15 @@ export interface MealPlanEntry {
    * this one meal. Set instead of `recipeId`.
    */
   foods?: RecipeIngredient[]
+  /** Eating out: the calories and protein you say it had, when you know or can guess. */
+  outKcal?: number
+  outProtein?: number
   servingsPlanned: number
   status: 'planned' | 'cooked' | 'skipped'
   /** What you asked for. Kept after the planner fills the slot, so planning again keeps it. */
   constraint?: SlotConstraint
   /** When you eat this meal (HH:MM), if not the usual time for the slot. */
   eatAt?: string
-  /** When you start cooking (HH:MM), if not worked out from the recipe's time. */
-  cookAt?: string
   /** Set when the meal this was eaten as leftovers from was deleted, so it now needs cooking itself. Cleared when you change or dismiss it. */
   cookDeleted?: boolean
   /** What making this meal took from the pantry, so Undo can put it back. */

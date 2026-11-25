@@ -248,7 +248,8 @@ export function planWeek(input: SuggestInput): PlanResult {
     const c = e.recipeId == null ? undefined : byRecipe.get(e.recipeId)
     if (c) dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + c.perServing.kcal * e.servingsPlanned)
     else if (isFoodsMeal(e)) dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + mealNutrition(e, new Map(), byId).kcal)
-    else if (e.constraint === 'out' && e.status === 'planned') dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + EATING_OUT_KCAL)
+    // eating out: what you entered for it, or a typical meal out until you do
+    else if (e.constraint === 'out' && e.status === 'planned') dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + (e.outKcal ?? EATING_OUT_KCAL))
   }
 
   const order = [...slots].sort((a, b) => SLOT_ORDER.indexOf(a) - SLOT_ORDER.indexOf(b))

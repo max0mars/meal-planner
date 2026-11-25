@@ -11,6 +11,7 @@ import {
   removeTrip,
   saveTrip,
   setConstraint,
+  setEatingOut,
   setFoods,
   setMeal,
   setTimes,
@@ -37,19 +38,33 @@ describe('editing the plan', () => {
     expect((await only()).recipeId).toBe(9)
   })
 
-  it('a constraint clears the recipe but keeps the times you set', async () => {
+  it('a constraint clears the recipe but keeps the time you set', async () => {
     await setMeal('2026-11-25', 'dinner', 7, 1)
-    await setTimes((await only()).id!, { eatAt: '20:00', cookAt: '19:00' })
+    await setTimes((await only()).id!, { eatAt: '20:00' })
     await setConstraint('2026-11-25', 'dinner', 'leftovers')
     const e = await only()
     expect(e.recipeId).toBeUndefined()
-    expect(e).toMatchObject({ constraint: 'leftovers', eatAt: '20:00', cookAt: '19:00' })
+    expect(e).toMatchObject({ constraint: 'leftovers', eatAt: '20:00' })
     expect(await db.mealPlan.count()).toBe(1)
   })
 
   it('eating out is one more constraint, with no recipe', async () => {
     await setConstraint('2026-11-27', 'dinner', 'out')
     expect(await only()).toMatchObject({ constraint: 'out', status: 'planned' })
+  })
+
+  it('keeps the calories you entered for eating out, until the meal becomes something else', async () => {
+    await setConstraint('2026-11-27', 'dinner', 'out')
+    await setEatingOut((await only()).id!, { kcal: 900, protein: 35 })
+    expect(await only()).toMatchObject({ outKcal: 900, outProtein: 35 })
+    await setConstraint('2026-11-27', 'dinner', 'out') // still out: kept
+    expect((await only()).outKcal).toBe(900)
+    await setConstraint('2026-11-27', 'dinner', 'quick')
+    expect((await only()).outKcal).toBeUndefined()
+    await setConstraint('2026-11-27', 'dinner', 'out')
+    await setEatingOut((await only()).id!, { kcal: 600 })
+    await setMeal('2026-11-27', 'dinner', 7, 1)
+    expect((await only()).outKcal).toBeUndefined()
   })
 
   it('two quick taps on the servings both count', async () => {

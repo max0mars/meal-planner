@@ -84,10 +84,11 @@ describe('the Today screen', () => {
     expect(within(cards()[1]).getByText('Dinner')).toBeTruthy()
     expect(within(cards()[1]).queryByText('Up next')).toBeNull()
     expect(within(cards()[1]).getByRole('link', { name: 'Chicken and rice' }).getAttribute('href')).toBe(`/recipes/${chicken}`)
-    // the numbers for the meal, and when to start cooking (45 minutes before 6:30 PM)
+    // the numbers for the meal, and how long the recipe takes
     expect(within(cards()[1]).getByText(/^\d+ kcal$/)).toBeTruthy()
     expect(within(cards()[1]).getByText(/^\d+ g protein$/)).toBeTruthy()
-    expect(within(cards()[1]).getByText('Start cooking at 5:45 PM · 45 min')).toBeTruthy()
+    expect(within(cards()[1]).getByText('45 min')).toBeTruthy()
+    expect(within(cards()[1]).queryByText(/Start cooking/)).toBeNull()
   })
 
   it('marks a meal as made, moves "Up next" on, and can undo it', async () => {
@@ -219,6 +220,26 @@ describe('the Today screen', () => {
     })
   })
 
+  it('takes the calories and protein of a meal out, and counts them in the day', async () => {
+    const id = (await db.mealPlan.add({ date: TODAY, slot: 'dinner', constraint: 'out', servingsPlanned: 1, status: 'planned' })) as number
+    open()
+    await waitFor(() => expect(cards().length).toBeGreaterThan(0))
+    const dinner = () => cards().find((c) => within(c).queryByText('Dinner'))!
+    expect(within(dinner()).getByText('Eating out')).toBeTruthy()
+    const kcal = within(dinner()).getByLabelText('Calories eating out') as HTMLInputElement
+    expect(kcal.value).toBe('') // not known yet: counts as nothing
+    expect(document.querySelector('.today-totals')!.textContent).toMatch(/^0 of /)
+    fireEvent.change(kcal, { target: { value: '850' } })
+    fireEvent.change(within(dinner()).getByLabelText('Protein eating out'), { target: { value: '40' } })
+    await waitFor(async () => expect(await db.mealPlan.get(id)).toMatchObject({ outKcal: 850, outProtein: 40 }))
+    await waitFor(() => expect(document.querySelector('.today-totals')!.textContent).toContain('850 of'))
+    expect(document.querySelector('.today-totals')!.textContent).toContain('40 of')
+    // emptying a box forgets that number
+    fireEvent.change(within(dinner()).getByLabelText('Protein eating out'), { target: { value: '' } })
+    await waitFor(async () => expect((await db.mealPlan.get(id))?.outProtein).toBeUndefined())
+    expect((await db.mealPlan.get(id))?.outKcal).toBe(850)
+  })
+
   it('removes a meal from today without deleting its recipe', async () => {
     const chicken = await chickenAndRice()
     await meal('dinner', chicken)
@@ -299,7 +320,7 @@ describe('the Today screen', () => {
     await waitFor(() => expect(cards().length).toBeGreaterThan(0))
     const dinner = cards().find((c) => within(c).queryByText('Dinner'))!
     expect(within(dinner).getByText('18:30')).toBeTruthy()
-    expect(within(dinner).getByText('Start cooking at 17:45 · 45 min')).toBeTruthy()
+
   })
 
   it('says so when nothing is planned, and offers the plan', async () => {
@@ -459,7 +480,7 @@ describe('the Today screen', () => {
     expect(pick.options).toHaveLength(49)
     fireEvent.change(pick, { target: { value: '19:30' } })
     await waitFor(async () => expect((await db.mealPlan.get(id))?.eatAt).toBe('19:30'))
-    await waitFor(() => expect(screen.getByText(/Start cooking at 6:45 PM/)).toBeTruthy())
+
   })
 
   it('has no grocery section when there is no trip today', async () => {
