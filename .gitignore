@@ -25,3 +25,9 @@ dist-ssr
 
 # copied from node_modules by scripts/copy-ocr-assets.mjs before dev and build
 public/ocr
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
