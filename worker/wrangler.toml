@@ -1,0 +1,9 @@
+name = "meal-planner"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "meal-planner"
+database_id = "865f189f-72b8-40a0-bb57-fb49cc086126"
+migrations_dir = "migrations"

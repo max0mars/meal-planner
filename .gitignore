@@ -31,3 +31,8 @@ public/ocr
 .env.*
 !.env.example
 .claude/settings.local.json
+
+# Worker local secrets
+worker/.dev.vars
+.dev.vars
+.wrangler/
