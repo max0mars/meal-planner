@@ -1143,7 +1143,7 @@ describe('adding the plan to a calendar', () => {
   }
   afterEach(() => vi.restoreAllMocks())
 
-  it('saves an .ics file with your meals, the cooking time, and grocery trips with what to buy', async () => {
+  it('saves an .ics file with your meals and grocery trips with what to buy', async () => {
     const files = captureDownloads()
     const { chicken } = await threeRecipes()
     await db.recipes.update(chicken, { estMinutes: 45 })
@@ -1155,7 +1155,7 @@ describe('adding the plan to a calendar', () => {
     await db.trips.add({ date: TODAY, after: 'start', time: '09:30', note: 'weekend shop' })
     open('/plan')
     fireEvent.click(await screen.findByRole('button', { name: /Add to calendar/ }))
-    expect(await screen.findByText(/Saved meal-plan-[0-9-]+[.]ics with 4 events/)).toBeTruthy()
+    expect(await screen.findByText(/Saved meal-plan-[0-9-]+[.]ics with 3 events/)).toBeTruthy()
     expect(files).toHaveLength(1)
     expect(files[0].name).toBe(`meal-plan-${TODAY}.ics`)
 
@@ -1166,9 +1166,7 @@ describe('adding the plan to a calendar', () => {
     })
     const events = new ICAL.Component(ICAL.parse(text)).getAllSubcomponents('vevent').map((v) => new ICAL.Event(v))
     const summaries = events.map((e) => e.summary).sort()
-    expect(summaries).toEqual(['Cook: Chicken and rice', 'Dinner: Chicken and rice', 'Groceries', 'Lunch: eating out'])
-    const [y, m, d] = tomorrow.split('-').map(Number)
-    expect(events.find((e) => e.summary === 'Cook: Chicken and rice')!.startDate.toJSDate().getTime()).toBe(new Date(y, m - 1, d, 17, 45).getTime())
+    expect(summaries).toEqual(['Dinner: Chicken and rice', 'Groceries', 'Lunch: eating out'])
     const shop = events.find((e) => e.summary === 'Groceries')!
     expect(shop.description).toContain('weekend shop')
     expect(shop.description).toContain('To buy:')
