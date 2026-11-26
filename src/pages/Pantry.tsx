@@ -10,12 +10,13 @@ import {
   LOCATION_ORDER,
   SOON_DAYS,
   daysLeft,
+  amountLabel,
   expiryLabel,
   expiryStatus,
   formatDate,
   groupByUrgency,
   locationsFor,
-  shelfFraction,
+  timeLeftFraction,
   todayIso,
 } from '../lib/pantry'
 import { effectiveSensitivity, tagLevelMap } from '../lib/sensitivity'
@@ -203,22 +204,23 @@ function PantryRow({
   const days = daysLeft(item.expiresOn, today)
   const status = expiryStatus(days)
   const { value, caption } = expiryLabel(days)
-  const fraction = shelfFraction(item.purchasedOn, item.expiresOn, today)
+  const amount = amountLabel(item.qty, item.unit)
+  const fraction = timeLeftFraction(item.expiresOn, today)
   const update = (changes: Partial<PantryItem>) => db.pantryItems.update(item.id!, changes)
   const panelId = `pantry-edit-${item.id}`
 
   return (
     <li className={`pantry-row ${status}`}>
       <button className="pantry-main" onClick={onToggle} aria-expanded={open} aria-controls={panelId}>
-        <span className="days">
-          <span className="days-num">{value}</span>
-          <span className="days-cap">{caption}</span>
+        <span className="days amount">
+          <span className="days-num">{amount.value}</span>
+          <span className="days-cap">{amount.caption}</span>
         </span>
         <span className="pantry-body">
           <span className="r-name">{ingredient.name}</span>
           <span className="r-nums">
-            <span>
-              {item.qty} {item.unit}
+            <span className="time-left">
+              {value} {caption}
             </span>
             <span>{LOCATION_LABEL[item.location]}</span>
             <span>Use by {formatDate(item.expiresOn)}</span>
@@ -229,7 +231,8 @@ function PantryRow({
               {level.reasons.length > 0 && `: ${level.reasons.map((r) => TAG_LABEL[r].toLowerCase()).join(', ')}`}
             </span>
           )}
-          <span className="bar" aria-hidden>
+          {/* time left out of 21 days: full with 21 or more days to go, empty on the use-by date */}
+          <span className="bar time-bar" aria-hidden title={`${Math.round(fraction * 100)}% of its time left`}>
             <span className="bar-fill" style={{ width: `${Math.round(fraction * 100)}%` }} />
           </span>
         </span>

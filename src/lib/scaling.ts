@@ -139,7 +139,8 @@ export function pantryCapacity(lines: RecipeIngredient[], items: PantryItem[], b
   let best: { factor: number; limiting: Ingredient } | null = null
   for (const line of lines) {
     const food = byId.get(line.ingredientId)
-    if (!food || assumedOnHand(food)) continue
+    // an optional food (onion, garlic) never limits the batch or blocks it: you can make it without
+    if (!food || assumedOnHand(food) || line.optional) continue
     const need = toGrams(line.qty, line.unit, food)
     if (need == null || need <= 0) continue
     const have = pantryGrams(line.ingredientId, items, byId)

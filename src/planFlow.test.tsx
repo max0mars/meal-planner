@@ -300,6 +300,72 @@ describe('the Plan screen', () => {
     expect(lastDialog().queryByText('From your pantry')).toBeNull()
   })
 
+  it('plans some plain foods instead of a recipe, and changes them by tapping the meal', async () => {
+    await threeRecipes()
+    open('/plan')
+    await addMeal(0, 'dinner')
+    fireEvent.click(lastDialog().getByRole('button', { name: 'Just some foods, no recipe' }))
+    const foods = lastDialog()
+    fireEvent.change(foods.getByLabelText(/What did you have/), { target: { value: 'banana' } })
+    fireEvent.click(await foods.findByRole('button', { name: 'Banana' }))
+    expect(foods.queryByRole('checkbox', { name: /eaten it/ })).toBeNull() // planning ahead: not eaten yet
+    fireEvent.click(foods.getByRole('button', { name: 'Save meal' }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    expect(await (await col(0)).findByText('Banana')).toBeTruthy()
+    const entry = (await db.mealPlan.toArray())[0]
+    expect(entry.recipeId).toBeUndefined()
+    expect(entry.foods).toHaveLength(1)
+    // tapping it opens its foods, to change them
+    fireEvent.click(await (await col(0)).findByRole('button', { name: /^Dinner, .*: Banana, \d+ kcal/ }))
+    const edit = lastDialog()
+    fireEvent.change(edit.getByLabelText('Amount of Banana'), { target: { value: '2' } })
+    fireEvent.click(edit.getByRole('button', { name: 'Save changes' }))
+    await waitFor(async () => expect((await db.mealPlan.get(entry.id!))!.foods![0].qty).toBe(2))
+  })
+
+  it('lets you say you are borrowing a food for a meal, so it is not on your shopping list', async () => {
+    const { chicken } = await threeRecipes()
+    const id = (await db.mealPlan.add({ date: TODAY, slot: 'dinner', recipeId: chicken, servingsPlanned: 1, status: 'planned' })) as number
+    open('/plan')
+    fireEvent.click(await (await col(0)).findByRole('button', { name: /^Dinner, .*Chicken and rice/ }))
+    const sheet = sheetFor('Dinner')
+    const broccoli = sheet.getByRole('checkbox', { name: 'Borrowing Broccoli' }) as HTMLInputElement
+    expect(broccoli.checked).toBe(false)
+    fireEvent.click(broccoli)
+    const food = (await db.ingredients.where('name').equals('Broccoli').first())!
+    await waitFor(async () => expect((await db.mealPlan.get(id))?.borrowed).toEqual([food.id]))
+    await waitFor(() => expect((sheet.getByRole('checkbox', { name: 'Borrowing Broccoli' }) as HTMLInputElement).checked).toBe(true))
+    fireEvent.click(sheet.getByRole('checkbox', { name: 'Borrowing Broccoli' }))
+    await waitFor(async () => expect((await db.mealPlan.get(id))?.borrowed).toBeUndefined())
+  })
+
+  it('plans a single day from the button beside its date, leaving the other days alone', async () => {
+    await threeRecipes()
+    await fillerRecipes()
+    open('/plan')
+    const tomorrow = addDays(TODAY, 1)
+    const label = `Plan ${new Date(`${tomorrow}T00:00:00Z`).toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' })} ${new Date(`${tomorrow}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })}`
+    fireEvent.click(await screen.findByRole('button', { name: label }))
+    await screen.findByText(/^Planned 2 meals for /, {}, { timeout: 5000 })
+    const meals = await db.mealPlan.toArray()
+    expect(meals.map((m) => [m.date, m.slot]).sort()).toEqual([
+      [tomorrow, 'dinner'],
+      [tomorrow, 'lunch'],
+    ])
+    // the day is full now: planning it again adds nothing
+    fireEvent.click(screen.getByRole('button', { name: label }))
+    expect(await screen.findByText('Nothing to add: every meal in this day is already planned.', {}, { timeout: 5000 })).toBeTruthy()
+  })
+
+  it('offers no plan button on a day that has gone', async () => {
+    open('/plan')
+    fireEvent.click(await screen.findByRole('button', { name: 'Previous day' }))
+    const yesterday = addDays(TODAY, -1)
+    const col = await waitFor(() => document.querySelector(`[data-date="${yesterday}"]`) as HTMLElement)
+    expect(within(col).queryByRole('button', { name: /^Plan / })).toBeNull()
+    expect(within(document.querySelector(`[data-date="${TODAY}"]`) as HTMLElement).getByRole('button', { name: /^Plan / })).toBeTruthy()
+  })
+
   it('changes the servings in half steps, never below half a serving', async () => {
     const { chicken } = await threeRecipes()
     await db.mealPlan.add({ date: TODAY, slot: 'dinner', recipeId: chicken, servingsPlanned: 1, status: 'planned' })
@@ -640,18 +706,13 @@ describe('meal times', () => {
     fireEvent.click(cell)
     const sheet = sheetFor('Dinner')
     expect(timeValue(sheet, 'Eat at')).toBe('18:30')
-    expect(timeValue(sheet, 'Start cooking at')).toBe('17:45')
+    expect(sheet.queryByRole('group', { name: 'Start cooking at' })).toBeNull() // no cooking time any more
 
     setTime(sheet, 'Eat at', '20:00')
     await waitFor(async () => expect((await db.mealPlan.toArray())[0].eatAt).toBe('20:00'))
-    await waitFor(() => expect(timeValue(sheet, 'Start cooking at')).toBe('19:15')) // follows the new time
 
-    setTime(sheet, 'Start cooking at', '19:00')
-    await waitFor(async () => expect((await db.mealPlan.toArray())[0].cookAt).toBe('19:00'))
-
-    fireEvent.click(sheet.getByRole('button', { name: 'Use the usual times' }))
+    fireEvent.click(sheet.getByRole('button', { name: 'Use the usual time' }))
     await waitFor(async () => expect((await db.mealPlan.toArray())[0].eatAt).toBeUndefined())
-    expect((await db.mealPlan.toArray())[0].cookAt).toBeUndefined()
   })
 
   it('shows times as 18:30 when the setting is 24-hour', async () => {
@@ -730,8 +791,7 @@ describe('meal times', () => {
     open('/plan')
     fireEvent.click(await (await col(1)).findByRole('button', { name: /^Lunch, .*Chicken and rice/ }))
     const sheet = sheetFor('Lunch')
-    expect(sheet.queryByRole('group', { name: 'Start cooking at' })).toBeNull()
-    expect(sheet.getByText(/Leftovers need no cooking/)).toBeTruthy()
+    expect(sheet.queryByRole('group', { name: 'Borrowing any of this?' })).toBeNull() // nothing is cooked for leftovers
   })
 })
 
@@ -816,7 +876,7 @@ describe('the week you described', () => {
     open('/plan')
     for (let i = 0; i < 3; i++) fireEvent.click(await screen.findByRole('button', { name: 'Next day' })) // the plan fills the three days on screen
     fireEvent.click(await screen.findByRole('button', { name: /Plan these days/ }))
-    await screen.findByText(/Planned/)
+    await screen.findByText(/Planned/, {}, { timeout: 5000 }) // planning a week with all these rules takes a moment
 
     const meals = await db.mealPlan.toArray()
     const at = (date: string, slot: string) => meals.find((e) => e.date === date && e.slot === slot)
@@ -1083,7 +1143,7 @@ describe('adding the plan to a calendar', () => {
   }
   afterEach(() => vi.restoreAllMocks())
 
-  it('saves an .ics file with your meals, the cooking time, and grocery trips with what to buy', async () => {
+  it('saves an .ics file with your meals and grocery trips with what to buy', async () => {
     const files = captureDownloads()
     const { chicken } = await threeRecipes()
     await db.recipes.update(chicken, { estMinutes: 45 })
@@ -1095,7 +1155,7 @@ describe('adding the plan to a calendar', () => {
     await db.trips.add({ date: TODAY, after: 'start', time: '09:30', note: 'weekend shop' })
     open('/plan')
     fireEvent.click(await screen.findByRole('button', { name: /Add to calendar/ }))
-    expect(await screen.findByText(/Saved meal-plan-[0-9-]+[.]ics with 4 events/)).toBeTruthy()
+    expect(await screen.findByText(/Saved meal-plan-[0-9-]+[.]ics with 3 events/)).toBeTruthy()
     expect(files).toHaveLength(1)
     expect(files[0].name).toBe(`meal-plan-${TODAY}.ics`)
 
@@ -1106,9 +1166,7 @@ describe('adding the plan to a calendar', () => {
     })
     const events = new ICAL.Component(ICAL.parse(text)).getAllSubcomponents('vevent').map((v) => new ICAL.Event(v))
     const summaries = events.map((e) => e.summary).sort()
-    expect(summaries).toEqual(['Cook: Chicken and rice', 'Dinner: Chicken and rice', 'Groceries', 'Lunch: eating out'])
-    const [y, m, d] = tomorrow.split('-').map(Number)
-    expect(events.find((e) => e.summary === 'Cook: Chicken and rice')!.startDate.toJSDate().getTime()).toBe(new Date(y, m - 1, d, 17, 45).getTime())
+    expect(summaries).toEqual(['Dinner: Chicken and rice', 'Groceries', 'Lunch: eating out'])
     const shop = events.find((e) => e.summary === 'Groceries')!
     expect(shop.description).toContain('weekend shop')
     expect(shop.description).toContain('To buy:')

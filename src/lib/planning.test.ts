@@ -79,18 +79,50 @@ describe('days, totals and cook sessions', () => {
     expect(sessions.map((s) => [s.cookOn, s.servings])).toEqual([['2026-11-19', 2], ['2026-11-25', 1]])
   })
 
-  it('leaves out meals already cooked or skipped, and says which meals are leftovers', () => {
+  it('leaves out skipped meals, marks a made one done, and says which meals are leftovers', () => {
     const first = entry('2026-11-19', 'dinner', 7)
     const second = entry('2026-11-20', 'lunch', 7)
-    const gone = entry('2026-11-20', 'dinner', 9, 1, 'cooked')
-    const sessions = cookSessions([first, second, gone, entry('2026-11-21', 'lunch', 9, 1, 'skipped')], 4)
-    expect(sessions).toHaveLength(1)
+    const made = entry('2026-11-20', 'dinner', 9, 1, 'cooked')
+    const sessions = cookSessions([first, second, made, entry('2026-11-25', 'lunch', 3, 1, 'skipped')], 4)
+    expect(sessions.map((s) => [s.recipeId, s.done])).toEqual([[7, false], [9, true]])
     expect(isLeftover(first, sessions)).toBe(false)
     expect(isLeftover(second, sessions)).toBe(true)
+  })
+
+  it('keeps the leftovers of a meal you have made as leftovers, rather than a meal to cook', () => {
+    const made = entry('2026-11-19', 'dinner', 7, 1, 'cooked')
+    const later = entry('2026-11-20', 'lunch', 7)
+    const sessions = cookSessions([made, later], 4)
+    expect(sessions).toHaveLength(1)
+    expect(sessions[0].done).toBe(true)
+    expect(isLeftover(later, sessions)).toBe(true)
+  })
+})
+
+describe('a meal out', () => {
+  it('counts the calories and protein you entered, and nothing when you have not', () => {
+    const out = { ...entry('2026-11-19', 'dinner', 0), recipeId: undefined, constraint: 'out' as const }
+    expect(dayTotals([out], '2026-11-19', new Map())).toEqual({ kcal: 0, protein: 0, meals: 1 })
+    expect(dayTotals([{ ...out, outKcal: 850, outProtein: 40 }], '2026-11-19', new Map())).toEqual({ kcal: 850, protein: 40, meals: 1 })
   })
 })
 
 describe('the shopping list', () => {
+  it('does not ask you to buy food you are borrowing for a meal', () => {
+    const r = recipe('Eggs on toast', [line('Eggs', 2, 'piece'), line('White bread', 60)])
+    const meal = { ...entry('2026-11-19', 'lunch', r.id), borrowed: [food('Eggs').id!] }
+    const list = buildShoppingList(cookSessions([meal], 4), new Map([[r.id, r]]), byId, [])
+    expect(list.toBuy.map((i) => i.food.name)).toEqual(['White bread'])
+  })
+
+  it('asks for nothing for a meal you have already made, or its leftovers', () => {
+    const r = recipe('Stew', [line('Beef chuck roast', 500)])
+    const sessions = cookSessions([entry('2026-11-19', 'dinner', r.id, 1, 'cooked'), entry('2026-11-20', 'lunch', r.id)], 4)
+    expect(buildShoppingList(sessions, new Map([[r.id, r]]), byId, []).toBuy).toEqual([])
+    const fresh = cookSessions([entry('2026-11-19', 'dinner', r.id), entry('2026-11-20', 'lunch', r.id)], 4)
+    expect(buildShoppingList(fresh, new Map([[r.id, r]]), byId, []).toBuy.map((i) => i.food.name)).toEqual(['Beef chuck roast'])
+  })
+
   const chickenRice = recipe('Chicken and rice', [line('Chicken breast', 400), line('White rice', 200), line('Salt', 1, 'tsp'), line('Cumin', 1, 'tsp'), line('Eggs', 2, 'piece')])
   const recipes = new Map([[chickenRice.id, chickenRice]])
   const session = (servings: number, cookOn = '2026-11-20') => ({ recipeId: chickenRice.id, cookOn, servings, entries: [] })

@@ -15,6 +15,10 @@ const ml = (name, qty) => ({ name, qty, unit: 'ml' })
 const tbsp = (name, qty) => ({ name, qty, unit: 'tbsp' })
 const tsp = (name, qty) => ({ name, qty, unit: 'tsp' })
 const pc = (name, qty) => ({ name, qty, unit: 'piece' })
+// a line the recipe works without (left out for anyone sensitive to it)
+const optional = (line) => ({ ...line, optional: true })
+// a flexible line: `line` is the default, and any food in `anyCategory` or named in `anyOf` can be used instead
+const flex = (label, line, { anyOf, anyCategory } = {}) => ({ ...line, label, ...(anyOf ? { anyOf } : {}), ...(anyCategory ? { anyCategory } : {}) })
 
 const R = (id, title, category, cuisine, description, servings, estMinutes, ingredients, steps) => ({
   seedId: `basic:${id}`, title, category, cuisine, description, source: '', servings, servingsEstimated: false,
@@ -118,12 +122,24 @@ const recipes = [
   R('egg-scramble-toast', 'Egg scramble with toast', 'Breakfast', 'American', 'Scrambled eggs with spinach and cheese, with whole wheat toast.', 2, 10,
     [pc('Eggs', 6), g('Spinach', 60), g('Cheddar cheese', 40), g('Whole wheat bread', 120), tbsp('Butter', 1)],
     ['Melt the butter and wilt the spinach in a pan.', 'Pour in the whisked eggs and stir gently until just set. Stir in the cheese.', 'Toast the bread and serve.']),
+  // A flexible recipe: make it with whatever meat, pasta and sauce you have. Onion and garlic can be left out.
+  // One hearty meal: half a 1 lb (454 g) box of pasta, half a 24 oz (680 g) jar of sauce, 2 sausages (60 g each), 1 onion.
+  R('meat-sauce-pasta', 'Meat sauce pasta', 'Pasta', 'Italian', 'Pasta in a tomato sauce with cooked meat, made with any meat, pasta and pasta sauce you have.', 1, 25,
+    [
+      flex('Meat', g('Pork sausages', 120), { anyCategory: 'meat' }),
+      flex('Pasta', g('Wheat pasta', 227), { anyOf: ['Whole wheat pasta', 'Gluten-free pasta'] }),
+      flex('Pasta sauce', g('Tomato sauce', 340), { anyOf: ['Canned tomatoes'] }),
+      optional(pc('Onion', 1)),
+      optional(pc('Garlic', 2)),
+    ],
+    ['Boil the pasta in salted water.', 'Slice the meat (or break up ground meat) and cook it in a pan with the chopped onion and garlic, if using, until the meat is cooked through.', 'Pour in the sauce and simmer for 10 minutes.', 'Drain the pasta and mix in the sauce.']),
 ]
 
 const problems = []
 for (const r of recipes) {
   for (const l of r.ingredients) {
     const f = byName.get(l.name)
+    for (const alt of l.anyOf ?? []) if (!byName.has(alt)) problems.push(`${r.title}: unknown food "${alt}"`)
     if (!f) problems.push(`${r.title}: unknown food "${l.name}"`)
     else if (l.unit === 'piece' && !f.gramsPerPiece) problems.push(`${r.title}: "${l.name}" has no piece weight`)
   }

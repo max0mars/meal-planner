@@ -40,19 +40,6 @@ export function eatTime(entry: Pick<MealPlanEntry, 'slot' | 'eatAt'>, mealTimes:
 }
 
 /**
- * When to start cooking so the meal is ready at `eatAt`: the recipe's time before it, on a 5 minute mark (earlier, never
- * later, so it is never late). A recipe longer than the time since midnight starts at midnight.
- */
-export function cookStart(eatAt: string, minutes: number): string {
-  return fromMinutes(Math.floor((toMinutes(eatAt) - minutes) / 5) * 5)
-}
-
-/** The time to start cooking a meal: the one you set, otherwise worked out from the eat time and the recipe's time. */
-export function cookTime(entry: Pick<MealPlanEntry, 'slot' | 'eatAt' | 'cookAt'>, estMinutes: number, mealTimes: MealTimes): string {
-  return entry.cookAt ?? cookStart(eatTime(entry, mealTimes), estMinutes)
-}
-
-/**
  * The meals today whose time has already gone, as "date|slot" keys, so the planner does not plan a lunch for 12:30 when
  * it is already 3 in the afternoon. The time you usually eat that meal is what counts.
  */

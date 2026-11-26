@@ -70,7 +70,7 @@ export default function AddFoodSheet({
       editing?.id == null
         ? null
         : {
-            recipes: await db.recipes.filter((r) => r.ingredients.some((l) => l.ingredientId === editing.id)).count(),
+            recipes: await db.recipes.filter((r) => r.ingredients.some((l) => l.ingredientId === editing.id || l.anyOf?.includes(editing.id!))).count(),
             pantry: await db.pantryItems.where('ingredientId').equals(editing.id).count(),
           },
     [editing?.id],

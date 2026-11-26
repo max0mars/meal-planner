@@ -1,5 +1,6 @@
-import type { MealPlanEntry, MealSlot, SlotConstraint } from '../types'
+import type { Ingredient, MealPlanEntry, MealSlot, RecipeIngredient, SlotConstraint } from '../types'
 import { addDays, daysBetween } from './expiry'
+import { recipeNutrition } from './nutrition'
 
 export const SLOT_ORDER: MealSlot[] = ['breakfast', 'lunch', 'dinner', 'snack']
 export const SLOT_LABEL: Record<MealSlot, string> = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack' }
@@ -31,20 +32,57 @@ export interface PerServing {
   protein: number
 }
 
-/** What a planned meal adds up to: the recipe's per-serving numbers times the servings you plan to eat. */
-export function mealNutrition(entry: Pick<MealPlanEntry, 'recipeId' | 'servingsPlanned'>, perServing: Map<number, PerServing>): PerServing {
+/** True for a meal of plain foods (no recipe). */
+export function isFoodsMeal(entry: Pick<MealPlanEntry, 'foods'> | undefined): entry is { foods: RecipeIngredient[] } {
+  return (entry?.foods?.length ?? 0) > 0
+}
+
+/** "Eggs, White bread and Apple": what a meal of plain foods is called. */
+export function foodsTitle(foods: RecipeIngredient[], byId: Map<number, Ingredient>): string {
+  const names = [...new Set(foods.map((f) => byId.get(f.ingredientId)?.name).filter((n): n is string => !!n))]
+  if (names.length <= 1) return names[0] ?? 'Some foods'
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+}
+
+/** A meal of plain foods, read as a recipe of one serving, so it can be counted, shopped for and taken from the pantry. */
+export function foodsAsRecipe(foods: RecipeIngredient[]) {
+  return { servings: 1, ingredients: foods }
+}
+
+/**
+ * What a planned meal adds up to: the recipe's per-serving numbers times the servings you plan to eat; for a meal of
+ * plain foods, the foods themselves (`byId` is needed for those); for eating out, what you entered.
+ */
+export function mealNutrition(
+  entry: Pick<MealPlanEntry, 'recipeId' | 'servingsPlanned' | 'foods' | 'constraint' | 'outKcal' | 'outProtein'>,
+  perServing: Map<number, PerServing>,
+  byId?: Map<number, Ingredient>,
+): PerServing {
+  // eating out counts what you entered for it, and nothing until you do
+  if (entry.constraint === 'out') return { kcal: entry.outKcal ?? 0, protein: entry.outProtein ?? 0 }
+  if (isFoodsMeal(entry)) {
+    if (!byId) return { kcal: 0, protein: 0 }
+    const n = recipeNutrition(foodsAsRecipe(entry.foods), byId)
+    return { kcal: n.totalKcal, protein: n.totalProtein }
+  }
   const p = entry.recipeId == null ? undefined : perServing.get(entry.recipeId)
   return p ? { kcal: p.kcal * entry.servingsPlanned, protein: p.protein * entry.servingsPlanned } : { kcal: 0, protein: 0 }
 }
 
 /** Everything planned for one day, added up. Skipped meals do not count. */
-export function dayTotals(entries: MealPlanEntry[], date: string, perServing: Map<number, PerServing>): PerServing & { meals: number } {
+export function dayTotals(
+  entries: MealPlanEntry[],
+  date: string,
+  perServing: Map<number, PerServing>,
+  /** The foods, to count meals of plain foods. */
+  byId?: Map<number, Ingredient>,
+): PerServing & { meals: number } {
   let kcal = 0
   let protein = 0
   let meals = 0
   for (const e of entries) {
     if (e.date !== date || e.status === 'skipped') continue
-    const n = mealNutrition(e, perServing)
+    const n = mealNutrition(e, perServing, byId)
     kcal += n.kcal
     protein += n.protein
     meals++
@@ -60,26 +98,35 @@ export interface CookSession {
   /** Total servings to cook, across all the meals it feeds. */
   servings: number
   entries: MealPlanEntry[]
+  /** True once you have made it (its first meal is marked made): nothing more to buy for it, but its leftovers still count. */
+  done?: boolean
+  /** For a meal of plain foods (then `recipeId` is 0): the foods, for one serving. */
+  foods?: RecipeIngredient[]
 }
 
 /**
  * Groups planned meals into cooking sessions. Meals of the same recipe within `windowDays` of the first one are one
  * cook (the later ones are leftovers), so you cook once and eat it again, and the shopping list asks for one batch.
- * Meals already cooked or skipped are left out.
+ * Skipped meals are left out. A meal you have made still groups its leftovers; the session is then marked `done`.
  */
 export function cookSessions(entries: MealPlanEntry[], windowDays: number): CookSession[] {
   // meals with no recipe yet (a constraint, or eating out) cook nothing
-  const planned = entries.filter((e) => e.status === 'planned' && e.recipeId != null).sort(byDateThenSlot)
+  const planned = entries.filter((e) => e.status !== 'skipped' && (e.recipeId != null || isFoodsMeal(e))).sort(byDateThenSlot)
   const open = new Map<number, CookSession>()
   const sessions: CookSession[] = []
   for (const e of planned) {
+    // a meal of plain foods is its own session: nothing is cooked for other meals
+    if (isFoodsMeal(e)) {
+      sessions.push({ recipeId: 0, cookOn: e.date, servings: 1, entries: [e], done: e.status === 'cooked', foods: e.foods })
+      continue
+    }
     const recipeId = e.recipeId!
     const current = open.get(recipeId)
     if (current && daysBetween(current.cookOn, e.date) <= windowDays) {
       current.servings += e.servingsPlanned
       current.entries.push(e)
     } else {
-      const fresh: CookSession = { recipeId, cookOn: e.date, servings: e.servingsPlanned, entries: [e] }
+      const fresh: CookSession = { recipeId, cookOn: e.date, servings: e.servingsPlanned, entries: [e], done: e.status === 'cooked' }
       open.set(recipeId, fresh)
       sessions.push(fresh)
     }

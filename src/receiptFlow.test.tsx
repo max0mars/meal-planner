@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import { DEFAULT_SETTINGS, db } from './db'
 import { addDays } from './lib/expiry'
-import { todayIso } from './lib/pantry'
+import { formatDate, todayIso } from './lib/pantry'
 import { seedIfEmpty } from './lib/seed'
 
 // jsdom cannot read an image, so only the reading step is replaced. Parsing, the review screen and saving are the real code.
@@ -76,7 +76,7 @@ describe('scanning a receipt', () => {
     expect((review.getByLabelText('Amount of Chicken breast') as HTMLInputElement).value).toBe('500')
     expect((review.getByLabelText('Unit for Chicken breast') as HTMLSelectElement).value).toBe('g')
     expect((review.getByLabelText('Amount of Carrot') as HTMLInputElement).value).toBe('452') // from the weight line under it
-    expect((review.getByLabelText('Bought on') as HTMLInputElement).value).toBe(BOUGHT) // read from the receipt
+    expect((review.getByLabelText('Bought on') as HTMLInputElement).value).toBe(TODAY) // assumed to be today
     expect(await db.pantryItems.count()).toBe(0)
     expect(engine.recognizeReceipt).toHaveBeenCalledTimes(1)
     expect(fetchMock).not.toHaveBeenCalled() // nothing left the phone
@@ -95,6 +95,16 @@ describe('scanning a receipt', () => {
     expect((review.getByLabelText(/Add BRITISH CHICKEN/) as HTMLInputElement).checked).toBe(true)
   })
 
+  it('takes the date printed on the receipt only when you tap it, and works out use-by dates from it', async () => {
+    const review = await scan()
+    const bought = review.getByLabelText('Bought on') as HTMLInputElement
+    expect(bought.value).toBe(TODAY)
+    fireEvent.click(review.getByRole('button', { name: new RegExp(`The receipt says ${formatDate(BOUGHT)}`) }))
+    expect(bought.value).toBe(BOUGHT)
+    expect(review.queryByRole('button', { name: /The receipt says/ })).toBeNull() // already using it
+    expect((review.getAllByLabelText('Use by')[0] as HTMLInputElement).value).toBe(addDays(BOUGHT, 3)) // chicken, the first line
+  })
+
   it('adds what you confirm to the pantry with the amount, place and use-by date, then says how many', async () => {
     const review = await scan()
     fireEvent.change(review.getByLabelText('Amount of Eggs'), { target: { value: '12' } })
@@ -107,12 +117,21 @@ describe('scanning a receipt', () => {
     const items = await db.pantryItems.toArray()
     const chicken = await food('Chicken breast')
     const mine = items.find((i) => i.ingredientId === chicken.id)!
-    expect(mine).toMatchObject({ qty: 500, unit: 'g', purchasedOn: BOUGHT, location: 'fridge' })
-    expect(mine.expiresOn).toBe(addDays(BOUGHT, 3)) // chicken keeps 3 days in the fridge
+    expect(mine).toMatchObject({ qty: 500, unit: 'g', purchasedOn: TODAY, location: 'fridge' })
+    expect(mine.expiresOn).toBe(addDays(TODAY, 3)) // chicken keeps 3 days in the fridge
     const eggsId = (await food('Eggs')).id
     const eggs = items.find((i) => i.ingredientId === eggsId)!
     expect(eggs).toMatchObject({ qty: 12, unit: 'piece' })
     expect(items.some((i) => i.ingredientId === undefined)).toBe(false)
+    // the scanner and its review sheet have both closed, so the pantry page scrolls again
+    await waitFor(() => expect(document.querySelector('.sheet')).toBeNull())
+    expect(document.body.style.overflow).toBe('')
+    // each item shows how much you have, then how long it has left
+    const row = [...document.querySelectorAll('.pantry-row')].find((r) => r.textContent?.includes('Chicken breast'))!
+    expect(row.querySelector('.days-num')!.textContent).toBe('500')
+    expect(row.querySelector('.days-cap')!.textContent).toBe('g')
+    expect(row.querySelector('.time-left')!.textContent).toBe('3 days left')
+    expect((row.querySelector('.time-bar .bar-fill') as HTMLElement).style.width).toBe('14%') // 3 of 21 days
     expect(items).toHaveLength(4) // chicken, milk, carrots, eggs; the unknown item and the kitchen roll stay out
     expect(await screen.findByText('Added 4 items from your receipt.')).toBeTruthy()
     expect(screen.queryByRole('dialog')).toBeNull()
@@ -151,14 +170,14 @@ describe('scanning a receipt', () => {
     expect(where.value).toBe('fridge')
     fireEvent.change(where, { target: { value: 'freezer' } })
     const expires = review.getAllByLabelText('Use by')[0] as HTMLInputElement
-    expect(expires.value).toBe(addDays(BOUGHT, chicken.shelfLifeDays.freezer!))
-    fireEvent.change(expires, { target: { value: addDays(BOUGHT, 2) } })
+    expect(expires.value).toBe(addDays(TODAY, chicken.shelfLifeDays.freezer!))
+    fireEvent.change(expires, { target: { value: addDays(TODAY, 2) } })
     fireEvent.change(review.getByLabelText('Amount of Eggs'), { target: { value: '12' } })
     fireEvent.change(review.getByLabelText('Unit for Eggs'), { target: { value: 'piece' } })
     fireEvent.click(review.getByRole('button', { name: /^Add \d+ items? to pantry$/ }))
     await waitFor(async () => expect(await db.pantryItems.count()).toBeGreaterThan(0))
     const mine = (await db.pantryItems.toArray()).find((i) => i.ingredientId === chicken.id)!
-    expect(mine).toMatchObject({ location: 'freezer', expiresOn: addDays(BOUGHT, 2) })
+    expect(mine).toMatchObject({ location: 'freezer', expiresOn: addDays(TODAY, 2) })
   })
 
   it('says which items you were waiting for on the shopping list', async () => {

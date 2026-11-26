@@ -241,11 +241,14 @@
 .days { display: grid; justify-items: start; line-height: 1; }
 .days-num { font-size: var(--t-display); font-weight: var(--w-bold); letter-spacing: -0.03em; }
 .days-cap { font-size: var(--t-small); color: var(--muted); margin-top: 4px; line-height: 1.2; }
-.pantry-row.expired .days-num, .pantry-row.today .days-num { color: var(--major-fill); }
-.pantry-row.soon .days-num { color: #8a5a00; }
+/* the big number is how much you have; the time left is coloured by how soon it goes off */
+.time-left { font-weight: var(--w-medium); color: var(--ink); }
+.pantry-row.expired .time-left, .pantry-row.today .time-left { color: var(--major-fill); }
+.pantry-row.soon .time-left { color: #8a5a00; }
+.time-bar { height: 6px; }
 @media (prefers-color-scheme: dark) {
-  .pantry-row.expired .days-num, .pantry-row.today .days-num { color: #f08a7b; }
-  .pantry-row.soon .days-num { color: var(--light-fill); }
+  .pantry-row.expired .time-left, .pantry-row.today .time-left { color: #f08a7b; }
+  .pantry-row.soon .time-left { color: var(--light-fill); }
 }
 .pantry-body { display: grid; gap: 4px; min-width: 0; }
 .pantry-body .r-name { font-weight: var(--w-medium); line-height: 1.25; }
@@ -316,6 +319,18 @@ textarea.input { resize: vertical; line-height: 1.5; }
   padding-left: 12px; border-left: 4px solid var(--light-fill);
 }
 @media (prefers-color-scheme: dark) { .line-note { color: var(--light-fill); } }
+
+/* flexible and optional ingredient lines */
+.line-flags { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.check { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; cursor: pointer; font-size: var(--t-small); }
+.check input { width: 20px; height: 20px; accent-color: var(--brand); }
+.line-flex { display: grid; gap: 8px; padding: 12px 16px; border-left: 4px solid var(--brand); background: var(--surface); border-radius: var(--radius-sm); }
+.line-flex .hint { margin: 0; }
+.flex-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.flex-chip { display: inline-flex; align-items: center; padding-left: 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); font-size: var(--t-small); }
+.flex-chip .icon-btn { min-width: 36px; min-height: 36px; }
+.r-flex { display: block; color: var(--muted); font-size: var(--t-small); font-weight: normal; }
+.r-optional { display: inline-block; margin-left: 8px; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: var(--t-small); font-weight: normal; }
 
 .source-link {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
@@ -480,10 +495,20 @@ textarea.input { resize: vertical; line-height: 1.5; }
 .plan-col { scroll-snap-align: start; }
 .plan-col { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; align-content: start; min-width: 0; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .plan-col.today { border-color: var(--brand); box-shadow: inset 0 4px 0 var(--brand); padding-top: 12px; }
-.col-head { display: grid; gap: 2px; min-height: 48px; align-content: start; }
+.col-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px; min-height: 48px; }
+.col-name { display: grid; gap: 2px; min-width: 0; }
+/* to the right of the date: plan this day, and clear it */
+.col-actions { display: flex; align-items: center; gap: 2px; flex: none; }
+.col-plan {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0 8px; cursor: pointer;
+  border: 1px solid var(--brand); border-radius: 999px; background: var(--bg); color: var(--brand);
+  font: inherit; font-size: var(--t-small); font-weight: var(--w-medium);
+}
+.col-plan:hover { background: var(--brand); color: var(--bg); }
+.col-plan:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
 .col-day { font-weight: var(--w-bold); font-size: var(--t-title); line-height: 1.1; }
 .col-date { color: var(--ink); font-size: var(--t-body); font-weight: var(--w-medium); }
-.col-head .today-tag { justify-self: start; padding: 0 8px; }
+.col-name .today-tag { justify-self: start; padding: 0 8px; }
 .col-totals { display: grid; gap: 4px; font-size: var(--t-small); color: var(--muted); min-height: 44px; align-content: start; }
 .col-totals b { color: var(--ink); font-weight: var(--w-medium); }
 .col-totals .bar { margin-top: 0; }
@@ -584,6 +609,14 @@ textarea.input { resize: vertical; line-height: 1.5; }
 .today-meal.next { background: var(--surface); box-shadow: var(--shadow); }
 .today-when { display: grid; gap: 4px; align-content: start; justify-items: start; }
 .today-time { font-weight: var(--w-bold); color: var(--ink); line-height: 1.2; }
+.time-select {
+  appearance: none; -webkit-appearance: none; margin: 0; padding: 2px 20px 2px 0; border: 0; border-bottom: 1px dashed var(--muted);
+  border-radius: 0; background: transparent no-repeat right 2px center / 10px 6px; font: inherit; font-weight: var(--w-bold); color: var(--ink); cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");
+}
+.time-select:hover { border-bottom-color: var(--brand); }
+.time-select:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.time-select option { color: initial; font-weight: normal; }
 .today-slot { color: var(--muted); font-size: var(--t-small); }
 .today-tag { padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: var(--t-small); }
 .today-tag.next { border-color: var(--brand); color: var(--brand); font-weight: var(--w-medium); }
@@ -666,10 +699,45 @@ a.today-title:hover { text-decoration: underline; }
 
 /* clearing one day: a small bin in the column's corner, which becomes a red tick in the same place to confirm */
 .col-clear {
-  position: absolute; right: 0; top: 0; display: grid; place-items: center; width: 36px; height: 36px; padding: 0;
+  display: grid; place-items: center; width: 36px; height: 36px; padding: 0;
   border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer;
 }
 .col-clear:hover { color: var(--ink); }
 .col-clear:focus-visible { outline: 3px solid var(--brand); outline-offset: -2px; }
 .col-clear.confirm { background: var(--major-fill); color: #fff; box-shadow: 0 0 0 3px var(--major-tint); }
 .col-clear.confirm:hover { color: #fff; }
+
+/* a flexible ingredient on the recipe page: "Meat: Pork sausages ▾" */
+.food-choice { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; max-width: 100%; }
+.food-choice-label { font-weight: var(--w-medium); }
+.food-choice .time-select { max-width: 100%; text-overflow: ellipsis; }
+.receipt-date { justify-self: start; padding-left: 0; text-align: left; }
+
+/* a meal you have made, on Today */
+.today-made { justify-self: start; margin-top: 8px; }
+.today-undo { justify-self: start; padding-left: 0; }
+.today-meal.made { border-left-color: var(--line); background: var(--bg); box-shadow: none; }
+.today-meal.made .today-title { color: var(--muted); }
+.today-tag.made { display: inline-flex; align-items: center; gap: 4px; border-color: var(--brand); color: var(--brand); font-weight: var(--w-medium); }
+
+/* an optional ingredient's "Use it" box, and one you have left out */
+.r-optional .optional-use { min-height: 0; margin-left: 8px; }
+.r-optional .optional-use input { width: 16px; height: 16px; }
+.row.left-out .left-out-name { color: var(--muted); text-decoration: line-through; }
+
+/* a meal of plain foods, instead of a recipe */
+.foods-entry { justify-self: start; margin-bottom: 8px; }
+.foods-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.foods-line { display: grid; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.foods-name { font-weight: var(--w-medium); }
+.foods-totals { margin: 0; color: var(--muted); }
+.foods-totals b { color: var(--ink); }
+.today-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.borrow { border: 0; padding: 0; margin: 0; display: grid; gap: 0; }
+.borrow .hint { margin: 0 0 4px; }
+.today-remove { padding-left: 0; }
+
+/* eating out: type in its calories and protein */
+.out-numbers { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: var(--t-small); }
+.out-numbers label { display: inline-flex; align-items: center; gap: 4px; }
+.out-numbers .input { width: 88px; min-height: 40px; padding: 0 8px; }

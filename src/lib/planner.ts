@@ -1,6 +1,6 @@
 import type { Ingredient, MealPlanEntry, MealSlot, PantryItem, Recipe, Trip } from '../types'
 import { addDays, daysBetween } from './expiry'
-import { SLOT_ORDER, byDateThenSlot, cookSessions, mealKey, type PerServing } from './plan'
+import { SLOT_ORDER, byDateThenSlot, cookSessions, isFoodsMeal, mealKey, mealNutrition, type PerServing } from './plan'
 import type { KindId } from './recipeFilters'
 import { isStaple } from './shopping'
 import { tripBefore, upcomingTrips } from './trips'
@@ -247,7 +247,9 @@ export function planWeek(input: SuggestInput): PlanResult {
     if (e.status === 'skipped') continue
     const c = e.recipeId == null ? undefined : byRecipe.get(e.recipeId)
     if (c) dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + c.perServing.kcal * e.servingsPlanned)
-    else if (e.constraint === 'out' && e.status === 'planned') dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + EATING_OUT_KCAL)
+    else if (isFoodsMeal(e)) dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + mealNutrition(e, new Map(), byId).kcal)
+    // eating out: what you entered for it, or a typical meal out until you do
+    else if (e.constraint === 'out' && e.status === 'planned') dayKcal.set(e.date, (dayKcal.get(e.date) ?? 0) + (e.outKcal ?? EATING_OUT_KCAL))
   }
 
   const order = [...slots].sort((a, b) => SLOT_ORDER.indexOf(a) - SLOT_ORDER.indexOf(b))

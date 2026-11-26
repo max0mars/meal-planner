@@ -1,13 +1,18 @@
 // @vitest-environment jsdom
 import 'fake-indexeddb/auto'
-import { afterEach, beforeAll, describe, expect, it } from 'vitest'
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { cleanup, configure, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import { db } from './db'
 import { addDays } from './lib/expiry'
 import { todayIso } from './lib/pantry'
 import { seedIfEmpty } from './lib/seed'
+
+// The Ingredients page draws every food (about 400, each with a sensitivity slider), which takes a few seconds in the test
+// browser on a busy machine. Give these tests time to see it instead of failing on the default 1 s wait and 5 s limit.
+configure({ asyncUtilTimeout: 5000 })
+vi.setConfig({ testTimeout: 20000 })
 
 beforeAll(async () => {
   await seedIfEmpty()

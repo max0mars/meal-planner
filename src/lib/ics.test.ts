@@ -65,27 +65,20 @@ describe('writing an .ics file', () => {
     expect(eat.description).toBe('https://example.com/chicken')
   })
 
-  it('adds a cooking block ending when you eat, for a meal cooked fresh', () => {
+  it('has only an event for eating a meal, with no cooking block', () => {
     const events = parse(buildCalendar(input({ entries: [meal('2026-11-25', 'dinner', { recipeId: 1 })] })))
-    const cook = events.find((e) => e.uid.startsWith('cook-'))!
-    expect(cook.summary).toBe('Cook: Chicken and rice')
-    expect(cook.start.getTime()).toBe(new Date(2026, 10, 25, 17, 45).getTime()) // 45 minute recipe, ready at 18:30
-    expect(cook.end.getTime()).toBe(new Date(2026, 10, 25, 18, 30).getTime())
-    expect(cook.description).toContain('Makes 1 serving')
+    expect(events.map((e) => e.uid)).toEqual(['eat-2026-11-25-dinner@meal-planner'])
   })
 
-  it('uses the eat and cook times you set on a meal', () => {
-    const events = parse(buildCalendar(input({ entries: [meal('2026-11-25', 'dinner', { recipeId: 1, eatAt: '20:00', cookAt: '19:00' })] })))
+  it('uses the eat time you set on a meal', () => {
+    const events = parse(buildCalendar(input({ entries: [meal('2026-11-25', 'dinner', { recipeId: 1, eatAt: '20:00' })] })))
     expect(events.find((e) => e.uid.startsWith('eat-'))!.start.getTime()).toBe(new Date(2026, 10, 25, 20, 0).getTime())
-    expect(events.find((e) => e.uid.startsWith('cook-'))!.start.getTime()).toBe(new Date(2026, 10, 25, 19, 0).getTime())
   })
 
-  it('leftovers are eaten but not cooked again, and the cook makes enough for both', () => {
+  it('says when a meal is leftovers', () => {
     const entries = [meal('2026-11-24', 'dinner', { recipeId: 1 }), meal('2026-11-25', 'lunch', { recipeId: 1 })]
     const events = parse(buildCalendar(input({ entries })))
-    expect(events.filter((e) => e.uid.startsWith('cook-'))).toHaveLength(1)
     expect(events.find((e) => e.uid === 'eat-2026-11-25-lunch@meal-planner')!.summary).toBe('Lunch: Chicken and rice (leftovers)')
-    expect(events.find((e) => e.uid.startsWith('cook-'))!.description).toContain('Makes 2 servings')
   })
 
   it('eating out is an event with no cooking, and a meal with nothing planned yet is left out', () => {
@@ -106,18 +99,19 @@ describe('writing an .ics file', () => {
 
   it('keeps special characters in a title intact when read back', () => {
     const events = parse(buildCalendar(input({ entries: [meal('2026-11-25', 'dinner', { recipeId: 2 })] })))
-    expect(events.map((e) => e.summary).sort()).toEqual(['Cook: Beef stew, with dumplings; slow', 'Dinner: Beef stew, with dumplings; slow'])
+    expect(events.map((e) => e.summary)).toEqual(['Dinner: Beef stew, with dumplings; slow'])
   })
 
   it('only includes meals and trips from the start date on, and skips meals already cooked or skipped', () => {
     const entries = [
       meal('2026-11-18', 'dinner', { recipeId: 1 }),
-      meal('2026-11-25', 'lunch', { recipeId: 1, status: 'cooked' }),
-      meal('2026-11-25', 'dinner', { recipeId: 1, status: 'skipped' }),
+      // a different recipe: a made meal of recipe 1 would make the dinner after it leftovers
+      meal('2026-11-25', 'lunch', { recipeId: 2, status: 'cooked' }),
+      meal('2026-11-25', 'dinner', { recipeId: 2, status: 'skipped' }),
       meal('2026-11-26', 'dinner', { recipeId: 1 }),
     ]
     const events = calendarEvents(input({ entries, trips: [trip('2026-11-10', 'start', '09:00'), trip('2026-11-22', 'start', '09:00')] }))
-    expect(events.map((e) => e.uid).sort()).toEqual(['cook-2026-11-26-dinner', 'eat-2026-11-26-dinner', 'shop-2026-11-22-start'])
+    expect(events.map((e) => e.uid).sort()).toEqual(['eat-2026-11-26-dinner', 'shop-2026-11-22-start'])
   })
 
   it('gives every event the same id each time, so importing twice updates instead of duplicating', () => {
@@ -128,8 +122,4 @@ describe('writing an .ics file', () => {
     expect(new Set(a).size).toBe(a.length)
   })
 
-  it('does not start cooking after you eat (a recipe cannot be cooked in negative time)', () => {
-    const events = parse(buildCalendar(input({ entries: [meal('2026-11-25', 'dinner', { recipeId: 1, eatAt: '18:30', cookAt: '18:30' })] })))
-    expect(events.some((e) => e.uid.startsWith('cook-'))).toBe(false)
-  })
 })

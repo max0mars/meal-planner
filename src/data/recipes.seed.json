@@ -12034,5 +12034,63 @@
    "Pour in the whisked eggs and stir gently until just set. Stir in the cheese.",
    "Toast the bread and serve."
   ]
+ },
+ {
+  "seedId": "basic:meat-sauce-pasta",
+  "title": "Meat sauce pasta",
+  "category": "Pasta",
+  "cuisine": "Italian",
+  "description": "Pasta in a tomato sauce with cooked meat, made with any meat, pasta and pasta sauce you have.",
+  "source": "",
+  "servings": 1,
+  "servingsEstimated": false,
+  "estMinutes": 25,
+  "timeEstimated": false,
+  "ingredients": [
+   {
+    "name": "Pork sausages",
+    "qty": 120,
+    "unit": "g",
+    "label": "Meat",
+    "anyCategory": "meat"
+   },
+   {
+    "name": "Wheat pasta",
+    "qty": 227,
+    "unit": "g",
+    "label": "Pasta",
+    "anyOf": [
+     "Whole wheat pasta",
+     "Gluten-free pasta"
+    ]
+   },
+   {
+    "name": "Tomato sauce",
+    "qty": 340,
+    "unit": "g",
+    "label": "Pasta sauce",
+    "anyOf": [
+     "Canned tomatoes"
+    ]
+   },
+   {
+    "name": "Onion",
+    "qty": 1,
+    "unit": "piece",
+    "optional": true
+   },
+   {
+    "name": "Garlic",
+    "qty": 2,
+    "unit": "piece",
+    "optional": true
+   }
+  ],
+  "steps": [
+   "Boil the pasta in salted water.",
+   "Slice the meat (or break up ground meat) and cook it in a pan with the chopped onion and garlic, if using, until the meat is cooked through.",
+   "Pour in the sauce and simmer for 10 minutes.",
+   "Drain the pasta and mix in the sauce."
+  ]
  }
 ]

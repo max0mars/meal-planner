@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { PantryItem } from '../types'
 import {
+  amountLabel,
   daysLeft,
   defaultLocation,
   defaultUnit,
@@ -9,7 +10,7 @@ import {
   groupByUrgency,
   locationsFor,
   searchIngredients,
-  shelfFraction,
+  timeLeftFraction,
 } from './pantry'
 
 const TODAY = '2026-11-19'
@@ -45,11 +46,15 @@ describe('expiry status and labels', () => {
     expect(expiryLabel(-4)).toEqual({ value: '4', caption: 'days past' })
   })
 
-  it('computes remaining shelf life, clamped to 0..1', () => {
-    expect(shelfFraction('2026-11-15', '2026-11-23', '2026-11-19')).toBeCloseTo(0.5)
-    expect(shelfFraction('2026-11-15', '2026-11-17', '2026-11-19')).toBe(0)
-    expect(shelfFraction('2026-11-19', '2026-11-19', '2026-11-19')).toBe(0)
-    expect(shelfFraction('2026-11-25', '2026-12-05', '2026-11-19')).toBe(1)
+  it('fills the time-left bar by days left out of 21, full beyond that and empty once due', () => {
+    expect(timeLeftFraction('2026-12-10', '2026-11-19')).toBe(1) // exactly 21 days
+    expect(timeLeftFraction('2027-11-19', '2026-11-19')).toBe(1) // a year: stays full
+    expect(timeLeftFraction('2026-11-26', '2026-11-19')).toBeCloseTo(7 / 21)
+    expect(timeLeftFraction('2026-11-20', '2026-11-19')).toBeCloseTo(1 / 21)
+    expect(timeLeftFraction('2026-11-19', '2026-11-19')).toBe(0) // the use-by day
+    expect(timeLeftFraction('2026-11-10', '2026-11-19')).toBe(0) // past it
+    // only the days left count, not when it was bought: chicken with 3 days left reads the same whenever it was bought
+    expect(timeLeftFraction('2026-11-22', '2026-11-19')).toBeCloseTo(3 / 21)
   })
 })
 
@@ -120,5 +125,16 @@ describe('searchIngredients', () => {
     expect(searchIngredients(foods, '  ')).toEqual([])
     expect(searchIngredients(foods, 'zzz')).toEqual([])
     expect(searchIngredients(foods, 'milk', 2)).toHaveLength(2)
+  })
+})
+
+describe('how much you have, as the big number on a pantry item', () => {
+  it('reads weights, volumes and pieces plainly, and large amounts in kg and L', () => {
+    expect(amountLabel(227, 'g')).toEqual({ value: '227', caption: 'g' })
+    expect(amountLabel(1500, 'g')).toEqual({ value: '1.5', caption: 'kg' })
+    expect(amountLabel(2000, 'ml')).toEqual({ value: '2', caption: 'L' })
+    expect(amountLabel(2, 'piece')).toEqual({ value: '2', caption: 'pieces' })
+    expect(amountLabel(1, 'piece')).toEqual({ value: '1', caption: 'piece' })
+    expect(amountLabel(0.333, 'cup')).toEqual({ value: '0.33', caption: 'cups' })
   })
 })

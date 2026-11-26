@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_SETTINGS } from '../db'
-import { cookStart, cookTime, defaultTripTime, eatTime, fromMinutes, passedSlots, toMinutes } from './times'
+import { defaultTripTime, eatTime, fromMinutes, passedSlots, toMinutes } from './times'
 import { tripPosition } from './trips'
 
 const TIMES = DEFAULT_SETTINGS.mealTimes! // breakfast 08:00, lunch 12:30, dinner 18:30, snack 15:30
@@ -16,19 +16,6 @@ describe('times', () => {
   it('eats at the time you set on the meal, otherwise your usual time', () => {
     expect(eatTime({ slot: 'dinner' }, TIMES)).toBe('18:30')
     expect(eatTime({ slot: 'dinner', eatAt: '20:00' }, TIMES)).toBe('20:00')
-  })
-
-  it('starts cooking early enough, on a 5 minute mark, and never late', () => {
-    expect(cookStart('18:30', 45)).toBe('17:45')
-    expect(cookStart('18:30', 47)).toBe('17:40') // 17:43 rounds earlier, not later
-    expect(cookStart('18:30', 120)).toBe('16:30')
-    expect(cookStart('00:20', 60)).toBe('00:00') // cannot start before midnight
-  })
-
-  it('uses a cook time you set over the worked-out one', () => {
-    expect(cookTime({ slot: 'dinner' }, 45, TIMES)).toBe('17:45')
-    expect(cookTime({ slot: 'dinner', eatAt: '20:00' }, 45, TIMES)).toBe('19:15') // follows a changed eat time
-    expect(cookTime({ slot: 'dinner', cookAt: '16:00' }, 45, TIMES)).toBe('16:00')
   })
 
   it('puts a grocery trip 90 minutes before the first meal, midway between meals, and 90 minutes after the last', () => {

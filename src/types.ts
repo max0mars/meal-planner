@@ -46,9 +46,22 @@ export interface PantryItem {
 }
 
 export interface RecipeIngredient {
+  /** The food. On a flexible line, the default choice. */
   ingredientId: number
   qty: number
   unit: Unit
+  /** The recipe works without it. Left out when it is not safe for you (see src/lib/flexible.ts). */
+  optional?: boolean
+  /** Flexible line: these foods can be used instead of the default. */
+  anyOf?: number[]
+  /** Flexible line: any food in this category (an id from src/data/categories.ts, such as "meat") can be used. */
+  anyCategory?: string
+  /** What a flexible line is called, such as "Meat" or "Pasta sauce". */
+  label?: string
+  /** On a flexible line: you picked `ingredientId` yourself, so it is used as it is rather than chosen for you. */
+  picked?: boolean
+  /** On an optional line: you make it without this, so it is left out of calories, shopping and the pantry check. */
+  leftOut?: boolean
 }
 
 export interface Recipe {
@@ -77,6 +90,11 @@ export interface Recipe {
   cuisine?: string
   /** Your verdict. A disliked recipe is never suggested by the planner. */
   rating?: 'like' | 'dislike'
+  /**
+   * Only on data from an earlier version, which saved a meal of plain foods as a hidden recipe. Those are moved onto their
+   * meals (`MealPlanEntry.foods`) when the app starts, and the recipe deleted.
+   */
+  adhoc?: boolean
 }
 
 export type MealSlot = 'breakfast' | 'lunch' | 'dinner' | 'snack'
@@ -88,18 +106,40 @@ export interface MealPlanEntry {
   id?: number
   date: string
   slot: MealSlot
-  /** Missing while the slot is a constraint that has not been filled yet, or when you are eating out. */
+  /** Missing while the slot is a constraint that has not been filled yet, when you are eating out, or for a meal of plain foods. */
   recipeId?: number
+  /**
+   * A meal of plain foods, with no recipe ("3 eggs, a slice of toast and an apple"): each food and how much of it, for
+   * this one meal. Set instead of `recipeId`.
+   */
+  foods?: RecipeIngredient[]
+  /** Eating out: the calories and protein you say it had, when you know or can guess. */
+  outKcal?: number
+  outProtein?: number
   servingsPlanned: number
   status: 'planned' | 'cooked' | 'skipped'
   /** What you asked for. Kept after the planner fills the slot, so planning again keeps it. */
   constraint?: SlotConstraint
   /** When you eat this meal (HH:MM), if not the usual time for the slot. */
   eatAt?: string
-  /** When you start cooking (HH:MM), if not worked out from the recipe's time. */
-  cookAt?: string
   /** Set when the meal this was eaten as leftovers from was deleted, so it now needs cooking itself. Cleared when you change or dismiss it. */
   cookDeleted?: boolean
+  /** What making this meal took from the pantry, so Undo can put it back. */
+  usedPantry?: UsedPantry[]
+  /**
+   * Foods (ingredient ids) you are borrowing for this meal, from a shared fridge: they count towards its calories, but
+   * are never taken from your pantry or put on your shopping list. Only ever set by you.
+   */
+  borrowed?: number[]
+}
+
+/** One pantry item that making a meal took food from. */
+export interface UsedPantry {
+  id: number
+  /** How much was taken, in the item's own unit. */
+  took: number
+  /** The item as it was before, so it can be put back if it was used up and removed. */
+  before: PantryItem
 }
 
 /** A grocery trip, placed before, between or after the day's meals. */

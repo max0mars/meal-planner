@@ -141,8 +141,9 @@ export default function ScalePanel({
                 Your pantry covers about {formatServings(Math.floor(capacity.factor * servings * 2) / 2)} servings, running out of{' '}
                 {capacity.limiting.name.toLowerCase()} first.{' '}
                 {capacity.factor * servings >= 0.5 && (
-                  <button className="btn-quiet" onClick={() => onTarget(Math.floor(capacity.factor * servings * 2) / 2)}>
-                    Cook that much
+                  <button className="btn-primary" onClick={() => onTarget(Math.floor(capacity.factor * servings * 2) / 2)}>
+                    Use my pantry: cook {formatServings(Math.floor(capacity.factor * servings * 2) / 2)}{' '}
+                    {Math.floor(capacity.factor * servings * 2) / 2 === 1 ? 'serving' : 'servings'}
                   </button>
                 )}
               </p>
@@ -150,12 +151,12 @@ export default function ScalePanel({
             {capacity?.kind === 'missing' && (
               <p className="hint">
                 Not in your pantry: {capacity.foods.map((f) => f.name.toLowerCase()).join(', ')}. Seasonings and water are assumed to be in the
-                cupboard.
+                cupboard, and optional foods can be left out.
               </p>
             )}
 
             <div className="field">
-              <label htmlFor={`${amountId}-food`}>Which ingredient?</label>
+              <label htmlFor={`${amountId}-food`}>Or scale by one ingredient</label>
               <select
                 id={`${amountId}-food`}
                 className="input"
@@ -194,7 +195,7 @@ export default function ScalePanel({
                   </button>
                   {inPantry && pickedGrams ? (
                     <button className="btn-outline" onClick={() => onTarget((inPantry.grams / pickedGrams) * servings)}>
-                      Use my pantry ({formatAmount(inPantry.grams, 'g')})
+                      Use all my {picked.food.name.toLowerCase()} ({formatAmount(inPantry.grams, 'g')})
                     </button>
                   ) : null}
                 </div>

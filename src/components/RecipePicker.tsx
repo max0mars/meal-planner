@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ThumbsDown, ThumbsUp, X } from 'lucide-react'
+import { Apple, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { db } from '../db'
 import { todayIso } from '../lib/pantry'
 import { pantryMatch, pantryScore, type PantryMatch } from '../lib/pantryMatch'
@@ -9,6 +9,7 @@ import { suitsSlot, type Candidate } from '../lib/planner'
 import { useRecipeFilters } from '../lib/useRecipeFilters'
 import type { RecipeRow } from '../lib/useRecipeRows'
 import RecipeFilterBar from './RecipeFilterBar'
+import { useSheetFocus } from './useSheetFocus'
 import type { Ingredient, MealSlot } from '../types'
 
 /**
@@ -24,6 +25,7 @@ export default function RecipePicker({
   date,
   slot,
   onPick,
+  onFoods,
   onClose,
 }: {
   title: string
@@ -37,6 +39,8 @@ export default function RecipePicker({
   /** The meal, so a dessert is not suggested for dinner. */
   slot?: MealSlot
   onPick: (row: RecipeRow) => void
+  /** Choose some plain foods instead of a recipe ("3 eggs and an apple"). Omit to hide the option. */
+  onFoods?: () => void
   onClose: () => void
 }) {
   const uid = useId()
@@ -44,16 +48,8 @@ export default function RecipePicker({
   const { shown, filtering } = filters
   const searchRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    const before = document.activeElement as HTMLElement | null
-    const overflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    searchRef.current?.focus()
-    return () => {
-      document.body.style.overflow = overflow
-      before?.focus?.()
-    }
-  }, [])
+  useSheetFocus()
+  useEffect(() => searchRef.current?.focus(), [])
 
   // Meals the pantry can mostly make. Only offered while no search or filter is on, and never a recipe you disliked.
   const pantry = useLiveQuery(() => db.pantryItems.toArray(), [])
@@ -113,6 +109,11 @@ export default function RecipePicker({
             <X size={24} aria-hidden />
           </button>
         </div>
+        {onFoods && (
+          <button type="button" className="btn-outline foods-entry" onClick={onFoods}>
+            <Apple size={20} aria-hidden /> Just some foods, no recipe
+          </button>
+        )}
         <RecipeFilterBar filters={filters} searchRef={searchRef} />
         {suggestions.length > 0 && (
           <>

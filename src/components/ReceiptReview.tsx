@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { db } from '../db'
 import { defaultExpiry } from '../lib/expiry'
-import { LOCATION_LABEL, defaultLocation, defaultUnit, locationsFor, searchIngredients, todayIso } from '../lib/pantry'
+import { LOCATION_LABEL, defaultLocation, defaultUnit, formatDate, locationsFor, searchIngredients, todayIso } from '../lib/pantry'
 import type { ParsedReceipt } from '../lib/receipt'
 import { UNITS, toGrams } from '../lib/units'
 import type { Ingredient, StorageLocation, Unit } from '../types'
@@ -71,7 +71,8 @@ export default function ReceiptReview({
   const uid = useId()
   useSheetFocus()
   const [rows, setRows] = useState<Row[]>(() => buildRows(parsed))
-  const [purchasedOn, setPurchasedOn] = useState(parsed.date ?? todayIso())
+  // most receipts are scanned the day of the shop, so it starts as today; a date read from the receipt is offered, not assumed
+  const [purchasedOn, setPurchasedOn] = useState(todayIso())
   const [search, setSearch] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -119,6 +120,18 @@ export default function ReceiptReview({
             <X size={24} aria-hidden />
           </button>
         </div>
+
+        <div className="field">
+          <label htmlFor={`${uid}-date`}>Bought on</label>
+          <input id={`${uid}-date`} className="input" type="date" value={purchasedOn} max={todayIso()} onChange={(e) => setPurchasedOn(e.target.value)} />
+          {purchasedOn === todayIso() && <p className="hint">Today. Change it if you shopped on another day.</p>}
+          {parsed.date && parsed.date !== purchasedOn && (
+            <button type="button" className="btn-quiet receipt-date" onClick={() => setPurchasedOn(parsed.date!)}>
+              The receipt says {formatDate(parsed.date)}. Use that date
+            </button>
+          )}
+        </div>
+
         <p className="hint">
           Reading a receipt is not perfect. Check each line, fix anything that is wrong, and untick what you do not want. Nothing is added until you tap
           the button at the bottom.
@@ -129,12 +142,6 @@ export default function ReceiptReview({
             No items could be read. Try again with the receipt flat, in good light, and the whole width in the photo.
           </p>
         )}
-
-        <div className="field">
-          <label htmlFor={`${uid}-date`}>Bought on</label>
-          <input id={`${uid}-date`} className="input" type="date" value={purchasedOn} max={todayIso()} onChange={(e) => setPurchasedOn(e.target.value)} />
-          {parsed.date && <p className="hint">Read from the receipt. Change it if it is wrong.</p>}
-        </div>
 
         <ul className="receipt-list">
           {rows.map((r) => {
