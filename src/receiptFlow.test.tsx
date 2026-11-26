@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -8,6 +8,10 @@ import { DEFAULT_SETTINGS, db } from './db'
 import { addDays } from './lib/expiry'
 import { formatDate, todayIso } from './lib/pantry'
 import { seedIfEmpty } from './lib/seed'
+import { API_URL } from './api/client'
+
+// The test server's fetch, kept before the stub below replaces fetch.
+const serverFetch = globalThis.fetch
 
 // jsdom cannot read an image, so only the reading step is replaced. Parsing, the review screen and saving are the real code.
 const engine = vi.hoisted(() => ({ recognizeReceipt: vi.fn() }))
@@ -33,7 +37,7 @@ const RECEIPT = [
   'VISA CONTACTLESS  13.29',
 ].join('\n')
 
-const fetchMock = vi.fn(async () => {
+const fetchMock = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => {
   throw new Error('the receipt flow must not use the network')
 })
 
@@ -43,7 +47,8 @@ beforeAll(async () => {
 beforeEach(() => {
   engine.recognizeReceipt.mockReset().mockResolvedValue(RECEIPT)
   fetchMock.mockClear()
-  vi.stubGlobal('fetch', fetchMock)
+  // The planner's own requests go to the test server; anything else must still not touch the network.
+  vi.stubGlobal('fetch', (input: RequestInfo | URL, init?: RequestInit) => (String(input).startsWith(API_URL) ? serverFetch(input, init) : fetchMock(input, init)))
 })
 afterEach(async () => {
   cleanup()

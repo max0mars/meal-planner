@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { db, withDefaults, type ResolvedSettings } from '../db'

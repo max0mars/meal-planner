@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { readBackTo } from '../lib/backTo'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { ArrowLeft, ExternalLink, Pencil, Plus } from 'lucide-react'
 import RatingButtons from '../components/RatingButtons'
 import SafetyPanel from '../components/SafetyPanel'

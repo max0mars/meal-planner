@@ -1,7 +1,7 @@
-import 'fake-indexeddb/auto'
+import '../test/fakeServer'
+import { freshDatabase } from '../test/resetDb'
 import { describe, expect, it } from 'vitest'
 import seed from '../data/ingredients.seed.json'
-import { MealPlannerDB } from '../db'
 import type { Ingredient, Recipe, Sensitivity } from '../types'
 import { parseIngredientBlock, parseIngredientLine } from './parseIngredients'
 import { recipeNutrition } from './nutrition'
@@ -152,7 +152,7 @@ describe('parseIngredientLine', () => {
 
 describe('seed backfill', () => {
   it('fills in unit conversions on ingredients from an older install without touching labels', async () => {
-    const database = new MealPlannerDB('backfill-test')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     const eggs = (await database.ingredients.where('name').equals('Eggs').first())!
     expect(eggs.gramsPerPiece).toBe(50)

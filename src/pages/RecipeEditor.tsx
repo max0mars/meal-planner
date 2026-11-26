@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import RecipeForm from '../components/RecipeForm'
 import { db } from '../db'
 import { useKitchenData } from '../lib/useKitchenData'

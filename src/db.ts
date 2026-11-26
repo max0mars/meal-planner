@@ -1,16 +1,6 @@
-import Dexie, { type EntityTable } from 'dexie'
 import { DEFAULT_REGIONS, normalizeRegions } from './lib/cuisine'
-import type {
-  Ingredient,
-  Leftover,
-  MealLog,
-  MealPlanEntry,
-  PantryItem,
-  Recipe,
-  Settings,
-  TagSensitivity,
-  Trip,
-} from './types'
+import { createTable, type Table } from './api/table'
+import type { Ingredient, Leftover, MealLog, MealPlanEntry, PantryItem, Recipe, Settings, TagSensitivity, Trip } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 1,
@@ -45,41 +35,39 @@ export function withDefaults(stored?: Settings | null): ResolvedSettings {
   } as ResolvedSettings
 }
 
-export class MealPlannerDB extends Dexie {
-  ingredients!: EntityTable<Ingredient, 'id'>
-  pantryItems!: EntityTable<PantryItem, 'id'>
-  recipes!: EntityTable<Recipe, 'id'>
-  mealPlan!: EntityTable<MealPlanEntry, 'id'>
-  leftovers!: EntityTable<Leftover, 'id'>
-  mealLogs!: EntityTable<MealLog, 'id'>
-  settings!: EntityTable<Settings, 'id'>
-  trips!: EntityTable<Trip, 'id'>
-  tagSensitivities!: EntityTable<TagSensitivity, 'tag'>
+let transactionQueue: Promise<unknown> = Promise.resolve()
 
-  constructor(name = 'meal-planner') {
-    super(name)
-    this.version(1).stores({
-      ingredients: '++id, name, *aliases, category, sensitivity',
-      pantryItems: '++id, ingredientId, expiresOn',
-      recipes: '++id, title',
-      mealPlan: '++id, date, recipeId',
-      leftovers: '++id, recipeId, expiresOn',
-      mealLogs: '++id, date',
-      settings: 'id',
-    })
-    // v2: curated ingredient list + allergen/intolerance tags. The ingredient table is
-    // cleared so it reseeds from the new curated list (no recipes/pantry existed yet).
-    this.version(2)
-      .stores({
-        ingredients: '++id, name, *aliases, category, sensitivity, *tags',
-        tagSensitivities: 'tag',
-      })
-      .upgrade((tx) => tx.table('ingredients').clear())
-    // v3: grocery trips, and a barcode on foods you add by scanning. No data needs changing.
-    this.version(3).stores({
-      ingredients: '++id, name, *aliases, category, sensitivity, *tags, barcode',
-      trips: '++id, date',
-    })
+/** The planner's data. Same tables and methods as before, now kept on the Worker (see src/api/). */
+export class MealPlannerDB {
+  /** The schema version the backup file records. Kept at the last Dexie version so older backups still restore. */
+  readonly verno = 3
+
+  readonly ingredients: Table<Ingredient> = createTable<Ingredient>('ingredients')
+  readonly pantryItems: Table<PantryItem> = createTable<PantryItem>('pantryItems')
+  readonly recipes: Table<Recipe> = createTable<Recipe>('recipes')
+  readonly mealPlan: Table<MealPlanEntry> = createTable<MealPlanEntry>('mealPlan')
+  readonly leftovers: Table<Leftover> = createTable<Leftover>('leftovers')
+  readonly mealLogs: Table<MealLog> = createTable<MealLog>('mealLogs')
+  readonly settings: Table<Settings> = createTable<Settings>('settings')
+  readonly trips: Table<Trip> = createTable<Trip>('trips')
+  readonly tagSensitivities: Table<TagSensitivity> = createTable<TagSensitivity>('tagSensitivities')
+
+  table(name: string): Table<Record<string, unknown>> {
+    const t = (this as unknown as Record<string, unknown>)[name]
+    if (!t || typeof t !== 'object') throw new Error(`No table called "${name}"`)
+    return t as Table<Record<string, unknown>>
+  }
+
+  /**
+   * Runs `work`. Dexie's version rolled everything back if `work` failed; this one does not yet. Each call inside
+   * `work` is its own request to the server. Making these atomic is part of moving the planner logic onto the Worker.
+   */
+  transaction<T>(_mode: string, ...rest: [...unknown[], () => Promise<T>]): Promise<T> {
+    const work = rest[rest.length - 1] as () => Promise<T>
+    // Transactions run one after another, as Dexie's did, so two quick taps cannot read the same value and both write.
+    const run = transactionQueue.then(() => work())
+    transactionQueue = run.catch(() => undefined)
+    return run
   }
 }
 

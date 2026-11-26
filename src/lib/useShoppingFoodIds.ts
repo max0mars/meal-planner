@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { db } from '../db'
 import { todayIso } from './pantry'
 import { cookSessions } from './plan'

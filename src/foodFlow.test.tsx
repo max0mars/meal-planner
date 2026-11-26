@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { cleanup, configure, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'

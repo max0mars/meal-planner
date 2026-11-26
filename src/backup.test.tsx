@@ -1,25 +1,25 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
+import { freshDatabase } from './test/resetDb'
 import { afterEach, describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import viteConfig from '../vite.config.ts?raw'
 import mainSource from './main.tsx?raw'
-import { DEFAULT_SETTINGS, MealPlannerDB, db } from './db'
+import { DEFAULT_SETTINGS, db } from './db'
 import { backupFileName, BackupError, exportBackup, parseBackup, restoreBackup } from './lib/backup'
 import { seedIfEmpty } from './lib/seed'
 import { seedBaselineRecipes } from './lib/seedRecipes'
 
-let n = 0
 async function populated() {
-  const database = new MealPlannerDB(`backup-${n++}`)
+  const database = await freshDatabase()
   await seedIfEmpty(database)
   await seedBaselineRecipes(database)
   const milk = (await database.ingredients.where('name').equals('Whole milk').first())!
-  await database.pantryItems.add({ ingredientId: milk.id!, quantity: 1000, unit: 'ml', location: 'fridge', purchasedOn: '2026-01-01', expiresOn: '2026-01-08' } as never)
+  await database.pantryItems.add({ ingredientId: milk.id!, qty: 1000, unit: 'ml', location: 'fridge', purchasedOn: '2026-01-01', expiresOn: '2026-01-08' } as never)
   await database.trips.add({ date: '2026-01-05', after: 'start', time: '09:00', note: 'big shop' })
-  await database.tagSensitivities.put({ tag: 'gluten', level: 'major' } as never)
+  await database.tagSensitivities.put({ tag: 'gluten', sensitivity: 'major' })
   return database
 }
 
@@ -29,21 +29,24 @@ describe('backup and restore', () => {
   it('a restored backup is identical to what was saved, in every table', async () => {
     const source = await populated()
     const backup = await exportBackup(source)
-    const target = new MealPlannerDB(`backup-${n++}`)
-    await restoreBackup(parseBackup(JSON.stringify(backup)), target)
-    for (const t of ['ingredients', 'pantryItems', 'recipes', 'trips', 'tagSensitivities', 'settings']) {
-      expect(await target.table(t).toArray(), t).toEqual(await source.table(t).toArray())
+    const saved = Object.fromEntries(
+      await Promise.all(['ingredients', 'pantryItems', 'recipes', 'trips', 'tagSensitivities', 'settings'].map(async (t) => [t, await source.table(t).toArray()] as const)),
+    )
+    // Empty the database, then restore into it.
+    await freshDatabase()
+    await restoreBackup(parseBackup(JSON.stringify(backup)))
+    for (const t of Object.keys(saved)) {
+      expect(await source.table(t).toArray(), t).toEqual(saved[t])
     }
   })
 
   it('restoring replaces what was there', async () => {
     const source = await populated()
     const backup = await exportBackup(source)
-    const target = new MealPlannerDB(`backup-${n++}`)
-    await seedIfEmpty(target)
-    await target.trips.add({ date: '2030-01-01', after: 'start', time: '10:00' })
-    await restoreBackup(backup, target)
-    expect((await target.trips.toArray()).map((t) => t.date)).toEqual(['2026-01-05'])
+    await seedIfEmpty(source)
+    await source.trips.add({ date: '2030-01-01', after: 'start', time: '10:00' })
+    await restoreBackup(backup)
+    expect((await source.trips.toArray()).map((t) => t.date)).toEqual(['2026-01-05'])
   })
 
   it('rejects files that are not backups, and changes nothing', async () => {
@@ -62,7 +65,7 @@ describe('backup and restore', () => {
     const before = await target.recipes.count()
     const bad = await exportBackup(target)
     bad.tables.pantryItems = [{ id: 1 }, { id: 1 }] // a duplicate key makes bulkAdd fail midway
-    await expect(restoreBackup(bad, target)).rejects.toBeTruthy()
+    await expect(restoreBackup(bad)).rejects.toBeTruthy()
     expect(await target.recipes.count()).toBe(before)
     expect(await target.trips.count()).toBe(1)
   })

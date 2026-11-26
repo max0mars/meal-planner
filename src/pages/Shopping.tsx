@@ -1,6 +1,6 @@
 import { useId, useMemo, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Check, ChevronDown } from 'lucide-react'
 import { db } from '../db'
 import { formatDate, todayIso } from '../lib/pantry'

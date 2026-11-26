@@ -1,3 +1,5 @@
+import { request } from '../api/client'
+import { invalidateAll } from '../api/table'
 import { db, type MealPlannerDB } from '../db'
 
 /** Every table, in an order where a failed restore leaves nothing half-written (it all happens in one transaction). */
@@ -40,16 +42,13 @@ export function parseBackup(text: string): Backup {
   return b as Backup
 }
 
-/** Replaces everything with the backup, all or nothing. Returns what was restored. */
-export async function restoreBackup(backup: Backup, database: MealPlannerDB = db): Promise<{ recipes: number; pantryItems: number }> {
-  const tables = TABLES.map((t) => database.table(t))
-  await database.transaction('rw', tables, async () => {
-    for (const t of tables) await t.clear()
-    for (const name of TABLES) {
-      const rows = backup.tables[name]
-      if (rows.length > 0) await database.table(name).bulkAdd(rows)
-    }
-  })
+/**
+ * Replaces everything with the backup, all or nothing: the Worker writes the whole backup in one batch, so a refused
+ * row changes nothing. Returns what was restored.
+ */
+export async function restoreBackup(backup: Backup): Promise<{ recipes: number; pantryItems: number }> {
+  await request('POST', '/api/restore', { tables: backup.tables })
+  invalidateAll()
   return { recipes: backup.tables.recipes.length, pantryItems: backup.tables.pantryItems.length }
 }
 

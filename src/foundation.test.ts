@@ -1,7 +1,6 @@
-import 'fake-indexeddb/auto'
-import Dexie from 'dexie'
-import { describe, expect, it } from 'vitest'
-import { DEFAULT_SETTINGS, MealPlannerDB, withDefaults } from './db'
+import './test/fakeServer'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { DEFAULT_SETTINGS, db, withDefaults } from './db'
 import { cookSessions, dayTotals, mealNutrition } from './lib/plan'
 import type { MealPlanEntry } from './types'
 
@@ -27,8 +26,12 @@ describe('settings with newer fields', () => {
 })
 
 describe('database version 3', () => {
+  beforeEach(async () => {
+    await db.trips.clear()
+    await db.ingredients.clear()
+  })
+
   it('stores grocery trips and finds them by day', async () => {
-    const db = new MealPlannerDB('foundation-trips')
     await db.trips.bulkAdd([
       { date: '2026-11-23', after: 'start', time: '11:00' },
       { date: '2026-11-23', after: 'dinner', time: '20:00', note: 'top up milk' },
@@ -39,7 +42,6 @@ describe('database version 3', () => {
   })
 
   it('finds a food by its barcode', async () => {
-    const db = new MealPlannerDB('foundation-barcode')
     await db.ingredients.add({
       name: 'Crunchy Oat Granola', aliases: [], category: 'grains', tags: ['oats'], shelfLifeDays: { pantry: 300 },
       kcalPer100g: 450, proteinPer100g: 9, sensitivity: 'safe', custom: true, barcode: '5000112637922',
@@ -47,34 +49,6 @@ describe('database version 3', () => {
     const found = await db.ingredients.where('barcode').equals('5000112637922').first()
     expect(found?.name).toBe('Crunchy Oat Granola')
     expect(await db.ingredients.where('barcode').equals('0000000000000').first()).toBeUndefined()
-  })
-
-  it('upgrades an existing database without losing anything in it', async () => {
-    // a database exactly as version 2 left it, with your data in it
-    const old = new Dexie('foundation-upgrade')
-    old.version(2).stores({
-      ingredients: '++id, name, *aliases, category, sensitivity, *tags',
-      pantryItems: '++id, ingredientId, expiresOn',
-      recipes: '++id, title',
-      mealPlan: '++id, date, recipeId',
-      leftovers: '++id, recipeId, expiresOn',
-      mealLogs: '++id, date',
-      settings: 'id',
-      tagSensitivities: 'tag',
-    })
-    await old.table('ingredients').add({ name: 'My cereal', aliases: [], category: 'grains', tags: [], shelfLifeDays: { pantry: 100 }, kcalPer100g: 380, proteinPer100g: 11, sensitivity: 'light', custom: true })
-    await old.table('recipes').add({ title: 'Keeper', servings: 2, servingsPerMeal: 1, ingredients: [], steps: [], estMinutes: 10, actualMinutesHistory: [] })
-    await old.table('mealPlan').add({ date: '2026-11-20', slot: 'dinner', recipeId: 1, servingsPlanned: 1, status: 'planned' })
-    await old.table('settings').put({ id: 1, kcalTarget: 3200, proteinTarget: 160, shoppingDays: [0], defaultLightThresholdPct: 0.15, combinedLightCapPct: 0.25, leftoverShelfLifeDays: 4 })
-    old.close()
-
-    const db = new MealPlannerDB('foundation-upgrade')
-    expect((await db.ingredients.toArray()).map((i) => i.name)).toEqual(['My cereal'])
-    expect((await db.recipes.toArray())[0].title).toBe('Keeper')
-    expect(await db.mealPlan.count()).toBe(1)
-    expect(withDefaults(await db.settings.get(1)).kcalTarget).toBe(3200) // and the new settings fall back to defaults
-    await db.trips.add({ date: '2026-11-21', after: 'start', time: '10:00' })
-    expect(await db.trips.count()).toBe(1)
   })
 })
 

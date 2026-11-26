@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Apple, CalendarDays, Check, ChefHat, ShoppingBasket, TriangleAlert } from 'lucide-react'
 import FoodsSheet from '../components/FoodsSheet'
 import TimeSelect from '../components/TimeSelect'

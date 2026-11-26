@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { ScanBarcode, X } from 'lucide-react'
 import { CATEGORIES } from '../data/categories'
 import { TAGS } from '../data/tags'

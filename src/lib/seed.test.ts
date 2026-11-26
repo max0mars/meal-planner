@@ -1,12 +1,12 @@
-import 'fake-indexeddb/auto'
+import '../test/fakeServer'
+import { freshDatabase } from '../test/resetDb'
 import { describe, expect, it } from 'vitest'
-import { MealPlannerDB } from '../db'
 import { TAGS } from '../data/tags'
 import { seedIfEmpty } from './seed'
 
 describe('seedIfEmpty', () => {
   it('loads the curated ingredients and default settings once', async () => {
-    const database = new MealPlannerDB('seed-test')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     const count = await database.ingredients.count()
     expect(count).toBeGreaterThan(100)
@@ -22,7 +22,7 @@ describe('seedIfEmpty', () => {
   })
 
   it('adds newly released ingredients without overwriting your labels', async () => {
-    const database = new MealPlannerDB('seed-test-merge')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     const total = await database.ingredients.count()
 
@@ -39,14 +39,14 @@ describe('seedIfEmpty', () => {
   })
 
   it('has one entry per concept (a single plain "Whole milk", not dozens of milks)', async () => {
-    const database = new MealPlannerDB('seed-test-2')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     const milks = await database.ingredients.filter((i) => /\bmilk\b/i.test(i.name)).toArray()
     expect(milks.length).toBeLessThan(10)
   })
 
   it('only uses known tags, and gluten/dairy/lactose/oats tags are populated', async () => {
-    const database = new MealPlannerDB('seed-test-3')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     const known = new Set(TAGS.map((t) => t.id))
     const all = await database.ingredients.toArray()

@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
+import { freshDatabase } from './test/resetDb'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import recipeSeed from './data/recipes.seed.json'
-import { db, MealPlannerDB } from './db'
+import { db } from './db'
 import { recipeNutrition } from './lib/nutrition'
 import { classifyRecipe } from './lib/recipeSafety'
 import { seedIfEmpty } from './lib/seed'
@@ -13,9 +14,8 @@ import { BASELINE_RECIPES_VERSION, seedBaselineRecipes } from './lib/seedRecipes
 import { tagLevelMap } from './lib/sensitivity'
 import type { RecipeIngredient, Sensitivity } from './types'
 
-let n = 0
 async function freshDb() {
-  const database = new MealPlannerDB(`baseline-${n++}`)
+  const database = await freshDatabase()
   await seedIfEmpty(database)
   return database
 }
@@ -616,7 +616,7 @@ function statsRow(): HTMLElement {
 
 describe('correcting ingredient amounts the import misread', () => {
   const PIRI = 'themealdb:53039'
-  const protein = async (database: MealPlannerDB) => {
+  const protein = async (database: typeof db) => {
     const r = (await database.recipes.filter((x) => x.seedId === PIRI).first())!
     const byId = new Map((await database.ingredients.toArray()).map((i) => [i.id!, i]))
     return { r, perServing: recipeNutrition(r, byId).proteinPerServing, byId }

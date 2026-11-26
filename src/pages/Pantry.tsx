@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Plus, ReceiptText, X } from 'lucide-react'
 import { db } from '../db'
 import AddGroceries, { type QuickPicks } from '../components/AddGroceries'

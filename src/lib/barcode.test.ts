@@ -1,4 +1,4 @@
-import 'fake-indexeddb/auto'
+import '../test/fakeServer'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { db } from '../db'
 import { draftFromProduct, hasValidCheckDigit, lookupBarcode, normalizeBarcode, parsePackage, parseProduct, productNotices } from './barcode'

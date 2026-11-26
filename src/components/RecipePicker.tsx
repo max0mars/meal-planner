@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Apple, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { db } from '../db'
 import { todayIso } from '../lib/pantry'

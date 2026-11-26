@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { CalendarPlus, Check, ChevronLeft, ChevronRight, Plus, ShoppingBasket, Sparkles, Trash2, TriangleAlert, X } from 'lucide-react'
 import FoodsSheet from '../components/FoodsSheet'
 import RecipePicker from '../components/RecipePicker'

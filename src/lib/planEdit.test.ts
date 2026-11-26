@@ -1,6 +1,6 @@
-import 'fake-indexeddb/auto'
+import '../test/fakeServer'
 import { afterEach, describe, expect, it } from 'vitest'
-import { db } from '../db'
+import { DEFAULT_SETTINGS, db } from '../db'
 import {
   applyPlan,
   changeServings,
@@ -84,7 +84,7 @@ describe('editing the plan', () => {
   })
 
   it('removing the meal that was cooked flags its leftovers, and removing a leftover flags nothing', async () => {
-    await db.settings.put({ ...(await db.settings.get(1))!, id: 1, leftoverShelfLifeDays: 4 })
+    await db.settings.put({ ...DEFAULT_SETTINGS, leftoverShelfLifeDays: 4 })
     await setMeal('2026-11-25', 'dinner', 7, 2)
     await setMeal('2026-11-26', 'dinner', 7, 1)
     await setMeal('2026-11-27', 'dinner', 7, 1)

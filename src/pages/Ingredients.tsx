@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Plus, ScanBarcode } from 'lucide-react'
 import { db } from '../db'

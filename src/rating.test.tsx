@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
+import { freshDatabase } from './test/resetDb'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import recipeSeed from './data/recipes.seed.json'
-import { db, MealPlannerDB } from './db'
+import { db } from './db'
 import { nextRating, toggleRating } from './lib/rating'
 import { seedIfEmpty } from './lib/seed'
 import { seedBaselineRecipes } from './lib/seedRecipes'
@@ -104,7 +105,7 @@ describe('like and dislike', () => {
 
 describe('version 4 descriptions', () => {
   it('fills a missing description and cuisine but never replaces one you wrote', async () => {
-    const database = new MealPlannerDB('desc-upgrade')
+    const database = await freshDatabase()
     await seedIfEmpty(database)
     await seedBaselineRecipes(database)
     const [plain, mine] = (await database.recipes.toArray()).filter((r) => r.seedId)

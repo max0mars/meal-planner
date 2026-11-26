@@ -1,12 +1,17 @@
 // @vitest-environment jsdom
-import 'fake-indexeddb/auto'
+import './test/fakeServer'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, configure, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
+import { API_URL } from './api/client'
+
 import { DEFAULT_SETTINGS, db } from './db'
 import { seedIfEmpty } from './lib/seed'
 import { ScanError } from './lib/scanEngine'
+
+// The test server's fetch, kept before the food-database mock replaces fetch.
+const serverFetch = globalThis.fetch
 
 // The Ingredients page draws every food (about 400, each with a sensitivity slider), which takes a few seconds in the test
 // browser on a busy machine. Give these tests time to see it instead of failing on the default 1 s wait and 5 s limit.
@@ -55,7 +60,10 @@ beforeEach(() => {
     return { stop: engine.stop, torchSupported: false, setTorch: vi.fn() }
   })
   fetchMock.mockReset().mockImplementation(respond(productJson()))
-  vi.stubGlobal('fetch', fetchMock)
+  // Only the food-database lookups are mocked; the planner's own requests still go to the test server.
+  vi.stubGlobal('fetch', (input: RequestInfo | URL, init?: RequestInit) =>
+    String(input).startsWith(API_URL) ? serverFetch(input, init) : fetchMock(input, init),
+  )
 })
 afterEach(async () => {
   cleanup()

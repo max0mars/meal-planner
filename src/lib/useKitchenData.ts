@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useLiveQuery } from '../api/liveQuery'
 import { db, withDefaults, type ResolvedSettings } from '../db'
 import { tagLevelMap } from './sensitivity'
 
