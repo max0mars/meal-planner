@@ -10,5 +10,6 @@ export interface SqlStatement {
 
 export interface SqlDatabase {
   prepare(sql: string): SqlStatement
-  batch(statements: SqlStatement[]): Promise<unknown>
+  /** Runs the statements as one transaction. Each result has the rows the statement returned. */
+  batch(statements: SqlStatement[]): Promise<Array<{ results: unknown[] }>>
 }

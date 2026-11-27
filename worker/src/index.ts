@@ -1,4 +1,4 @@
-import { handleData, handleRestore } from './data'
+import { handleCommit, handleData, handleRestore } from './data'
 
 export interface Env {
   DB: D1Database
@@ -66,6 +66,7 @@ async function route(request: Request, env: Env): Promise<Response> {
   }
 
   if (segments.length === 2 && segments[1] === 'restore') return handleRestore(request, env.DB)
+  if (segments.length === 2 && segments[1] === 'commit') return handleCommit(request, env.DB)
 
   return handleData(request, env.DB, segments)
 }

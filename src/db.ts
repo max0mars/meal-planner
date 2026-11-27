@@ -1,5 +1,5 @@
 import { DEFAULT_REGIONS, normalizeRegions } from './lib/cuisine'
-import { createTable, type Table } from './api/table'
+import { createTable, runTransaction, type Table } from './api/table'
 import type { Ingredient, Leftover, MealLog, MealPlanEntry, PantryItem, Recipe, Settings, TagSensitivity, Trip } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -35,8 +35,6 @@ export function withDefaults(stored?: Settings | null): ResolvedSettings {
   } as ResolvedSettings
 }
 
-let transactionQueue: Promise<unknown> = Promise.resolve()
-
 /** The planner's data. Same tables and methods as before, now kept on the Worker (see src/api/). */
 export class MealPlannerDB {
   /** The schema version the backup file records. Kept at the last Dexie version so older backups still restore. */
@@ -59,15 +57,12 @@ export class MealPlannerDB {
   }
 
   /**
-   * Runs `work`. Dexie's version rolled everything back if `work` failed; this one does not yet. Each call inside
-   * `work` is its own request to the server. Making these atomic is part of moving the planner logic onto the Worker.
+   * Runs `work` as one transaction: every change it makes to the planner's data is saved together, or none is. See
+   * runTransaction in src/api/table.ts.
    */
   transaction<T>(_mode: string, ...rest: [...unknown[], () => Promise<T>]): Promise<T> {
     const work = rest[rest.length - 1] as () => Promise<T>
-    // Transactions run one after another, as Dexie's did, so two quick taps cannot read the same value and both write.
-    const run = transactionQueue.then(() => work())
-    transactionQueue = run.catch(() => undefined)
-    return run
+    return runTransaction(work)
   }
 }
 

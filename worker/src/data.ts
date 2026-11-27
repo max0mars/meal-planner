@@ -203,3 +203,74 @@ export async function handleRestore(request: Request, db: SqlDatabase): Promise<
     return dbError(e)
   }
 }
+
+/**
+ * Applies a set of changes to several tables in one batch, so a change made in the app's transaction either lands
+ * completely or not at all. Body: { tables: { <name>: { clear?, deletes?: key[], updates?: {key, changes}[], inserts?: row[] } } }.
+ * Response: { ids: { <name>: id[] } }, the id of each inserted row in the order it was sent.
+ */
+export async function handleCommit(request: Request, db: SqlDatabase): Promise<Response> {
+  if (request.method !== 'POST') return errorResponse(405, 'Method not allowed')
+  try {
+    const body = asObject(await readBody(request))
+    const tables = body.tables
+    if (typeof tables !== 'object' || tables === null || Array.isArray(tables)) throw new RowError('The change has no tables')
+
+    const statements: ReturnType<SqlDatabase['prepare']>[] = []
+    const inserted: { table: string; statement: number; auto: boolean; key: unknown }[] = []
+
+    for (const [name, spec] of Object.entries(tables as Record<string, unknown>)) {
+      const def = TABLES[name]
+      if (!def) throw new RowError(`The change has an unknown table "${name}"`)
+      const s = asObject(spec)
+      const keyOf = (raw: unknown): string | number => {
+        const key = parseKey(def, String(raw))
+        if (key === null) throw new RowError(`"${String(raw)}" is not a ${name} key`)
+        return key
+      }
+
+      if (s.clear === true) statements.push(db.prepare(`DELETE FROM ${def.sql}`))
+
+      for (const key of (s.deletes as unknown[] | undefined) ?? []) {
+        statements.push(db.prepare(`DELETE FROM ${def.sql} WHERE ${def.pk} = ?`).bind(keyOf(key)))
+      }
+
+      for (const item of (s.updates as unknown[] | undefined) ?? []) {
+        const u = asObject(item)
+        const cols = toSql(def, asObject(u.changes), { allowId: false })
+        const names = Object.keys(cols)
+        if (names.length === 0) continue
+        const sets = names.map((n) => `${n} = ?`).join(', ')
+        statements.push(db.prepare(`UPDATE ${def.sql} SET ${sets} WHERE ${def.pk} = ?`).bind(...names.map((n) => cols[n]), keyOf(u.key)))
+      }
+
+      for (const item of (s.inserts as unknown[] | undefined) ?? []) {
+        const row = asObject(item)
+        const cols = toSql(def, row, { allowId: true })
+        if (def.pkKind === 'fixed') cols[def.pk] = 1
+        const { names, values, marks } = columnsAndValues(cols)
+        if (def.pkKind === 'auto') {
+          // The database picks the id of a new row; RETURNING tells us what it picked.
+          inserted.push({ table: name, statement: statements.length, auto: true, key: cols[def.pk] })
+          statements.push(db.prepare(`INSERT INTO ${def.sql} (${names.join(', ')}) VALUES (${marks}) RETURNING ${def.pk}`).bind(...values))
+        } else {
+          // Settings and text-keyed rows are whole rows: replace the one with this key.
+          if (cols[def.pk] === undefined) throw new RowError(`A ${name} row needs its ${def.pk}`)
+          inserted.push({ table: name, statement: statements.length, auto: false, key: cols[def.pk] })
+          statements.push(db.prepare(`INSERT OR REPLACE INTO ${def.sql} (${names.join(', ')}) VALUES (${marks})`).bind(...values))
+        }
+      }
+    }
+
+    const results = statements.length > 0 ? await db.batch(statements) : []
+    const ids: Record<string, unknown[]> = {}
+    for (const item of inserted) {
+      const id = item.auto ? (results[item.statement]?.results[0] as Record<string, unknown> | undefined)?.[TABLES[item.table].pk] : item.key
+      ;(ids[item.table] ??= []).push(id ?? null)
+    }
+    return json({ ids })
+  } catch (e) {
+    if (e instanceof RowError) return errorResponse(400, e.message)
+    return dbError(e)
+  }
+}

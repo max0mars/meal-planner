@@ -4,7 +4,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { DatabaseSync } from 'node:sqlite'
 import { resolve } from 'node:path'
-import { handleData, handleRestore } from '../../worker/src/data'
+import { handleCommit, handleData, handleRestore } from '../../worker/src/data'
 import type { SqlDatabase, SqlStatement } from '../../worker/src/d1'
 import { TEST_TOKEN } from './token'
 
@@ -44,7 +44,7 @@ function openDatabase(): SqlDatabase {
       sqlite.exec('BEGIN')
       try {
         const results = []
-        for (const s of statements) results.push(await s.run())
+        for (const s of statements) results.push(await s.all())
         sqlite.exec('COMMIT')
         return results
       } catch (e) {
@@ -64,6 +64,7 @@ globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
   }
   const segments = new URL(request.url).pathname.split('/').filter(Boolean)
   if (segments.length === 2 && segments[1] === 'restore') return handleRestore(request, database)
+  if (segments.length === 2 && segments[1] === 'commit') return handleCommit(request, database)
   return handleData(request, database, segments)
 }) as typeof fetch
 
